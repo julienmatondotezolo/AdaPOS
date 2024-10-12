@@ -2,12 +2,13 @@
 
 import React from "react";
 
-import { TimeHeader } from "@/components";
+import { TableBoard, TimeHeader } from "@/components";
 
 function Dashboard() {
   return (
     <div className="h-full w-full">
       <TimeHeader />
+      <TableBoard />
     </div>
   );
 }
