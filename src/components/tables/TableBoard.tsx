@@ -1,34 +1,71 @@
+import { motion } from "framer-motion";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
-const tableData = [
+import { TableType } from "@/_types/adaType";
+
+import { Table } from "./Table";
+
+const tableData: TableType[] = [
   {
     id: 0,
-    title: "Table 1",
-    status: "Vacant",
+    name: "Table 1",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
   },
   {
     id: 1,
-    title: "Table 2",
-    status: "Vacant",
+    name: "Table 2",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
   },
   {
     id: 2,
-    title: "Table 3",
-    status: "Vacant",
+    name: "Table 3",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
+  },
+  {
+    id: 3,
+    name: "Table 4",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
+  },
+  {
+    id: 4,
+    name: "Table 5",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
+  },
+  {
+    id: 5,
+    name: "Table 6",
+    min: 0,
+    max: 0,
+    is_bookable: false,
+    ordered: false,
   },
 ];
 
-const TableBoard = ({ onClick }) => {
-  const dispatch = useDispatch();
+const TableBoard = () => {
+  const queryClient = useQueryClient();
 
   return (
-    <div>
-      <p>Table board</p>
+    <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="grid lg:grid-cols-5 grid-cols-4 gap-2 p-3">
       {tableData.map((table, i) => (
-        <div key={i}>{table.name}</div>
+        <Table key={i} table={table} />
       ))}
-    </div>
+    </motion.div>
   );
 };
 
