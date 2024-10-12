@@ -11,5 +11,9 @@ export default function PagesLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
-  return <Providers locale={locale}>{children}</Providers>;
+  return (
+    <Providers locale={locale}>
+      <main className="h-[100vh] w-[100vw] overflow-hidden">{children}</main>
+    </Providers>
+  );
 }
