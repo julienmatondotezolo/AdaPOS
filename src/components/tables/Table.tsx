@@ -1,19 +1,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { TableType } from "@/_types/adaType";
 import { addCustomer } from "@/lib/features";
 
 const Table = ({ table }: { table: TableType }) => {
-  const customer = useSelector((state: any) => state.customer);
   const dispatch = useDispatch();
 
   const allEvents = (table: TableType) => {
-    if (customer.length != 0) {
-      console.log("customer", customer);
-    }
     const tableNumber = {
       tableId: table.id,
       tableNumber: table.name,

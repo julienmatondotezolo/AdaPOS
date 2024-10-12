@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { BreadCrumbNavigation, Cart, MenuBoard, TableBoard, TimeHeader } from "@/components";
+import { Cart, MenuBoard, Navigation, TableBoard, TimeHeader } from "@/components";
 
 function Dashboard() {
   const customer = useSelector((state: any) => state.customer);
@@ -11,7 +11,7 @@ function Dashboard() {
   return (
     <div className="h-full w-full">
       <TimeHeader />
-      <BreadCrumbNavigation />
+      <Navigation />
       <section className="flex flex-col md:flex-row">
         <div className="w-full md:w-8/12">{customer.length > 0 ? <MenuBoard /> : <TableBoard />}</div>
         <div className="w-full md:w-2/12">

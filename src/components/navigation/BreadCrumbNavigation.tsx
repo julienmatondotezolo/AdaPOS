@@ -8,8 +8,6 @@ function BreadCrumbNavigation() {
     <div className="w-full px-4 py-8 flex items-center">
       <p className={breadCrumbStyle}>Tables</p>
       <p>{<ChevronRight className="mx-2" size={15} />}</p>
-      <p className={breadCrumbStyle}>Table 1</p>
-      <p>{<ChevronRight className="mx-2" size={15} />}</p>
       <p className={breadCrumbStyle}>Menu</p>
     </div>
   );
