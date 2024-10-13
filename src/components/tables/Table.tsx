@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 import { TableType } from "@/_types/adaType";
-import { addCustomer } from "@/lib/features";
+import { addTable } from "@/lib/features";
 
 const Table = ({ table }: { table: TableType }) => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const Table = ({ table }: { table: TableType }) => {
       tableNumber: table.name,
     };
 
-    dispatch(addCustomer(tableNumber));
+    dispatch(addTable(tableNumber));
   };
 
   return (

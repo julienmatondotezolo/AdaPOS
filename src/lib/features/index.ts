@@ -1,4 +1,4 @@
 export * from "./allCustomerSlice";
 export * from "./cartSlice";
-export * from "./customerSlice";
+export * from "./tableSlice";
 export * from "./placedOrderSlice";
