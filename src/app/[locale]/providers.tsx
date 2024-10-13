@@ -2,6 +2,10 @@ import { NextIntlClientProvider } from "next-intl";
 import { ThemeProvider } from "next-themes";
 import React, { JSX, ReactNode } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Provider } from "react-redux";
+
+// Manually import store
+import { store } from "@/lib/store";
 
 // Manually import messages for each locale
 import enMessages from "../../../messages/en.json";
@@ -37,7 +41,7 @@ export default function Providers({ children, locale }: Props): JSX.Element {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <NextIntlClientProvider locale={locale} messages={messages} timeZone={timeZone}>
-          {children}
+          <Provider store={store}>{children}</Provider>
         </NextIntlClientProvider>
       </ThemeProvider>
     </QueryClientProvider>

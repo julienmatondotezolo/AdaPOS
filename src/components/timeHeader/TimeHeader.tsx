@@ -8,12 +8,7 @@ const TimeHeader = () => {
   }, 1000);
 
   return (
-    <div
-      className="flex items-center justify-between pl-3 pr-3 py-1 text-white "
-      style={{
-        backgroundColor: "#000000",
-      }}
-    >
+    <div className="flex items-center justify-between p-2 bg-black">
       <div>
         <small className="font-bold">Ada</small>
       </div>
