@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { useQueryClient } from "react-query";
 
 import { TableType } from "@/_types/adaType";
 
@@ -58,7 +57,9 @@ const tableData: TableType[] = [
 ];
 
 const TableBoard = () => {
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
+
+  Table;
 
   return (
     <motion.div

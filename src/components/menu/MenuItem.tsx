@@ -21,9 +21,9 @@ const MenuItem = ({ menu, selectedMenuCategory, onClick }: MenuItemProps) => {
       onClick={() => onClick(menu.category)}
       className="relative overflow-hidden flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer"
     >
-      <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[135px] space-y-5">
+      <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[105px] space-y-5">
         <h3 className="font-bold text-1xl md:text-2xl">{menu.name}</h3>
-        <p className=" text-xs">Items: </p>
+        <p className="hidden md:block text-xs">Items: </p>
       </div>
 
       {isSelected && (

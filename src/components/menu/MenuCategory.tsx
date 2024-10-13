@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import React from "react";
@@ -45,27 +47,25 @@ const MenuCategory = ({
   };
 
   return (
-    <div className="grid lg:grid-cols-5 grid-cols-3 gap-2 p-3">
+    <div className="grid grid-cols-4 lg:grid-cols-5 gap-2 p-3">
       {menuCategory?.map((menuCategory: any, index: any) => (
         <>
           <motion.div
-            key={"cat" + menuCategory.id}
+            key={index + "cat" + menuCategory.id}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="flex justify-between p-3 h-[150px] cursor-pointer bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-500"
+            className={`flex justify-between p-3 h-[120px] md:h-[150px] cursor-pointer ${selectedMenuCategoryItem == menuCategory.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
           >
-            <div className="flex flex-col items-start justify-between">
-              <article className="w-[50%] md:w-full">
+            <div onClick={() => addItems(menuCategory)} className="flex md:flex-col items-start justify-between w-full">
+              <article className="text-sm md:text-base w-full md:w-[50%]">
                 <h3 className="font-bold">{menuCategory.title}</h3>
-                <p className="text-xs text-[#818497]">€ {menuCategory.price}</p>
+                <p className="hidden md:block text-xs text-[#818497]">€ {menuCategory.price}</p>
+                {selectedMenuCategoryItem == menuCategory.id && quantity > 0 && (
+                  <button className="hidden md:block font-bold bg-green-600 px-6 py-2">ADD</button>
+                )}
               </article>
-              {selectedMenuCategoryItem == menuCategory.id && quantity > 0 && (
-                <button onClick={() => addItems(menuCategory)} className="font-bold bg-green-600 px-6 py-2">
-                  ADD
-                </button>
-              )}
             </div>
-            <div className="absolute top-0 right-0 p-4 h-full flex flex-col justify-between items-center">
+            <div className="absolute left-0 bottom-0 md:left-auto md:top-0 md:right-0 p-1 md:p-4 w-full md:w-fit md:h-full flex md:flex-col justify-between items-center">
               <Plus
                 onClick={() => inCreament(menuCategory.id)}
                 className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
