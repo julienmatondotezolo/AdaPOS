@@ -1,27 +1,36 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { remove, selectTotal } from "@/lib/features";
 
+import { Invoice } from "./Invoice";
+
 const CartItems = () => {
   const dispatch = useDispatch();
+  const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
   const total = useSelector(selectTotal);
+
   const subTotal = total;
+  // const tax = (5.25 / 100) * total;
 
   const handleRemove = (e: any, id: any) => {
     e.preventDefault();
     dispatch(remove(id));
   };
 
+  const showInvoice = () => {
+    setInvoiceShow(true);
+  };
+
   return (
-    <div>
+    <>
       <motion.div
         transition={{ duration: 0.5 }}
         exit={{ y: "50%", opacity: 0 }}
-        className="flex flex-col space-y-1 h-[55vh] overflow-y-scroll scrollbar-hide"
+        className="flex flex-col space-y-1 h-[50vh] overflow-y-scroll scrollbar-hide"
       >
         {allCartItems.length > 0 ? (
           <AnimatePresence>
@@ -73,13 +82,21 @@ const CartItems = () => {
       <div className="flex flex-col w-full">
         <div className="grid grid-cols-3 gap-0">
           <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
-            <button>Discount</button>
+            <button>Note</button>
+          </div>
+          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
+            <button>Split</button>
           </div>
           <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
             <button>Cash</button>
           </div>
+        </div>
+        <div className="grid grid-cols-3 gap-0">
           <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
-            <button>Discount</button>
+            <button>Take away</button>
+          </div>
+          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
+            <button>Hotel</button>
           </div>
         </div>
         <div className="flex flex-col pl-8 pr-8 py-2 space-y-2">
@@ -88,10 +105,10 @@ const CartItems = () => {
             <p className="text-center text-xs font-semibold text-green-500">
               Payment done. <small className="font-normal text-white"> Now you can place order.</small>{" "}
             </p>
-          )}
-          <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
+          )} */}
+          {/* <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
             <p>Tax 5.25%</p>
-            <p>₹{tax.toFixed(2)}</p>
+            <p>€ {tax.toFixed(2)}</p>
           </div> */}
           {/* <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
             <p>Items:</p>
@@ -102,28 +119,22 @@ const CartItems = () => {
             <p>€ {subTotal.toFixed(2)}</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-0 pt-2 text-center bottom-0 w-full">
-          <div className={allCartItems.length > 0 ? `bg-[#3441d4]` : `bg-gray-500 border-r border-gray-700`}>
-            <button
-              className={
-                allCartItems.length > 0 ? "py-4 text-center pt-2" : " py-4 text-center pt-2 cursor-not-allowed"
-              }
-            >
-              KOT
-            </button>
-          </div>
-          <div className={allCartItems.length > 0 ? `bg-[#5b45b0]` : `bg-gray-500`}>
-            <button
-              className={
-                allCartItems.length > 0 ? "py-4 text-center pt-2" : " py-4 text-center pt-2 cursor-not-allowed"
-              }
-            >
-              Place Order
-            </button>
-          </div>
+        <div className="flex w-full justify-between">
+          <button
+            onClick={showInvoice}
+            className={`w-1/4 py-4 text-center border-2 border-neutral-900 ${allCartItems.length > 0 ? "bg-[#3441d4]" : "bg-neutral-500 cursor-not-allowed"}`}
+          >
+            Print
+          </button>
+          <button
+            className={`w-3/4 py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
+          >
+            Send to kitchen
+          </button>
         </div>
       </div>
-    </div>
+      {invoiceShow && <Invoice open={invoiceShow} setIsOpen={setInvoiceShow} />}
+    </>
   );
 };
 

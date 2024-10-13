@@ -60,7 +60,7 @@ const MenuCategory = ({
                 <p className="text-xs text-[#818497]">€ {menuCategory.price}</p>
               </article>
               {selectedMenuCategoryItem == menuCategory.id && quantity > 0 && (
-                <button onClick={() => addItems(menuCategory)} className="bg-green-700 px-6 py-2">
+                <button onClick={() => addItems(menuCategory)} className="font-bold bg-green-600 px-6 py-2">
                   ADD
                 </button>
               )}
