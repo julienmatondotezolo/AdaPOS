@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useDispatch } from "react-redux";
 
 import { MenuType } from "@/_types/adaType";
 
@@ -41,7 +40,8 @@ const MenuBoard = () => {
   const queryClient = useQueryClient();
 
   const [quantity, setQuantity] = useState(0);
-  const [idCategory, setCategoryId] = useState<number>();
+  const [idCategoryId, setCategoryId] = useState<string>();
+  const [idCategoryItemId, setCategoryItemId] = useState<number>();
   const [categoryDetails, setCategoryDetails] = useState<any>();
 
   const getCategory = (category: string) => {
@@ -50,9 +50,9 @@ const MenuBoard = () => {
     setCategoryDetails(newArr);
   };
 
-  const openMenuCategory = (menuCategory: string, menuId: number) => {
+  const openMenuCategory = (menuCategory: string) => {
     getCategory(menuCategory);
-    setCategoryId(menuId);
+    setCategoryId(menuCategory);
   };
 
   return (
@@ -66,8 +66,8 @@ const MenuBoard = () => {
           <MenuItem
             key={i}
             menu={menu}
-            selectedMenuId={idCategory}
-            onClick={() => openMenuCategory(menu.category, menu.id)}
+            selectedMenuCategory={idCategoryId}
+            onClick={() => openMenuCategory(menu.category)}
           />
         ))}
       </motion.div>
@@ -75,10 +75,10 @@ const MenuBoard = () => {
         {categoryDetails?.length > 0 ? (
           <MenuCategory
             menuCategory={categoryDetails}
-            selectedMenuId={idCategory}
+            selectedMenuCategoryItem={idCategoryItemId}
             quantity={quantity}
             setQuantity={setQuantity}
-            setCategoryId={setCategoryId}
+            setCategoryItemId={setCategoryItemId}
           />
         ) : (
           <small className="text-neutral-600">Select any category. </small>

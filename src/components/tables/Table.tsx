@@ -20,7 +20,7 @@ const Table = ({ table }: { table: TableType }) => {
 
   return (
     <div
-      className="flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer rounded-xl"
+      className="flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer"
       onClick={() => allEvents(table)}
     >
       <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[135px] space-y-5">

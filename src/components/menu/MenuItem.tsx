@@ -9,17 +9,17 @@ import { MenuType } from "@/_types/adaType";
 
 interface MenuItemProps {
   menu: MenuType;
-  selectedMenuId: number | undefined;
-  onClick: (menuCategory: string, menuId: number) => void;
+  selectedMenuCategory: string | undefined;
+  onClick: (menuCategory: string) => void;
 }
 
-const MenuItem = ({ menu, selectedMenuId, onClick }: MenuItemProps) => {
-  const isSelected = selectedMenuId == menu.id;
+const MenuItem = ({ menu, selectedMenuCategory, onClick }: MenuItemProps) => {
+  const isSelected = selectedMenuCategory == menu.category;
 
   return (
     <div
-      onClick={() => onClick(menu.category, menu.id)}
-      className="relative overflow-hidden flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer rounded-xl"
+      onClick={() => onClick(menu.category)}
+      className="relative overflow-hidden flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer"
     >
       <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[135px] space-y-5">
         <h3 className="font-bold text-1xl md:text-2xl">{menu.name}</h3>
