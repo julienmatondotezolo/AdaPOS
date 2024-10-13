@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { X } from "lucide-react";
+import Image from "next/image";
 import React, { FC, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 
 import { selectTotal } from "@/lib/features";
+
+import logo from "../../assets/images/osteria-logo-black.png";
 
 type DialogProps = {
   open: boolean;
@@ -16,13 +19,10 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
   const total = useSelector(selectTotal);
 
   const handleAfterPrint = React.useCallback(() => {
-    console.log("`onAfterPrint` called");
+    // console.log("`onAfterPrint` called");
   }, []);
 
-  const handleBeforePrint = React.useCallback(() => {
-    console.log("`onBeforePrint` called");
-    return Promise.resolve();
-  }, []);
+  const handleBeforePrint = React.useCallback(() => Promise.resolve(), []);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,7 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
 
   const handlePrint = () => {
     reactToPrintFn();
-    // handleClose();
+    handleClose();
   };
 
   return (
@@ -77,6 +77,9 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
       <div className="w-full mt-4 bg-neutral-300 p-4">
         <figure className="h-[50vh] overflow-y-scroll scrollbar-thin scrollbar-track-neutral-600">
           <div ref={contentRef} className="w-full bg-white p-8 space-y-6">
+            <section className="flex justify-center w-full m-auto">
+              <Image src={logo} width={100} alt="Logo osteria" />
+            </section>
             <section className="text-center">
               <h3 className="text-xl">l&apos;Osteria</h3>
               <h3 className="text-sm">Date: {date}</h3>

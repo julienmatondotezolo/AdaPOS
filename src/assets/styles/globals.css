@@ -19,3 +19,9 @@
         --foreground: 210 20% 98%;
     }
 }
+
+@media print {
+  @page {
+    size: auto portrait;
+  }
+}
