@@ -61,7 +61,11 @@ const TableBoard = () => {
   const queryClient = useQueryClient();
 
   return (
-    <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="grid lg:grid-cols-5 grid-cols-4 gap-2 p-3">
+    <motion.div
+      initial={{ y: 100 }}
+      animate={{ y: 0 }}
+      className="grid lg:grid-cols-6 grid-cols-4 gap-2 p-3 border-2 border-neutral-900"
+    >
       {tableData.map((table, i) => (
         <Table key={i} table={table} />
       ))}

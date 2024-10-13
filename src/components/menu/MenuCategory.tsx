@@ -34,14 +34,13 @@ const MenuCategory = ({ menuCategory, selectedMenuId, quantity, setQuantity, set
     const newData = { id, title, price: price * quantity, category, quantity: quantity };
 
     if (quantity > 0) {
-      // dispatch(add(newData));
-      console.log("newData:", newData);
+      dispatch(add(newData));
       setQuantity(0);
     }
   };
 
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-1">
+    <div className="grid lg:grid-cols-5 grid-cols-3 gap-2 p-3">
       {menuCategory?.map((menuItem: any, index: any) => (
         <>
           <motion.div
@@ -51,7 +50,7 @@ const MenuCategory = ({ menuCategory, selectedMenuId, quantity, setQuantity, set
             className="flex justify-between p-3 h-[150px] cursor-pointer bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-500"
           >
             <div className="flex flex-col items-start justify-between">
-              <article>
+              <article className="w-[50%] md:w-full">
                 <h3 className="font-bold">{menuItem.title}</h3>
                 <p className="text-xs text-[#818497]">€ {menuItem.price}</p>
               </article>

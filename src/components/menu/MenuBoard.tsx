@@ -48,7 +48,6 @@ const MenuBoard = () => {
     const newArr = menus.filter((a: any) => a.category === category);
 
     setCategoryDetails(newArr);
-    console.log(newArr);
   };
 
   const openMenuCategory = (menuCategory: string, menuId: number) => {

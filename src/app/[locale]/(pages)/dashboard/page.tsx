@@ -12,9 +12,9 @@ function Dashboard() {
     <div className="h-full w-full">
       <TimeHeader />
       <Navigation />
-      <section className="flex flex-col md:flex-row">
-        <div className="w-full md:w-8/12">{customer.length > 0 ? <MenuBoard /> : <TableBoard />}</div>
-        <div className="w-full md:w-2/12">
+      <section className="flex flex-col md:flex-row w-full">
+        <div className="w-full md:w-9/12">{customer.length > 0 ? <MenuBoard /> : <TableBoard />}</div>
+        <div className="w-full md:w-3/12">
           <Cart />
         </div>
       </section>
