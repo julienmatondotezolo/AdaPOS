@@ -15,7 +15,7 @@ function Navigation() {
   };
 
   return (
-    <div className="w-full p-4 flex items-center bg-slate-200 dark:bg-gray-950">
+    <div className="w-full p-4 flex items-center border-2 border-neutral-900">
       <article className="flex items-center space-x-4">
         {!isTableSelected && <ArrowLeft className=" cursor-pointer" onClick={() => goBack()} />}
         <section className="flex flex-col dark:text-white">
