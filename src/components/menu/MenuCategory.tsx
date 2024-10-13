@@ -49,7 +49,7 @@ const MenuCategory = ({
       {menuCategory?.map((menuCategory: any, index: any) => (
         <>
           <motion.div
-            key={index}
+            key={"cat" + menuCategory.id}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="flex justify-between p-3 h-[150px] cursor-pointer bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-500"
