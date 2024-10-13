@@ -72,13 +72,13 @@ const CartItems = () => {
       </motion.div>
       <div className="flex flex-col w-full">
         <div className="grid grid-cols-3 gap-0">
-          <div className="bg-[#151a34] text-center p-2 text-sm font-semibold hover:bg-[#1f2544] cursor-pointer border border-black rounded-tl-lg">
+          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
             <button>Discount</button>
           </div>
-          <div className="bg-[#151a34] text-center p-2 text-sm font-semibold hover:bg-[#1f2544] cursor-pointer border border-black rounded-tl-lg">
-            <button>Discount</button>
+          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
+            <button>Cash</button>
           </div>
-          <div className="bg-[#151a34] text-center p-2 text-sm font-semibold hover:bg-[#1f2544] cursor-pointer border border-black rounded-tl-lg">
+          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
             <button>Discount</button>
           </div>
         </div>
@@ -92,10 +92,10 @@ const CartItems = () => {
           <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
             <p>Tax 5.25%</p>
             <p>₹{tax.toFixed(2)}</p>
-          </div>
-          <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
-            <p>Subtotal</p>
-            <p>₹{total.toFixed(2)}</p>
+          </div> */}
+          {/* <div className="flex flex-row items-center justify-between text-xs font-bold text-gray-600 ">
+            <p>Items:</p>
+            <p>{allCartItems.length}</p>
           </div> */}
           <div className="flex flex-row items-center justify-between text-sm font-bold ">
             <p>Total</p>
