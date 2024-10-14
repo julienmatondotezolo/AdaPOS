@@ -4,10 +4,10 @@ import { useSelector } from "react-redux";
 import { CartItems } from "./CartItems";
 
 const Cart = () => {
-  const customer = useSelector((state: any) => state.customer);
+  const table = useSelector((state: any) => state.table);
   const allCartItems = useSelector((state: any) => state.cart);
 
-  const isTableSlected = customer.length > 0 ? true : false;
+  const isTableSlected = table.length > 0 ? true : false;
 
   if (!isTableSlected)
     return (
@@ -19,7 +19,7 @@ const Cart = () => {
   return (
     <div className="w-full">
       <div className="flex flex-1 items-center justify-between p-4 border-2 border-neutral-900">
-        <h3 className="text-xl font-semibold">{customer[0]?.tableNumber}</h3>
+        <h3 className="text-xl font-semibold">{table[0]?.tableNumber}</h3>
         {allCartItems.length > 0 && (
           <article className="flex space-x-2 text-sm">
             <p>Items:</p>
