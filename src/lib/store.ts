@@ -2,13 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import allCustomerReducer from "./features/allCustomerSlice";
 import cartReducer from "./features/cartSlice";
-import customerReducer from "./features/customerSlice";
 import placedOrderSlice from "./features/placedOrderSlice";
+import tableReducer from "./features/tableSlice";
 
 const store = configureStore({
   reducer: {
     cart: cartReducer,
-    customer: customerReducer,
+    table: tableReducer,
     ordered: placedOrderSlice,
     allcustomer: allCustomerReducer,
   },

@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 import { TableType } from "@/_types/adaType";
-import { addCustomer } from "@/lib/features";
+import { addTable } from "@/lib/features";
 
 const Table = ({ table }: { table: TableType }) => {
   const dispatch = useDispatch();
@@ -15,16 +15,16 @@ const Table = ({ table }: { table: TableType }) => {
       tableNumber: table.name,
     };
 
-    dispatch(addCustomer(tableNumber));
+    dispatch(addTable(tableNumber));
   };
 
   return (
     <div
-      className="flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer"
+      className={`flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-2 md:p-3 cursor-pointer`}
       onClick={() => allEvents(table)}
     >
-      <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[135px] space-y-5">
-        <h3 className="font-bold text-1xl md:text-2xl">{table.name}</h3>
+      <div className="flex flex-col items-start justify-between h-[80px] md:h-[135px] space-y-5">
+        <h3 className="font-bold text-sm md:text-2xl">{table.name}</h3>
         <p className=" text-xs">Status: </p>
       </div>
     </div>

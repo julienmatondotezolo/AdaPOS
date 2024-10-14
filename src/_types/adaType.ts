@@ -7,8 +7,10 @@ export type MenuType = {
 export type TableType = {
   id: number;
   name: string;
-  min: number;
-  max: number;
-  is_bookable: boolean;
-  ordered: boolean;
+  x?: number;
+  y?: number;
+  min?: number;
+  max?: number;
+  is_bookable?: boolean;
+  ordered?: boolean;
 };
