@@ -3,7 +3,7 @@ import { ShoppingCart, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { remove, selectTotal } from "@/lib/features";
+import { remove } from "@/lib/features";
 
 import { Invoice } from "./Invoice";
 
@@ -11,9 +11,9 @@ const CartItems = () => {
   const dispatch = useDispatch();
   const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
-  const total = useSelector(selectTotal);
+  // const total = useSelector(selectTotal);
 
-  const subTotal = total;
+  // const subTotal = total;
   // const tax = (5.25 / 100) * total;
 
   const handleRemove = (e: any, id: any) => {
@@ -30,7 +30,7 @@ const CartItems = () => {
       <motion.div
         transition={{ duration: 0.5 }}
         exit={{ y: "50%", opacity: 0 }}
-        className="flex flex-col space-y-1 h-[150px] md:h-[50vh] overflow-y-scroll scrollbar-hide"
+        className={`flex flex-col space-y-1 ${allCartItems.length > 0 && "h-[50px] sm:h-[100px] md:h-[50vh]"} overflow-y-scroll scrollbar-hide`}
       >
         {allCartItems.length > 0 ? (
           <AnimatePresence>
@@ -48,11 +48,6 @@ const CartItems = () => {
                     <p className="truncate text-sm font-medium text-white">
                       {index + 1}. &nbsp;{cart.title} &nbsp;{" "}
                     </p>
-                    {/* <div className="ml-2 flex flex-shrink-0">
-                    <p className="inline-flex rounded-full px-2 text-xs font-semibold leading-5 text-white">
-                      € {cart.price}
-                    </p>
-                  </div> */}
                   </div>
 
                   <div className="md:mt-2 flex justify-between items-center sm:space-x-2">
@@ -77,7 +72,7 @@ const CartItems = () => {
             ))}
           </AnimatePresence>
         ) : (
-          <div className="flex flex-col items-center justify-center mt-24">
+          <div className="flex flex-1 flex-col items-center justify-center">
             <ShoppingCart className="text-neutral-600" />
             <small className=" text-neutral-600 mt-2">No items.</small>
           </div>
@@ -118,10 +113,10 @@ const CartItems = () => {
             <p>Items:</p>
             <p>{allCartItems.length}</p>
           </div> */}
-          <div className="flex flex-row items-center justify-between text-sm font-bold ">
+          {/* <div className="flex flex-row items-center justify-between text-sm font-bold ">
             <p>Total</p>
             <p>€ {subTotal.toFixed(2)}</p>
-          </div>
+          </div> */}
         </div>
         <div className="flex w-full justify-between">
           <button

@@ -27,7 +27,7 @@ const MenuBoard = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="h-[15vh] md:h-[40vh] overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900">
+      <div className="h-1/2 overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900">
         <motion.div
           initial={{ y: 100 }}
           animate={{ y: 0 }}
@@ -43,7 +43,7 @@ const MenuBoard = () => {
           ))}
         </motion.div>
       </div>
-      <div className="h-[15vh] md:h-[40vh] overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
+      <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
         {categoryDetails?.length > 0 ? (
           <MenuCategory
             menuCategory={categoryDetails}

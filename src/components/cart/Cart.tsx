@@ -11,14 +11,14 @@ const Cart = () => {
 
   if (!isTableSlected)
     return (
-      <div className="p-8 border-2 border-neutral-900">
-        <h3 className="text-xl font-semibold">Select a table</h3>
+      <div className="p-8 border-2 border-neutral-900 text-center md:text-left">
+        <h3 className="text-xl font-semibold text-neutral-600">No table selected</h3>
       </div>
     );
 
   return (
-    <div className="w-full">
-      <div className="flex flex-1 items-center justify-between p-4 border-2 border-neutral-900">
+    <div className="flex flex-col justify-between w-full h-full">
+      <div className="flex items-center justify-between p-4 border-2 border-neutral-900">
         <h3 className="text-xl font-semibold">{table[0]?.tableNumber}</h3>
         {allCartItems.length > 0 && (
           <article className="flex space-x-2 text-sm">

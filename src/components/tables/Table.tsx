@@ -23,9 +23,8 @@ const Table = ({ table }: { table: TableType }) => {
       className={`flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-2 md:p-3 cursor-pointer`}
       onClick={() => allEvents(table)}
     >
-      <div className="flex flex-col items-start justify-between h-[80px] md:h-[135px] space-y-5">
-        <h3 className="font-bold text-sm md:text-2xl">{table.name}</h3>
-        <p className=" text-xs">Status: </p>
+      <div className="flex m-auto flex-col justify-center h-[80px] md:h-[120px] space-y-5">
+        <h3 className="font-bold text-sm md:text-xl">{table.name}</h3>
       </div>
     </div>
   );
