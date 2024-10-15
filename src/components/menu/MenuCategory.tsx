@@ -54,10 +54,10 @@ const MenuCategory = ({
             key={index + "cat" + menuCategory.id}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className={`flex justify-between p-3 h-[120px] md:h-[150px] cursor-pointer ${selectedMenuCategoryItem == menuCategory.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
+            className={`flex justify-between p-3 h-[90px] sm:h-[120px] md:h-[150px] cursor-pointer ${selectedMenuCategoryItem == menuCategory.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
           >
             <div onClick={() => addItems(menuCategory)} className="flex md:flex-col items-start justify-between w-full">
-              <article className="text-sm md:text-base w-full md:w-[50%]">
+              <article className="text-xs sm:text-sm md:text-base w-full md:w-[50%]">
                 <h3 className="font-bold">{menuCategory.title}</h3>
                 <p className="hidden md:block text-xs text-[#818497]">€ {menuCategory.price}</p>
                 {selectedMenuCategoryItem == menuCategory.id && quantity > 0 && (

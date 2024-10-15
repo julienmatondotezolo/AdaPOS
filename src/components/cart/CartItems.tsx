@@ -30,7 +30,7 @@ const CartItems = () => {
       <motion.div
         transition={{ duration: 0.5 }}
         exit={{ y: "50%", opacity: 0 }}
-        className={`flex flex-col space-y-1 ${allCartItems.length > 0 && "h-[50px] sm:h-[100px] md:h-[50vh]"} overflow-y-scroll scrollbar-hide`}
+        className={`flex flex-col ${allCartItems.length > 0 && "h-[50px] sm:h-[100px] md:h-[50vh]"} overflow-y-scroll scrollbar-hide`}
       >
         {allCartItems.length > 0 ? (
           <AnimatePresence>

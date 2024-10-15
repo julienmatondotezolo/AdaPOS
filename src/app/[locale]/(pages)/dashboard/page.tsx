@@ -12,7 +12,7 @@ function Dashboard() {
     <div className="h-full w-full">
       <TimeHeader />
       <Navigation />
-      <section className="flex flex-col justify-between md:flex-row w-full h-[calc(100vh-140px)] overflow-hidden">
+      <section className="flex flex-col justify-between md:flex-row w-full h-[calc(100vh-120px)] overflow-hidden">
         <div
           className={`w-full ${table.length ? "h-[50%] sm:h-max md:h-full" : "h-[calc(100%-180px)] sm:h-[calc(100%-90px)] md:h-full"} md:w-9/12`}
         >
