@@ -10,6 +10,7 @@ const menus = [
     title: "Paneer Tikka",
     price: 250,
     category: "Starter1",
+    acc: ["frites", "croquettes", "pâtes"],
   },
   {
     id: 2,

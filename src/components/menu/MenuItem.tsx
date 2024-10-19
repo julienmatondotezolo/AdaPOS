@@ -8,7 +8,7 @@ import React from "react";
 import { MenuType } from "@/_types/adaType";
 
 interface MenuItemProps {
-  menu: MenuType;
+  menu: any;
   selectedMenuCategory: string | undefined;
   onClick: (menuCategory: string) => void;
 }

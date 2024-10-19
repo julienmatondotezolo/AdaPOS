@@ -9,13 +9,13 @@ import { MenuItem } from "./MenuItem";
 const MenuBoard = () => {
   // const queryClient = useQueryClient();
 
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [idCategoryId, setCategoryId] = useState<string>();
   const [idCategoryItemId, setCategoryItemId] = useState<number>();
   const [categoryDetails, setCategoryDetails] = useState<any>();
 
   const getCategory = (category: string) => {
-    const newArr = menusItems.filter((a: any) => a.category === category);
+    const newArr = menusItems.filter((a) => a.category === category);
 
     setCategoryDetails(newArr);
   };

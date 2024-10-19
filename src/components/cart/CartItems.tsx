@@ -3,6 +3,7 @@ import { ShoppingCart, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { MenuType } from "@/_types";
 import { remove } from "@/lib/features";
 
 import { Invoice } from "./Invoice";
@@ -11,6 +12,7 @@ const CartItems = () => {
   const dispatch = useDispatch();
   const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
+
   // const total = useSelector(selectTotal);
 
   // const subTotal = total;
@@ -34,7 +36,7 @@ const CartItems = () => {
       >
         {allCartItems.length > 0 ? (
           <AnimatePresence>
-            {allCartItems.map((cart: any, index: number) => (
+            {allCartItems.map((cart: MenuType, index: number) => (
               <motion.div
                 key={index}
                 initial={{ x: 100 }}
@@ -50,15 +52,17 @@ const CartItems = () => {
                     </p>
                   </div>
 
-                  <div className="md:mt-2 flex justify-between items-center sm:space-x-2">
-                    {/* <Plus className="bg-neutral-900 hover:bg-neutral-800 p-1 md:p-2 box-content" size={15} /> */}
-                    <p className="text-xs md:text-xs">Quantity: {cart.quantity}</p>
-                    {/* <Minus className="bg-neutral-900 hover:bg-neutral-800 p-1 md:p-2 box-content" size={15} /> */}
-                  </div>
+                  {cart.selectedAside && (
+                    <div className="md:mt-2 flex justify-between items-center sm:space-x-2">
+                      {/* <Plus className="bg-neutral-900 hover:bg-neutral-800 p-1 md:p-2 box-content" size={15} /> */}
+                      <p className="text-xs md:text-xs">Aside: {cart.selectedAside}</p>
+                      {/* <Minus className="bg-neutral-900 hover:bg-neutral-800 p-1 md:p-2 box-content" size={15} /> */}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center overflow-hidden">
-                  <p className="hidden lg:inline-flex text-xs mr-4 md:text-xs lg:text-base font-semibold text-white">
-                    € {cart.price}
+                  <p className="hidden lg:inline-flex text-xs mr-4 md:text-xs lg:text-base text-white">
+                    Qty: <strong className="ml-2">{cart.quantity}</strong>
                   </p>
                   <div className="w-10 md:w-14 h-full bg-red-500/20 hover:bg-red-500">
                     <Trash2
