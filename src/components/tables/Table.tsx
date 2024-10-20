@@ -24,7 +24,7 @@ const Table = ({ table }: { table: TableType }) => {
       onClick={() => allEvents(table)}
     >
       <div className="flex m-auto flex-col justify-center h-[80px] md:h-[120px] space-y-5">
-        <h3 className="font-bold text-sm md:text-xl">{table.name}</h3>
+        <h3 className="font-bold text-sm md:text-xl">T-{table.name}</h3>
       </div>
     </div>
   );

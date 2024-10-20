@@ -1,2 +1,2 @@
-export * from "./MenuBoard";
-export * from "./MenuItem";
+export * from "./CategoryBoard";
+export * from "./CategoryItem";

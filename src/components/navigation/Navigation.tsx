@@ -16,7 +16,7 @@ function Navigation() {
 
   return (
     <div className="w-full border-2 border-neutral-900">
-      <section className="w-full md:w-8/12 p-4 flex justify-between items-center">
+      <section className={`w-full ${table.length && "md:w-8/12"} p-4 flex justify-between items-center`}>
         <article className="flex items-center space-x-4">
           {!isTableSelected && <ArrowLeft className=" cursor-pointer" onClick={() => goBack()} />}
           <section className="flex flex-col dark:text-white">
@@ -26,9 +26,11 @@ function Navigation() {
             <small className="text-xs font-medium">{isTableSelected ? "16 tables" : "Items"}</small>
           </section>
         </article>
-        <form className="flex cursor-pointer">
-          <Search size={20} />
-        </form>
+        {table.length > 0 && (
+          <form className="flex cursor-pointer">
+            <Search size={20} />
+          </form>
+        )}
       </section>
     </div>
   );
