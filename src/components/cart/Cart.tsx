@@ -17,7 +17,7 @@ const Cart = () => {
     );
 
   return (
-    <div className="flex flex-col justify-between w-full h-full">
+    <div className="flex flex-col justify-between w-full h-[calc(100%-1rem)]">
       <div className="flex items-center justify-between p-2 md:p-4 border-2 border-neutral-900">
         <h3 className="md:text-xl font-semibold">{table[0]?.tableNumber}</h3>
         {allCartItems.length > 0 && (

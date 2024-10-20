@@ -27,7 +27,9 @@ const MenuBoard = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="h-1/2 overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900">
+      <div
+        className={`${idCategoryId ? "h-1/2" : "h-full"} overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900`}
+      >
         <motion.div
           initial={{ y: 100 }}
           animate={{ y: 0 }}
@@ -43,8 +45,8 @@ const MenuBoard = () => {
           ))}
         </motion.div>
       </div>
-      <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
-        {categoryDetails?.length > 0 ? (
+      {categoryDetails?.length > 0 && (
+        <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
           <MenuCategory
             menuCategory={categoryDetails}
             selectedMenuCategoryItem={idCategoryItemId}
@@ -52,10 +54,8 @@ const MenuBoard = () => {
             setQuantity={setQuantity}
             setCategoryItemId={setCategoryItemId}
           />
-        ) : (
-          <small className="text-neutral-600 text-lg p-4">Select any category. </small>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

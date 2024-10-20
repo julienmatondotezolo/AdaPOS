@@ -68,7 +68,7 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
       ref={modalRef}
       className={`${
         open ? "block" : "hidden"
-      } fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-5/12 border-2 p-6 space-y-8 shadow-lg bg-white text-black`}
+      } fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-11/12 md:w-8/12 border-2 p-6 space-y-8 shadow-lg bg-white text-black`}
     >
       <article className="flex flex-wrap justify-between w-full">
         <p className="font-bold text-xl">Invoice</p>

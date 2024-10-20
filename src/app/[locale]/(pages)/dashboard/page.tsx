@@ -14,11 +14,11 @@ function Dashboard() {
       <Navigation />
       <section className="flex flex-col justify-between md:flex-row w-full h-[calc(100vh-120px)] overflow-hidden">
         <div
-          className={`w-full ${table.length ? "h-[50%] sm:h-max md:h-full" : "h-[calc(100%-180px)] sm:h-[calc(100%-90px)] md:h-full"} md:w-9/12`}
+          className={`w-full ${table.length ? "h-[50%] sm:h-max md:h-full" : "h-[calc(100%-180px)] sm:h-[calc(100%-90px)] md:h-full"} md:w-8/12`}
         >
           {table.length > 0 ? <MenuBoard /> : <TableBoard />}
         </div>
-        <div className={`md:w-3/12 w-full ${table.length && "h-fit md:h-full"} overflow-hidden`}>
+        <div className={`md:w-4/12 w-full ${table.length && "h-fit md:h-full"} overflow-hidden`}>
           <Cart />
         </div>
       </section>
