@@ -20,8 +20,8 @@ const SubCategoryItem = ({ category, selectedCategoryId, onClick }: SubCategoryI
         onClick={() => onClick(category.id)}
         className="relative overflow-hidden flex justify-between w-full bg-gray-500 hover:bg-gray-600 p-3 cursor-pointer"
       >
-        <div className="flex flex-col items-start justify-between p-1 h-[80px] md:h-[105px] space-y-5">
-          <h3 className="font-bold md:text-xl">{category.names["en"]}</h3>
+        <div className="flex flex-col items-start justify-between h-[80px] md:h-[65px] space-y-5">
+          <h3 className="font-bold text-md">{category.names["en"]}</h3>
           {/* <p className="hidden md:block text-xs">{category.id}</p> */}
         </div>
 

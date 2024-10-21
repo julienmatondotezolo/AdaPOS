@@ -92,22 +92,22 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   };
 
   return (
-    <div className="grid grid-cols-4 lg:grid-cols-5 gap-2 p-3">
+    <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 p-3">
       {items?.map((menu: any, index: any) => (
         <>
           <motion.div
             key={index + "cat" + menu.id}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className={`flex justify-between p-3 h-[90px] sm:h-[120px] md:h-[150px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
+            className={`flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
           >
             <div className="flex md:flex-col items-start justify-between w-full">
-              <article className="text-xs sm:text-sm md:text-base w-full md:w-[50%]">
+              <article className="text-sm w-full">
                 <h3 className="font-bold">{menu.names["en"]}</h3>
-                <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p>
+                {/* <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p> */}
               </article>
             </div>
-            <div className="absolute left-0 bottom-0 md:left-auto md:top-0 md:right-0 p-1 md:p-4 w-full md:w-fit md:h-full flex md:flex-col justify-between items-center">
+            <div className="flex absolute left-0 bottom-0 p-1 w-full justify-between items-center">
               <Plus
                 onClick={() => inCreament(menu)}
                 className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
