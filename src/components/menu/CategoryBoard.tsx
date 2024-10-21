@@ -51,7 +51,7 @@ const CategoryBoard = () => {
 
   if (isLoading)
     return (
-      <div className="flex h-full overflow-scroll pb-12 border-2 border-neutral-900">
+      <div className="flex h-full overflow-scroll pb-12">
         <p className="m-auto">Loading categories</p>
       </div>
     );
@@ -59,7 +59,7 @@ const CategoryBoard = () => {
   return (
     <div className="relative flex flex-col h-full">
       <div
-        className={`${menuItemId ? "h-1/2" : "h-full"} overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900`}
+        className={`${menuItemId ? "h-1/2" : "h-full"} overflow-y-scroll scrollbar-hide p-3 border-t-2 border-r-2 dark:border-neutral-900`}
       >
         {subCategories && (
           <motion.div

@@ -27,7 +27,7 @@ const TimeHeader = () => {
   if (!mounted) return null;
 
   return (
-    <div className="flex items-center justify-between p-2 bg-black">
+    <div className="flex items-center justify-between p-2 bg-neutral-900 dark:bg-black text-white">
       <div>
         <small className="font-bold">Ada</small>
       </div>
@@ -35,7 +35,7 @@ const TimeHeader = () => {
         <small className="font-medium">{time}</small>
       </div>
       <div>
-        <button onClick={toggleTheme} className="ml-4 p-2 text-white">
+        <button onClick={toggleTheme} className="ml-4 p-2 ">
           {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </div>

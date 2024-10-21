@@ -15,11 +15,11 @@ function Navigation() {
   };
 
   return (
-    <div className="w-full border-2 border-neutral-900">
+    <div className="w-full border-b-2 dark:border-neutral-900">
       <section className={`w-full ${table.length && "md:w-8/12"} p-4 flex justify-between items-center`}>
         <article className="flex items-center space-x-4">
           {!isTableSelected && <ArrowLeft className=" cursor-pointer" onClick={() => goBack()} />}
-          <section className="flex flex-col dark:text-white">
+          <section className="flex flex-col">
             <motion.h3 initial={{ x: 30 }} animate={{ x: 0 }} className="text-xl font-semibold">
               {isTableSelected ? "Tables" : "Menus"}
             </motion.h3>

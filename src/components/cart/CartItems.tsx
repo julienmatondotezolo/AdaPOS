@@ -61,7 +61,7 @@ const CartItems = () => {
               >
                 <div className="flex w-3/4 flex-col justify-between">
                   <div className="flex items-center justify-between">
-                    <p className="truncate text-sm font-medium text-white">
+                    <p className="truncate text-sm font-medium">
                       {index + 1}. &nbsp;{cart.name} &nbsp;{" "}
                     </p>
                   </div>
@@ -74,7 +74,7 @@ const CartItems = () => {
                   )}
                 </div>
                 <div className="flex w-2/4 justify-between items-end md:items-center overflow-hidden">
-                  <p className="lg:inline-flex text-xs mr-4 md:text-xs lg:text-sm text-white">
+                  <p className="lg:inline-flex text-xs mr-4 md:text-xs lg:text-sm">
                     Qty: <strong className="ml-2">{cart.quantity}</strong>
                   </p>
                   <div onClick={(e) => handleRemove(e, cart.id)} className="w-12 h-full bg-red-500/20 hover:bg-red-500">
