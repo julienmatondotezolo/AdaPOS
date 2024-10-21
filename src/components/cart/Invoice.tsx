@@ -95,7 +95,7 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
               {allCartItems.map((cart: MenuType, index: number) => (
                 <div key={index} className="grid grid-cols-4 gap-0 w-full text-right">
                   <p className="w-[70%]">{cart.quantity}</p>
-                  <p>{cart.name}</p>
+                  <p>{cart.names["fr"]}</p>
                   <p>{cart.price}</p>
                   <p>{cart.price * cart.quantity}</p>
                 </div>

@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart, Trash2 } from "lucide-react";
+import { useLocale } from "next-intl";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,6 +12,7 @@ import { remove, removeAll } from "@/lib/features";
 import { Invoice } from "./Invoice";
 
 const CartItems = () => {
+  const locale = useLocale();
   const dispatch = useDispatch();
   const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
@@ -62,7 +64,7 @@ const CartItems = () => {
                 <div className="flex w-3/4 flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <p className="truncate text-sm font-medium">
-                      {index + 1}. &nbsp;{cart.name} &nbsp;{" "}
+                      {index + 1}. &nbsp;{cart.names[locale]} &nbsp;{" "}
                     </p>
                   </div>
 

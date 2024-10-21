@@ -2,6 +2,8 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 
+import { LanguageSwitcher } from "../languageSwitcher";
+
 const TimeHeader = () => {
   const [time, setTime] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -34,7 +36,8 @@ const TimeHeader = () => {
       <div>
         <small className="font-medium">{time}</small>
       </div>
-      <div>
+      <div className="flex ">
+        <LanguageSwitcher />
         <button onClick={toggleTheme} className="ml-4 p-2 ">
           {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
         </button>

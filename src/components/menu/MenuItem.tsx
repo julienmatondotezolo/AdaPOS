@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
+import { useLocale } from "next-intl";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -17,13 +18,13 @@ interface MenuItemProps {
 }
 
 const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemId }: MenuItemProps) => {
+  const locale = useLocale();
   const dispatch = useDispatch();
   const cartItems = useSelector((state: any) => state.cart);
 
   const inCreament = (data: any) => {
     const { id, names, price, category, acc } = data;
-    const name = names["en"];
-    const newData = { id, name, price: price * 1, category, quantity: 1 };
+    const newData = { id, names, price: price * 1, category, quantity: 1 };
 
     const existingItem = cartItems.find((item: any) => item.id === id);
 
@@ -40,7 +41,7 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
 
       const itemWithAside: MenuType = {
         id,
-        name,
+        names,
         price: price * 1,
         category,
         quantity: existingItem ? existingItem.quantity + 1 : 1,
@@ -55,7 +56,7 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
     if (existingItem) {
       setQuantity((prevQuantity: any) => prevQuantity + 1);
       const updates = {
-        name,
+        names,
         price: price * 1,
         category,
         quantity: existingItem ? existingItem.quantity + 1 : 1,
@@ -103,7 +104,7 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
           >
             <div className="flex md:flex-col items-start justify-between w-full">
               <article className="text-sm w-full">
-                <h3 className="font-bold">{menu.names["en"]}</h3>
+                <h3 className="font-bold">{menu.names[locale]}</h3>
                 {/* <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p> */}
               </article>
             </div>
