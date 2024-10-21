@@ -5,6 +5,7 @@ import React, { FC, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 
+import { MenuType } from "@/_types";
 import { selectTotal } from "@/lib/features";
 
 import logo from "../../assets/images/osteria-logo-black.png";
@@ -91,10 +92,10 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
                 <p>Price</p>
                 <p>Total</p>
               </div>
-              {allCartItems.map((cart: any, index: number) => (
+              {allCartItems.map((cart: MenuType, index: number) => (
                 <div key={index} className="grid grid-cols-4 gap-0 w-full text-right">
                   <p className="w-[70%]">{cart.quantity}</p>
-                  <p>{cart.title}</p>
+                  <p>{cart.name}</p>
                   <p>{cart.price}</p>
                   <p>{cart.price * cart.quantity}</p>
                 </div>

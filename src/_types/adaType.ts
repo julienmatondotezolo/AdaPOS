@@ -1,6 +1,6 @@
 export type MenuType = {
   id: number;
-  title: string;
+  name: string;
   price: number;
   category: string;
   quantity: number;

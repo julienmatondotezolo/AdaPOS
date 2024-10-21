@@ -1,2 +1,2 @@
 export * from "./CategoryBoard";
-export * from "./CategoryItem";
+export * from "./SubCategoryItem";

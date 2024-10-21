@@ -62,7 +62,7 @@ const CartItems = () => {
                 <div className="flex w-3/4 flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <p className="truncate text-sm font-medium text-white">
-                      {index + 1}. &nbsp;{cart.title} &nbsp;{" "}
+                      {index + 1}. &nbsp;{cart.name} &nbsp;{" "}
                     </p>
                   </div>
 

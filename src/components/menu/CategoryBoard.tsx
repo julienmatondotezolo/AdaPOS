@@ -1,33 +1,52 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { fetchCategories } from "@/_services";
+import { fetchCategories, fetchMenuItemByCategoryId } from "@/_services";
 
 import { CategoryItem } from "./CategoryItem";
-import { MenuCategory } from "./MenuCategory";
+import { MenuItem } from "./MenuItem";
+import { SubCategoryItem } from "./SubCategoryItem";
 
 const CategoryBoard = () => {
-  // const queryClient = useQueryClient();
+  const [categoryId, setCategoryId] = useState<string>();
+  const [subCategoryId, setSubCategoryId] = useState<string>();
+  const [subCategories, setSubCategories] = useState<any>();
+  const [quantity, setQuantity] = useState(1);
+  const [menuItemId, setMenuItemId] = useState<string>();
+
+  const queryClient = useQueryClient();
   const fetchCurrentTables = () => fetchCategories();
+
+  // Define the mutation for fetching menu items
+  const { mutate: fetchMenuItems, data: menuItems } = useMutation(fetchMenuItemByCategoryId, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("menuItems");
+    },
+  });
 
   const { isLoading, data: categories } = useQuery("categories", fetchCurrentTables, {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
+    onSuccess(data) {
+      const firstCategory = data[0];
+
+      setCategoryId(firstCategory.id);
+      setSubCategories(firstCategory.subCategories);
+    },
   });
 
-  const [quantity, setQuantity] = useState(1);
-  const [categoryId, setCategoryId] = useState<string>();
-  const [idCategoryItemId, setCategoryItemId] = useState<number>();
-  const [subCategory, setSubCategory] = useState<any>();
-
   const openSubCategory = (category: any) => {
+    setMenuItemId("");
+    setSubCategoryId("");
     setCategoryId(category.id);
-    setSubCategory(category.subCategories);
+    setSubCategories(category.subCategories);
   };
 
   const openMenuItem = (category: any) => {
-    console.log("category:", category);
+    setSubCategoryId(category.id);
+    fetchMenuItems({ categoryId: category.id });
+    setMenuItemId(category.id);
   };
 
   if (isLoading)
@@ -40,51 +59,45 @@ const CategoryBoard = () => {
   return (
     <div className="relative flex flex-col h-full">
       <div
-        className={`${categoryId ? "h-1/2" : "h-full"} overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900`}
+        className={`${menuItemId ? "h-1/2" : "h-full"} overflow-y-scroll scrollbar-hide p-3 border-2 border-neutral-900`}
       >
-        {subCategory && (
+        {subCategories && (
           <motion.div
             initial={{ y: 100 }}
             animate={{ y: 0 }}
             className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-5 gap-2 pt-16"
           >
-            {subCategory.map((category: any, index: any) => (
-              <CategoryItem
+            {subCategories.map((category: any, index: any) => (
+              <SubCategoryItem
                 key={index}
                 category={category}
-                selectedCategoryId={categoryId}
+                selectedCategoryId={subCategoryId}
                 onClick={() => openMenuItem(category)}
               />
             ))}
           </motion.div>
         )}
 
-        <div className="absolute top-0 left-0 w-full bg-[#121212] border-b-2 border-neutral-900 overflow-y-scroll">
-          <section className="flex w-fit">
-            {categories.map((category: any, index: any) => (
-              <button
-                key={index}
-                onClick={() => openSubCategory(category)}
-                className={`md:text-xl font-semibold px-8 py-2 md:py-4 ${category.id == categoryId && "border-green-600 border-b-2"}`}
-              >
-                <p className="w-max">{category.names["en"]}</p>
-              </button>
-            ))}
-          </section>
-        </div>
+        {categories && (
+          <CategoryItem
+            categories={categories}
+            categoryId={categoryId}
+            onClick={(category) => openSubCategory(category)}
+          />
+        )}
       </div>
 
-      {/* {categoryDetails?.length > 0 && (
+      {menuItemId && (
         <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
-          <MenuCategory
-            menuCategory={categoryDetails}
-            selectedMenuCategoryItem={idCategoryItemId}
+          <MenuItem
+            items={menuItems}
+            selectedMenuItem={menuItemId}
             quantity={quantity}
             setQuantity={setQuantity}
-            setCategoryItemId={setCategoryItemId}
+            setMenuItemId={setMenuItemId}
           />
         </div>
-      )} */}
+      )}
     </div>
   );
 };
