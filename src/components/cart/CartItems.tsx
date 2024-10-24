@@ -1,21 +1,33 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingCart, Trash2 } from "lucide-react";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 
+import { createOrder } from "@/_services";
 import { MenuType } from "@/_types";
 import { remove, removeAll } from "@/lib/features";
 
 import { Invoice } from "./Invoice";
 
 const CartItems = () => {
+  const text = useTranslations("Index");
+  const queryClient = useQueryClient();
+  const table = useSelector((state: any) => state.table);
   const locale = useLocale();
   const dispatch = useDispatch();
   const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
+
+  const createOrderMutation = useMutation(createOrder, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("order");
+    },
+  });
 
   // const total = useSelector(selectTotal);
 
@@ -43,6 +55,34 @@ const CartItems = () => {
     setInvoiceShow(true);
   };
 
+  const handleSend = async () => {
+    const modifiedItems = allCartItems.map((item: any) => {
+      const { id, selectedAside, ...rest } = item;
+
+      return { menuItemId: id, quantity: rest.quantity, sideDishIds: rest.sideDishIds ?? [] };
+    });
+
+    const order = {
+      waiter: "FIRSTWEEK",
+      table: table[0]?.tableNumber,
+      note: "",
+      orderMenuItems: modifiedItems,
+      orderSupplements: [],
+    };
+
+    try {
+      await createOrderMutation.mutate({ orderObject: order });
+      dispatch(removeAll("remove"));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`An error has occurred: ${error.message}`);
+      }
+    }
+
+    // console.log("allCartItems", allCartItems);
+    // console.log("allCartItems", JSON.stringify(allCartItems));
+  };
+
   return (
     <>
       <motion.div
@@ -68,9 +108,9 @@ const CartItems = () => {
                     </p>
                   </div>
 
-                  {cart.selectedAside && (
+                  {cart.sideDishIds && (
                     <div className="flex items-cente text-xs sm:space-x-1">
-                      <p className="font-bold">Aside:</p>
+                      <p className="font-bold">{text("aside")}:</p>
                       <p className="font-normal">{cart.selectedAside}</p>
                     </div>
                   )}
@@ -135,9 +175,10 @@ const CartItems = () => {
             Print
           </button>
           <button
+            onClick={handleSend}
             className={`w-3/4 py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
           >
-            Send to kitchen
+            {createOrderMutation.isLoading ? "Loading..;" : text("send")}
           </button>
         </div>
       </div>

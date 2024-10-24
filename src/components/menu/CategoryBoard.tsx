@@ -30,10 +30,12 @@ const CategoryBoard = () => {
     refetchOnMount: true,
     select: (data) => data.sort((a: any, b: any) => a.order - b.order),
     onSuccess(data) {
-      const firstCategory = data[0];
+      if (data && data.length > 0) {
+        const firstCategory = data[0];
 
-      setCategoryId(firstCategory.id);
-      setSubCategories(firstCategory.subCategories);
+        setCategoryId(firstCategory.id);
+        setSubCategories(firstCategory.subCategories);
+      }
     },
   });
 
@@ -54,6 +56,13 @@ const CategoryBoard = () => {
     return (
       <div className="flex h-full overflow-scroll pb-12">
         <p className="m-auto">Loading categories</p>
+      </div>
+    );
+
+  if (!categories)
+    return (
+      <div className="flex h-full overflow-scroll pb-12">
+        <p className="m-auto">No categories</p>
       </div>
     );
 

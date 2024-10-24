@@ -5,6 +5,7 @@ export type MenuType = {
   category: string;
   quantity: number;
   asides?: string[];
+  sideDishIds?: string[];
   selectedAside?: string;
 };
 

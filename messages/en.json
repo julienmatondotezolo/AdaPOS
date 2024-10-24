@@ -1,5 +1,10 @@
 {
   "Index": {
-    "welcome": "Welcome"
+    "welcome": "Welcome",
+    "send": "Send",
+    "aside": "Aside",
+    "confirm": "Confirm",
+    "selectSideDish": "Select a Side Dish",
+    "noSideDish": "No side dish"
   }
 }

@@ -2,11 +2,14 @@ import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 
+import { useRouter } from "@/navigation";
+
 import { LanguageSwitcher } from "../languageSwitcher";
 
 const TimeHeader = () => {
   const [time, setTime] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -30,9 +33,14 @@ const TimeHeader = () => {
 
   return (
     <div className="flex items-center justify-between p-2 bg-neutral-900 dark:bg-black text-white">
-      <div>
-        <small className="font-bold">Ada</small>
-      </div>
+      <nav className="flex space-x-5">
+        <button className="text-xs font-bold" onClick={() => router.push("/dashboard")}>
+          Ada
+        </button>
+        <button className="text-xs font-bold" onClick={() => router.push("/orders")}>
+          Order
+        </button>
+      </nav>
       <div>
         <small className="font-medium">{time}</small>
       </div>

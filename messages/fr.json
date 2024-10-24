@@ -1,5 +1,10 @@
 {
   "Index": {
-    "welcome": "Bienvenue"
+    "welcome": "Bienvenue",
+    "send": "Envoyer",
+    "aside": "Accompagnement",
+    "confirm": "Confirmer",
+    "selectSideDish": "Sélectionnez un accompagnement",
+    "noSideDish": "Aucun accompagnement"
   }
 }
