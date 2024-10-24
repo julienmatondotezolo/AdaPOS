@@ -28,6 +28,7 @@ const CategoryBoard = () => {
   const { isLoading, data: categories } = useQuery("categories", fetchCurrentTables, {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
+    select: (data) => data.sort((a: any, b: any) => a.order - b.order),
     onSuccess(data) {
       const firstCategory = data[0];
 
@@ -67,14 +68,16 @@ const CategoryBoard = () => {
             animate={{ y: 0 }}
             className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-2 pt-16"
           >
-            {subCategories.map((category: any, index: any) => (
-              <SubCategoryItem
-                key={index}
-                category={category}
-                selectedCategoryId={subCategoryId}
-                onClick={() => openMenuItem(category)}
-              />
-            ))}
+            {subCategories
+              .sort((a: any, b: any) => a.order - b.order)
+              .map((category: any, index: any) => (
+                <SubCategoryItem
+                  key={index}
+                  category={category}
+                  selectedCategoryId={subCategoryId}
+                  onClick={() => openMenuItem(category)}
+                />
+              ))}
           </motion.div>
         )}
 

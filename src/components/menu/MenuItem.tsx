@@ -23,18 +23,21 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   const cartItems = useSelector((state: any) => state.cart);
 
   const inCreament = (data: any) => {
-    const { id, names, price, category, acc } = data;
+    const { id, names, price, category, sideDishes } = data;
     const newData = { id, names, price: price * 1, category, quantity: 1 };
 
     const existingItem = cartItems.find((item: any) => item.id === id);
 
     setMenuItemId(id);
 
-    if (acc && acc.length > 0) {
+    if (sideDishes && sideDishes.length > 0) {
       // Replace alert with a selection mechanism
-      const selectedAcc = prompt("Select an option: " + acc.join(", "));
+      const sideDishNames = sideDishes.map((dish: any) => dish.names[locale]).join(", ");
+      const selectedsideDishes = prompt("Select an option: " + sideDishNames);
 
-      if (!selectedAcc || !acc.includes(selectedAcc)) {
+      const selectedDish = sideDishes.find((dish: any) => dish.names[locale] === selectedsideDishes);
+
+      if (!selectedsideDishes || !selectedDish) {
         alert("Invalid selection");
         return;
       }
@@ -45,7 +48,7 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
         price: price * 1,
         category,
         quantity: existingItem ? existingItem.quantity + 1 : 1,
-        selectedAside: selectedAcc, // Save the selected option
+        selectedAside: selectedsideDishes, // Save the selected option
       };
 
       dispatch(add(itemWithAside));
@@ -94,37 +97,39 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
 
   return (
     <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 p-3">
-      {items?.map((menu: any, index: any) => (
-        <>
-          <motion.div
-            key={index + "cat" + menu.id}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className={`flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
-          >
-            <div className="flex md:flex-col items-start justify-between w-full">
-              <article className="text-sm w-full">
-                <h3 className="font-bold">{menu.names[locale]}</h3>
-                {/* <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p> */}
-              </article>
-            </div>
-            <div className="flex absolute left-0 bottom-0 p-1 w-full justify-between items-center">
-              <Plus
-                onClick={() => inCreament(menu)}
-                className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
-                size={15}
-              />
-              {/* <p>{selectedmenuItem == menu.id ? quantity : "0"}</p> */}
-              <p>{cartItems.find((item: any) => item.id === menu.id)?.quantity ?? "0"}</p>
-              <Minus
-                onClick={() => deCrement(menu)}
-                className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
-                size={15}
-              />
-            </div>
-          </motion.div>
-        </>
-      ))}
+      {items
+        ?.sort((a: any, b: any) => a.order - b.order)
+        .map((menu: any, index: any) => (
+          <>
+            <motion.div
+              key={index + "cat" + menu.id}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className={`flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
+            >
+              <div className="flex md:flex-col items-start justify-between w-full">
+                <article className="text-sm w-full">
+                  <h3 className="font-bold">{menu.names[locale]}</h3>
+                  {/* <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p> */}
+                </article>
+              </div>
+              <div className="flex absolute left-0 bottom-0 p-1 w-full justify-between items-center">
+                <Plus
+                  onClick={() => inCreament(menu)}
+                  className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
+                  size={15}
+                />
+                {/* <p>{selectedmenuItem == menu.id ? quantity : "0"}</p> */}
+                <p>{cartItems.find((item: any) => item.id === menu.id)?.quantity ?? "0"}</p>
+                <Minus
+                  onClick={() => deCrement(menu)}
+                  className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
+                  size={15}
+                />
+              </div>
+            </motion.div>
+          </>
+        ))}
     </div>
   );
 };
