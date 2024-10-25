@@ -55,7 +55,7 @@ const CategoryBoard = () => {
   if (isLoading)
     return (
       <div className="flex h-full overflow-scroll pb-12">
-        <p className="m-auto">Loading categories</p>
+        <p className="m-auto">Loading categories...</p>
       </div>
     );
 
@@ -99,7 +99,7 @@ const CategoryBoard = () => {
         )}
       </div>
 
-      {menuItemId && (
+      {menuItemId ? (
         <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
           <MenuItem
             items={menuItems}
@@ -108,6 +108,10 @@ const CategoryBoard = () => {
             setQuantity={setQuantity}
             setMenuItemId={setMenuItemId}
           />
+        </div>
+      ) : (
+        <div className="h-1/2 border-2 border-neutral-900 p-8">
+          <p className="h-1/2">Loading menu...</p>
         </div>
       )}
     </div>
