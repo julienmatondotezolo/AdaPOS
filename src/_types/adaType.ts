@@ -12,6 +12,7 @@ export type MenuType = {
 export type TableType = {
   id: number;
   name: string;
+  couvert: number;
   x?: number;
   y?: number;
   min?: number;
@@ -19,3 +20,13 @@ export type TableType = {
   is_bookable?: boolean;
   ordered?: boolean;
 };
+
+// Define the Note type
+export interface Note {
+  id: string;
+  content: string;
+}
+
+export interface NotesState {
+  note: Note | null; // Only one note allowed
+}

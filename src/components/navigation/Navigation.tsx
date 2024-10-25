@@ -23,7 +23,7 @@ function Navigation() {
             <motion.h3 initial={{ x: 30 }} animate={{ x: 0 }} className="text-xl font-semibold">
               {isTableSelected ? "Tables" : "Menus"}
             </motion.h3>
-            <small className="text-xs font-medium">{isTableSelected ? "16 tables" : "Items"}</small>
+            <small className="text-xs font-medium">{isTableSelected ? "20 tables" : "Items"}</small>
           </section>
         </article>
         {table.length > 0 && (

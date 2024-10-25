@@ -9,9 +9,10 @@ import { useMutation, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder } from "@/_services";
-import { MenuType } from "@/_types";
-import { remove, removeAll } from "@/lib/features";
+import { MenuType, Note } from "@/_types";
+import { addNote, deleteNote, remove, removeAll } from "@/lib/features";
 
+import { Dialog } from "../ui";
 import { Invoice } from "./Invoice";
 
 const CartItems = () => {
@@ -20,8 +21,11 @@ const CartItems = () => {
   const table = useSelector((state: any) => state.table);
   const locale = useLocale();
   const dispatch = useDispatch();
+  const storedNote = useSelector((state: any) => state.notes);
   const [invoiceShow, setInvoiceShow] = useState(false);
   const allCartItems = useSelector((state: any) => state.cart);
+  const [openNoteDialog, setOpenNoteDialog] = useState<boolean>(false);
+  const [note, setNote] = useState<Note | "">(storedNote.note || "");
 
   const createOrderMutation = useMutation(createOrder, {
     onSuccess: () => {
@@ -73,6 +77,7 @@ const CartItems = () => {
     try {
       await createOrderMutation.mutate({ orderObject: order });
       dispatch(removeAll("remove"));
+      dispatch(deleteNote());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
@@ -83,6 +88,23 @@ const CartItems = () => {
     // console.log("allCartItems", JSON.stringify(allCartItems));
   };
 
+  const handleConfirmNote = () => {
+    if (note) {
+      dispatch(addNote(note));
+      setOpenNoteDialog(false);
+      setNote("");
+    }
+  };
+
+  const openDialog = () => {
+    setOpenNoteDialog(true); // Open the dialog
+    if (storedNote.note) {
+      setNote(storedNote.note); // Set the note state to the stored note if it exists
+    } else {
+      setNote(""); // Reset to empty if no stored note
+    }
+  };
+
   return (
     <>
       <motion.div
@@ -90,6 +112,25 @@ const CartItems = () => {
         exit={{ y: "50%", opacity: 0 }}
         className={`flex flex-col ${allCartItems.length > 0 && "h-[50px] sm:h-[100px] md:h-[50vh]"} overflow-y-scroll scrollbar-hide`}
       >
+        {storedNote.note && (
+          <AnimatePresence>
+            <motion.div
+              initial={{ x: 100 }}
+              animate={{ x: 0 }}
+              transition={{ duration: 0.2 }}
+              exit={{ y: "50%", opacity: 0, scale: 0.5 }}
+              className="relative flex justify-between w-full pl-2 py-2 border-2 border-neutral-900 box-border"
+            >
+              <div className="flex items-cente text-xs sm:space-x-1">
+                <p className="font-bold">Notes:</p>
+                <p className="font-normal">{storedNote.note}</p>
+              </div>
+              <div onClick={() => dispatch(deleteNote())} className="w-12 h-full bg-red-500/20 hover:bg-red-500">
+                <Trash2 className="cursor-pointer h-full mx-auto" width={18} />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        )}
         {allCartItems.length > 0 ? (
           <AnimatePresence>
             {allCartItems.map((cart: MenuType, index: number) => (
@@ -135,7 +176,10 @@ const CartItems = () => {
       </motion.div>
       <div className="flex flex-col w-full">
         <div className="grid grid-cols-3 gap-0">
-          <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
+          <div
+            onClick={openDialog}
+            className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50"
+          >
             <button>Note</button>
           </div>
           <div className="text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 bg-neutral-800 hover:bg-neutral-700 transition-all ease-out duration-50">
@@ -183,6 +227,24 @@ const CartItems = () => {
         </div>
       </div>
       {invoiceShow && <Invoice open={invoiceShow} setIsOpen={setInvoiceShow} />}
+      {/* Note Dialog */}
+      <Dialog open={openNoteDialog} setIsOpen={setOpenNoteDialog}>
+        <div className="p-4">
+          <h3 className="text-xl mb-8">Add a Note:</h3>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="border p-2 w-full"
+            placeholder="Enter your note here..."
+          />
+          <button
+            className="w-full py-2 mt-4 text-center font-bold border-2 border-neutral-900 bg-green-600"
+            onClick={handleConfirmNote}
+          >
+            Save Note
+          </button>
+        </div>
+      </Dialog>
     </>
   );
 };

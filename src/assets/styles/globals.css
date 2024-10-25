@@ -22,6 +22,15 @@
 }
 
 @media print {
+  .printable-content {
+    width: 2.83in; /* Set width to 2.83 inches */
+    height: 78.72in; /* Set height to 78.72 inches */
+    overflow: hidden; /* Prevent overflow */
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
   @page {
     size: auto portrait;
   }

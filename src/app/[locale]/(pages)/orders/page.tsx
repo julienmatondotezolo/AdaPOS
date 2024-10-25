@@ -10,6 +10,8 @@ import { TimeHeader } from "@/components";
 
 const formatDate = (timestamp: number) => {
   const date = new Date(timestamp);
+
+  date.setHours(date.getHours() + 2);
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
   const year = date.getFullYear();
@@ -49,18 +51,24 @@ function Orders() {
             return (
               <div
                 key={index}
-                className="flex flex-col justify-between w-full bg-red-500 hover:bg-gray-600 p-2 md:p-3 cursor-pointer"
+                className="flex flex-col justify-between w-full bg-secondary hover:bg-gray-600 p-4 md:p-3 cursor-pointer text-white"
               >
-                <div className="flex justify-between border-b">
-                  <p className="text-xl font-bold">Table: {order.table}</p>
-                  <p>{formatDate(order.createdTime)}</p>
+                <div className="flex flex-col">
+                  <article className="mb-4 pb-2 border-b border-neutral-400/30">
+                    <p className="text-xl font-bold">Table: {order.table}</p>
+                    <p className="text-xs">{formatDate(order.createdTime)}</p>
+                  </article>
+                  <section className="bg-black/10 p-4 w-full">
+                    {order.orderMenuItems.map((menuItems: any, index: any) => (
+                      <div key={index} className="flex justify-between py-1">
+                        <p>{menuItems.menuItem.names[locale]}</p>
+                        <section className="w-12">
+                          <p>Qty: {menuItems.quantity}</p>
+                        </section>
+                      </div>
+                    ))}
+                  </section>
                 </div>
-                {order.orderMenuItems.map((menuItems: any, index: any) => (
-                  <div key={index} className="mt-2 grid grid-cols-2">
-                    <p>{menuItems.menuItem.names[locale]}</p>
-                    <p>Qty: {menuItems.quantity}</p>
-                  </div>
-                ))}
                 <p className="mt-6 text-lg">
                   Total couvert: <b className="bold">{totalCouvert}</b>
                 </p>{" "}

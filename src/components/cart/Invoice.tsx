@@ -78,6 +78,7 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
       <div className="w-full mt-4 bg-neutral-300 p-4">
         <figure className="h-[50vh] overflow-y-scroll scrollbar-thin scrollbar-track-neutral-600">
           <div ref={contentRef} className="w-full bg-white p-8 space-y-6">
+            {/* <div ref={contentRef} className="printable-content"> */}
             <section className="flex justify-center w-full m-auto">
               <Image src={logo} width={100} alt="Logo osteria" />
             </section>
