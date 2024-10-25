@@ -274,12 +274,12 @@ const CartItems = () => {
           </div>
         </div> */}
         <div className="flex w-full justify-between">
-          <button
+          {/* <button
             onClick={showInvoice}
             className={`w-1/4 py-4 text-center border-2 border-neutral-900 ${allCartItems.length > 0 ? "bg-[#3441d4]" : "bg-neutral-500 cursor-not-allowed"}`}
           >
             Print
-          </button>
+          </button> */}
           <button
             onClick={handleSend}
             className={`w-3/4 py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
