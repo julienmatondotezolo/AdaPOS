@@ -42,6 +42,27 @@ export async function fetchMenuItemByCategoryId({ categoryId }: { categoryId: st
   }
 }
 
+export async function fetchSupplement(): Promise<any> {
+  try {
+    const response: Response = await fetch(adaMenuUrl + `/supplement`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: `Bearer ${session.session.user.token}`,
+        "ngrok-skip-browser-warning": "1",
+      },
+    });
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw response;
+    }
+  } catch (error) {
+    console.error("Impossible to fetch supplement:", error);
+  }
+}
+
 export async function fetchOrder(): Promise<any> {
   try {
     const responseGetOrder: Response = await fetch(adaMenuUrl + `/order`, {

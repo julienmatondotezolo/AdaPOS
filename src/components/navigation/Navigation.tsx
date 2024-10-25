@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,11 +26,11 @@ function Navigation() {
             <small className="text-xs font-medium">{isTableSelected ? "20 tables" : "Items"}</small>
           </section>
         </article>
-        {table.length > 0 && (
+        {/* {table.length > 0 && (
           <form className="flex cursor-pointer">
             <Search size={20} />
           </form>
-        )}
+        )} */}
       </section>
     </div>
   );
