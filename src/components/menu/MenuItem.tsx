@@ -48,8 +48,8 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   };
 
   const inCreament = (data: any) => {
-    const { id, names, price, sideDishes } = data;
-    const newData = { id, names, price: price * 1, quantity: 1 };
+    const { id, names, price, sideDishes, category } = data;
+    const newData = { id, names, price: price * 1, quantity: 1, category };
 
     const existingItem = cartItems.find((item: any) => item.id === id);
 
@@ -104,13 +104,13 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
       <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 p-3">
         {items
           ?.sort((a: any, b: any) => a.order - b.order)
-          .map((menu: any, index: any) => (
+          .map((menu: any) => (
             <>
               <motion.div
-                key={index + "cat" + menu.id}
+                key={menu.id}
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                className={`flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
+                className={`relative flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
               >
                 <div className="flex md:flex-col items-start justify-between w-full">
                   <article className="text-sm w-full">

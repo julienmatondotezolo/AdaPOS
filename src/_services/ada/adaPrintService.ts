@@ -1,8 +1,8 @@
 const adaPrintUrl: string | undefined = "http://localhost:8000";
 
-export async function sendPdfFile({ formData }: { formData: any }): Promise<any> {
+export async function sendPdfFile({ filename, formData }: { filename: string; formData: any }): Promise<any> {
   try {
-    const responseAdaPrint: Response = await fetch(adaPrintUrl + `/order.pdf`, {
+    const responseAdaPrint: Response = await fetch(adaPrintUrl + `/${filename}.pdf`, {
       method: "PUT",
       headers: {
         "Content-Type": "multipart/form-data",

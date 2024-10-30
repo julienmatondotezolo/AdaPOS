@@ -30,3 +30,5 @@ export interface Note {
 export interface NotesState {
   note: Note | null; // Only one note allowed
 }
+
+export type TicketTitle = "BAR" | "KEUKEN" | "PIZZERIA";

@@ -9,9 +9,10 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder, fetchSupplement } from "@/_services";
+import { sendPdfFile } from "@/_services/ada/adaPrintService";
 import { MenuType, Note } from "@/_types";
-import { barTicket } from "@/lib";
 import { addNote, addSupplement, deleteNote, remove, removeAll, removeAllSupplements } from "@/lib/features";
+import { generateTicket } from "@/lib/Helpers";
 
 import { Dialog } from "../ui";
 import { Invoice } from "./Invoice";
@@ -35,6 +36,8 @@ const CartItems = () => {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
   });
+
+  const sendPdfFileMutation = useMutation(sendPdfFile);
 
   const createOrderMutation = useMutation(createOrder, {
     onSuccess: () => {
@@ -74,6 +77,110 @@ const CartItems = () => {
     setInvoiceShow(true);
   };
 
+  const handlePrint = async () => {
+    const barItems: any = {
+      bar: [],
+      aperitivi: [],
+    };
+    const otherItems: any = [];
+    const pizzeriaItems: any = {
+      pizza: [],
+      rest: [],
+    };
+
+    allCartItems.forEach((item: any) => {
+      const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
+      const aperitiviCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
+      const dessertCategoryId = "62bbd6ca-5891-4d29-bb59-d22a2f11ba00";
+
+      const pizzaCategoryId = "1e5b59c5-bf44-45a7-8a63-9dc1d7e5202b";
+      const pizzaSubCategoryId = "e16a2016-1c00-4e90-99b9-868ffe80d4a2";
+
+      if (item.category.parentCategory.id === drinksCategoryId) {
+        barItems.bar.push(item);
+      } else if (
+        item.category.parentCategory.id === dessertCategoryId ||
+        item.category.parentCategory.id === aperitiviCategoryId
+      ) {
+        barItems.aperitivi.push(item);
+      } else if (item.category.parentCategory.id === pizzaCategoryId) {
+        pizzeriaItems.pizza.push(item);
+      } else {
+        otherItems.push(item);
+        pizzeriaItems.rest.push(item);
+      }
+    });
+
+    if (barItems.bar.length > 0 || barItems.aperitivi.length > 0) {
+      const doc = await generateTicket({
+        title: "BAR",
+        tableNumber: table[0]?.tableNumber,
+        meals: table[0]?.couvert,
+        waiter: "Julien",
+        items: barItems,
+      });
+
+      if (!doc) return;
+
+      doc.save("BAR");
+
+      const blob = doc.output("blob");
+
+      // Inside the handlePrint function:
+      const formData = new FormData();
+
+      formData.append("file", blob, "BAR.pdf");
+
+      sendPdfFileMutation.mutate({ filename: "BAR", formData });
+    }
+
+    if (pizzeriaItems.pizza.length > 0) {
+      const doc = await generateTicket({
+        title: "PIZZERIA",
+        tableNumber: table[0]?.tableNumber,
+        meals: table[0]?.couvert,
+        waiter: "Julien",
+        items: pizzeriaItems,
+      });
+
+      if (!doc) return;
+
+      doc.save("PIZZERIA");
+
+      const blob = doc.output("blob");
+
+      // Inside the handlePrint function:
+      const formData = new FormData();
+
+      formData.append("file", blob, "PIZZERIA.pdf");
+
+      sendPdfFileMutation.mutateAsync({ filename: "PIZZERIA", formData });
+    }
+
+    if (pizzeriaItems.rest.length > 0) {
+      const doc = await generateTicket({
+        title: "KEUKEN",
+        tableNumber: table[0]?.tableNumber,
+        meals: table[0]?.couvert,
+        waiter: "Julien",
+        items: otherItems,
+      });
+
+      if (!doc) return;
+
+      doc.save("KEUKEN");
+
+      const blob = doc.output("blob");
+
+      // Inside the handlePrint function:
+      const formData = new FormData();
+
+      formData.append("file", blob, "KEUKEN.pdf");
+
+      sendPdfFileMutation.mutateAsync({ filename: "KEUKEN", formData });
+    }
+  };
+
   const handleSend = async () => {
     const modifiedItems = allCartItems.map((item: any) => {
       const { id, selectedAside, ...rest } = item;
@@ -87,26 +194,13 @@ const CartItems = () => {
       waiter: "FIRSTWEEK",
       table: table[0]?.tableNumber,
       note: note,
+      // meals: table[0]?.couvert,
       orderMenuItems: modifiedItems,
       orderSupplements: supplementIds,
     };
 
     try {
-      const doc = await barTicket({
-        title: "bar",
-        tableNumber: table[0]?.tableNumber,
-        waiter: "FIRSTWEEK",
-        allCartItems,
-      });
-
-      const blob = doc.output("blob");
-
-      // Inside the handlePrint function:
-      const formData = new FormData();
-
-      formData.append("file", blob, "barticket.pdf");
-
-      // sendPdfFileMutation.mutate({ formData });
+      await handlePrint();
       // await createOrderMutation.mutate({ orderObject: order });
       // dispatch(removeAll("remove"));
       // dispatch(removeAllSupplements("remove"));

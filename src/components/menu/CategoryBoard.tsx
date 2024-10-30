@@ -79,9 +79,9 @@ const CategoryBoard = () => {
           >
             {subCategories
               .sort((a: any, b: any) => a.order - b.order)
-              .map((category: any, index: any) => (
+              .map((category: any) => (
                 <SubCategoryItem
-                  key={index}
+                  key={category.id}
                   category={category}
                   selectedCategoryId={subCategoryId}
                   onClick={() => openMenuItem(category)}
@@ -111,7 +111,7 @@ const CategoryBoard = () => {
         </div>
       ) : (
         <div className="h-1/2 border-2 border-neutral-900 p-8">
-          <p className="h-1/2">Loading menu...</p>
+          <p className="h-1/2">Select sub category</p>
         </div>
       )}
     </div>
