@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { X } from "lucide-react";
 import Image from "next/image";
-import React, { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
+import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
-import { useReactToPrint } from "react-to-print";
 
+import { sendPdfFile } from "@/_services/ada/adaPrintService";
 import { MenuType } from "@/_types";
 import { selectTotal } from "@/lib/features";
+import { formatDate, invoiceTicket } from "@/lib/Helpers";
 
 import logo from "../../assets/images/osteria-logo-black.png";
 
@@ -16,23 +18,13 @@ type DialogProps = {
 };
 
 const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
+  const sendPdfFileMutation = useMutation(sendPdfFile);
+
   const allCartItems = useSelector((state: any) => state.cart);
   const total = useSelector(selectTotal);
 
-  const handleAfterPrint = React.useCallback(() => {
-    // console.log("`onAfterPrint` called");
-  }, []);
-
-  const handleBeforePrint = React.useCallback(() => Promise.resolve(), []);
-
   const modalRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({
-    contentRef,
-    documentTitle: "Order",
-    onAfterPrint: handleAfterPrint,
-    onBeforePrint: handleBeforePrint,
-  });
+  const contentRef = useRef<any>();
 
   const handleClose = () => {
     setIsOpen(false);
@@ -51,16 +43,26 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
     };
   }, []);
 
-  const formatDate = (date: Date) => {
-    const options: any = { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" };
-
-    return new Intl.DateTimeFormat("en-GB", options).format(date);
-  };
-
   const date = formatDate(new Date());
 
-  const handlePrint = () => {
-    reactToPrintFn();
+  const handlePrint = async () => {
+    const content = contentRef.current;
+
+    if (content) {
+      const doc = await invoiceTicket({ total, allCartItems });
+
+      doc.save();
+
+      const blob = doc.output("blob");
+
+      // Inside the handlePrint function:
+      const formData = new FormData();
+
+      formData.append("file", blob, "invoice.pdf");
+
+      sendPdfFileMutation.mutate({ formData });
+    }
+
     handleClose();
   };
 
@@ -117,12 +119,12 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
             </section>
           </div>
         </figure>
-        <button
+        {/* <button
           onClick={handlePrint}
           className="cursor-pointer w-full mt-4 py-4 text-center text-white font-bold bg-[#3441d4]"
         >
           Print
-        </button>
+        </button> */}
       </div>
     </div>
   );

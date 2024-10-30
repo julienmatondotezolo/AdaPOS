@@ -91,10 +91,10 @@ const CartItems = () => {
     };
 
     try {
-      await createOrderMutation.mutate({ orderObject: order });
-      dispatch(removeAll("remove"));
-      dispatch(removeAllSupplements("remove"));
-      dispatch(deleteNote());
+      // await createOrderMutation.mutate({ orderObject: order });
+      // dispatch(removeAll("remove"));
+      // dispatch(removeAllSupplements("remove"));
+      // dispatch(deleteNote());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
