@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder, fetchSupplement } from "@/_services";
 import { MenuType, Note } from "@/_types";
+import { barTicket } from "@/lib";
 import { addNote, addSupplement, deleteNote, remove, removeAll, removeAllSupplements } from "@/lib/features";
 
 import { Dialog } from "../ui";
@@ -91,6 +92,21 @@ const CartItems = () => {
     };
 
     try {
+      const doc = await barTicket({
+        title: "bar",
+        tableNumber: table[0]?.tableNumber,
+        waiter: "FIRSTWEEK",
+        allCartItems,
+      });
+
+      const blob = doc.output("blob");
+
+      // Inside the handlePrint function:
+      const formData = new FormData();
+
+      formData.append("file", blob, "barticket.pdf");
+
+      // sendPdfFileMutation.mutate({ formData });
       // await createOrderMutation.mutate({ orderObject: order });
       // dispatch(removeAll("remove"));
       // dispatch(removeAllSupplements("remove"));

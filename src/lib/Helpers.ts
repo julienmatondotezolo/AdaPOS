@@ -146,12 +146,65 @@ export const invoiceTicket = async ({ total, allCartItems }: { total: number; al
   return doc;
 };
 
-export const barTicket = async ({ total, allCartItems }: { total: number; allCartItems: MenuType[] }) => {
-  const doc = new jsPDF({
+type ticketProps = {
+  title: string;
+  tableNumber: string;
+  waiter: string;
+  allCartItems?: any[];
+};
+
+const ticketHeadSection = ({ title, tableNumber, waiter }: { title: string; tableNumber: string; waiter: string }) => {
+  const date = formatDate(new Date());
+
+  var doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
     format: [72, 297], // Width: 72 mm, Height: 297 mm
     putOnlyUsedFonts: true,
     floatPrecision: 16, // or "smart", default is 16
   });
+
+  doc.setFontSize(12);
+  doc.text(title, 36, 10, {
+    align: "center",
+  });
+
+  doc.setFontSize(8);
+  doc.text(date, 35, 15, {
+    align: "center",
+  });
+
+  doc.setFontSize(12);
+  doc.text(`T-${tableNumber} - ${waiter}`, 36, 20, {
+    align: "center",
+  });
+
+  return doc;
+};
+
+export const barTicket = async ({ title, tableNumber, waiter }: ticketProps) => {
+  const doc = ticketHeadSection({ title, tableNumber, waiter });
+
+  if (title == "bar") {
+    doc.setLineWidth(7);
+    doc.line(5, 35, 68, 35);
+
+    doc.setFontSize(12);
+    doc.setTextColor("#ffffff");
+    doc.text(title, 36, 36, {
+      align: "center",
+    });
+  } else if (title == "kitchen") {
+    doc.setFontSize(12);
+    doc.text("Couverts:", 35, 25, {
+      align: "center",
+    });
+  } else if (title == "pizzeria") {
+    doc.setFontSize(12);
+    doc.text("Couverts:", 35, 25, {
+      align: "center",
+    });
+  }
+
+  return doc;
 };
