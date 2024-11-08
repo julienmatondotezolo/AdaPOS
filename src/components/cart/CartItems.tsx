@@ -31,6 +31,7 @@ const CartItems = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogMode, setDialogMode] = useState<"note" | "extra" | null>(null);
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
+  const waiter = "Julien";
 
   const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
     refetchOnWindowFocus: true,
@@ -82,7 +83,10 @@ const CartItems = () => {
       bar: [],
       aperitivi: [],
     };
-    const otherItems: any = [];
+    const otherItems: any = {
+      rest: [],
+      pizza: [],
+    };
     const pizzeriaItems: any = {
       pizza: [],
       rest: [],
@@ -105,24 +109,30 @@ const CartItems = () => {
         barItems.aperitivi.push(item);
       } else if (item.category.parentCategory.id === pizzaCategoryId) {
         pizzeriaItems.pizza.push(item);
-      } else {
-        otherItems.push(item);
+        otherItems.pizza.push(item);
+      } else if (
+        item.category.parentCategory.id !== drinksCategoryId &&
+        item.category.parentCategory.id !== aperitiviCategoryId &&
+        item.category.parentCategory.id !== dessertCategoryId &&
+        item.category.parentCategory.id !== pizzaCategoryId
+      ) {
         pizzeriaItems.rest.push(item);
+        otherItems.rest.push(item);
       }
     });
 
-    if (barItems.bar.length > 0 || barItems.aperitivi.length > 0) {
+    if (barItems.aperitivi.length > 0 || barItems.bar.length > 0) {
       const doc = await generateTicket({
         title: "BAR",
         tableNumber: table[0]?.tableNumber,
         meals: table[0]?.couvert,
-        waiter: "Julien",
+        waiter: waiter,
         items: barItems,
       });
 
       if (!doc) return;
 
-      doc.save("BAR");
+      // doc.save("BAR");
 
       const blob = doc.output("blob");
 
@@ -134,50 +144,54 @@ const CartItems = () => {
       sendPdfFileMutation.mutate({ filename: "BAR", formData });
     }
 
-    if (pizzeriaItems.pizza.length > 0) {
+    if (pizzeriaItems.pizza.length > 0 || barItems.rest.length > 0) {
+      const filename = "PIZZERIA";
+
       const doc = await generateTicket({
-        title: "PIZZERIA",
+        title: filename,
         tableNumber: table[0]?.tableNumber,
         meals: table[0]?.couvert,
-        waiter: "Julien",
+        waiter: waiter,
         items: pizzeriaItems,
       });
 
       if (!doc) return;
 
-      doc.save("PIZZERIA");
+      // doc.save(filename);
 
       const blob = doc.output("blob");
 
       // Inside the handlePrint function:
       const formData = new FormData();
 
-      formData.append("file", blob, "PIZZERIA.pdf");
+      formData.append("file", blob, `${filename}.pdf`);
 
-      sendPdfFileMutation.mutateAsync({ filename: "PIZZERIA", formData });
+      sendPdfFileMutation.mutateAsync({ filename: filename, formData });
     }
 
-    if (pizzeriaItems.rest.length > 0) {
+    if (otherItems.pizza.length > 0 || otherItems.rest.length > 0) {
+      const filename = "KEUKEN";
+
       const doc = await generateTicket({
-        title: "KEUKEN",
+        title: filename,
         tableNumber: table[0]?.tableNumber,
         meals: table[0]?.couvert,
-        waiter: "Julien",
+        waiter: waiter,
         items: otherItems,
       });
 
       if (!doc) return;
 
-      doc.save("KEUKEN");
+      // doc.save(filename);
 
       const blob = doc.output("blob");
 
       // Inside the handlePrint function:
       const formData = new FormData();
 
-      formData.append("file", blob, "KEUKEN.pdf");
+      formData.append("file", blob, `${filename}.pdf`);
 
-      sendPdfFileMutation.mutateAsync({ filename: "KEUKEN", formData });
+      sendPdfFileMutation.mutateAsync({ filename, formData });
     }
   };
 
@@ -191,20 +205,20 @@ const CartItems = () => {
     const supplementIds = allSupplements.map((supplement: any) => supplement.id);
 
     const order = {
-      waiter: "FIRSTWEEK",
+      waiter: waiter,
       table: table[0]?.tableNumber,
       note: note,
-      // meals: table[0]?.couvert,
+      meals: table[0]?.couvert,
       orderMenuItems: modifiedItems,
       orderSupplements: supplementIds,
     };
 
     try {
       await handlePrint();
-      // await createOrderMutation.mutate({ orderObject: order });
-      // dispatch(removeAll("remove"));
-      // dispatch(removeAllSupplements("remove"));
-      // dispatch(deleteNote());
+      await createOrderMutation.mutate({ orderObject: order });
+      dispatch(removeAll("remove"));
+      dispatch(removeAllSupplements("remove"));
+      dispatch(deleteNote());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);

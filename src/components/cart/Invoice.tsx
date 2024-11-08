@@ -49,6 +49,8 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
     const content = contentRef.current;
 
     if (content) {
+      const filename = "invoice";
+
       const doc = await invoiceTicket({ total, allCartItems });
 
       doc.save();
@@ -60,7 +62,7 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
 
       formData.append("file", blob, "invoice.pdf");
 
-      sendPdfFileMutation.mutate({ formData });
+      sendPdfFileMutation.mutate({ filename, formData });
     }
 
     handleClose();
@@ -119,12 +121,12 @@ const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
             </section>
           </div>
         </figure>
-        {/* <button
+        <button
           onClick={handlePrint}
           className="cursor-pointer w-full mt-4 py-4 text-center text-white font-bold bg-[#3441d4]"
         >
           Print
-        </button> */}
+        </button>
       </div>
     </div>
   );

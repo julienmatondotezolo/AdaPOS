@@ -156,11 +156,12 @@ type ticketProps = {
 };
 
 const textBar = ({ doc, text, position }: { doc: jsPDF; text: string; position: number }) => {
-  doc.setLineWidth(7);
-  doc.line(5, position, 68, position);
+  doc.setLineWidth(1);
+  doc.line(5, position - 3, 68, position - 3);
+  doc.line(5, position + 2, 68, position + 2);
 
   doc.setFontSize(12);
-  doc.setTextColor("#ffffff");
+  // doc.setTextColor("#000000");
   doc.text(text, 36, position + 1, {
     align: "center",
   });
@@ -224,9 +225,17 @@ const ticketHeadSection = ({
 };
 
 export const generateTicket = async ({ title, tableNumber, meals, waiter, items }: ticketProps) => {
-  const doc = ticketHeadSection({ title, tableNumber, meals, waiter });
-
   if (!items) return;
+
+  // var doc = new jsPDF({
+  //   orientation: "portrait",
+  //   unit: "mm",
+  //   format: [72, 297], // Width: 72 mm, Height: 297 mm
+  //   putOnlyUsedFonts: true,
+  //   floatPrecision: 16, // or "smart", default is 16
+  // });
+
+  const doc = ticketHeadSection({ title, tableNumber, meals, waiter });
 
   let contentHeight = 45;
 
@@ -242,6 +251,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
+          maxWidth: 63,
         });
 
         // Update totalHeight after each iteration
@@ -277,16 +287,17 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
         });
-        doc.text(cart.names.fr, 12, yPosition, {
+        doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
+          maxWidth: 63,
         });
       });
 
-      if (items.rest.length > 0) textBar({ doc, text: "", position: contentHeight + 20 });
+      if (items.pizza.length > 0) textBar({ doc, text: "", position: contentHeight + 30 });
 
-      let newKitchenContentHeight = contentHeight + 30;
+      let newKitchenContentHeight = contentHeight + 40;
 
-      items.rest.forEach((cart: MenuType) => {
+      items.pizza.forEach((cart: MenuType) => {
         const yPosition = newKitchenContentHeight;
 
         doc.setFontSize(6);
@@ -313,12 +324,13 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
+          maxWidth: 63,
         });
       });
 
-      if (items.rest.length > 0) textBar({ doc, text: "", position: contentHeight + 40 });
+      if (items.rest.length > 0) textBar({ doc, text: "", position: contentHeight + 30 });
 
-      let newPizzaContentHeight = contentHeight + 50;
+      let newPizzaContentHeight = contentHeight + 40;
 
       items.rest.forEach((cart: MenuType) => {
         const yPosition = newPizzaContentHeight;
