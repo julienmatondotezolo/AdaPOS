@@ -236,18 +236,19 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
       items.bar.forEach((cart: MenuType) => {
         const yPosition = contentHeight;
 
-        doc.setFontSize(10);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
         doc.setTextColor("#000000");
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
-          maxWidth: 63,
+          maxWidth: 59,
         });
 
         // Update totalHeight after each iteration
-        contentHeight = contentHeight + 6;
+        contentHeight = contentHeight + 12;
       });
 
       if (items.aperitivi.length > 0) textBar({ doc, text: "ATTENTION APERITIF !!!", position: contentHeight + 10 });
@@ -264,35 +265,40 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
+          maxWidth: 58,
         });
 
         // Update totalHeight after each iteration
-        newContentHeight = newContentHeight + 6;
+        newContentHeight = newContentHeight + 12;
       });
       break;
     case "KEUKEN":
-      items.rest.forEach((cart: MenuType, index: number) => {
-        const yPosition = contentHeight + index * 6;
+      items.rest.forEach((cart: MenuType) => {
+        const yPosition = contentHeight;
 
-        doc.setFontSize(10);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
         doc.setTextColor("#000000");
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
-          maxWidth: 63,
+          maxWidth: 59,
         });
+
+        // Update totalHeight after each iteration
+        contentHeight = contentHeight + 12;
       });
 
-      if (items.pizza.length > 0) textBar({ doc, text: "", position: contentHeight + 30 });
+      if (items.pizza.length > 0) textBar({ doc, text: "", position: contentHeight + 5 });
 
-      let newKitchenContentHeight = contentHeight + 40;
+      let newKitchenContentHeight = contentHeight + 15;
 
       items.pizza.forEach((cart: MenuType) => {
         const yPosition = newKitchenContentHeight;
 
-        doc.setFontSize(6);
+        doc.setFontSize(8);
         doc.setTextColor("#000000");
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
@@ -306,28 +312,30 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items 
       });
       break;
     case "PIZZERIA":
-      items.pizza.forEach((cart: MenuType, index: number) => {
-        const yPosition = contentHeight + index * 6;
+      items.pizza.forEach((cart: MenuType) => {
+        const yPosition = contentHeight;
 
-        doc.setFontSize(10);
-        doc.setTextColor("#000000");
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
         });
         doc.text(cart.names.fr.toUpperCase(), 12, yPosition, {
           align: "left",
-          maxWidth: 63,
+          maxWidth: 59,
         });
+
+        contentHeight = contentHeight + 12;
       });
 
-      if (items.rest.length > 0) textBar({ doc, text: "", position: contentHeight + 30 });
+      if (items.rest.length > 0) textBar({ doc, text: "", position: contentHeight + 5 });
 
-      let newPizzaContentHeight = contentHeight + 40;
+      let newPizzaContentHeight = contentHeight + 15;
 
       items.rest.forEach((cart: MenuType) => {
         const yPosition = newPizzaContentHeight;
 
-        doc.setFontSize(6);
+        doc.setFontSize(8);
         doc.setTextColor("#000000");
         doc.text(cart.quantity.toString(), 10, yPosition, {
           align: "right",
