@@ -51,21 +51,21 @@ const Table = ({ table }: { table: TableType }) => {
 
       <Dialog open={openDialog} setIsOpen={setOpenDialog}>
         <div className="p-4">
-          <h3 className="text-xl mb-8">Veuillez saisir le nombre de couverts :</h3>
+          <h3 className="text-xl mb-8">{text("selectDishNumber")}</h3>
           <form onSubmit={handleConfirmCouvert}>
             <input
               type="number"
               value={couvert || ""}
               onChange={(e) => setCouvert(Number(e.target.value))}
               className="border p-2 mb-4 w-full"
-              placeholder="Number of couvert"
+              placeholder={text("dishNumber")}
               required
             />
             <button
               className="w-full py-4 text-center font-bold border-2 border-neutral-900 bg-green-600"
               type="submit"
             >
-              Confirm
+              {text("confirm")}
             </button>
           </form>
         </div>

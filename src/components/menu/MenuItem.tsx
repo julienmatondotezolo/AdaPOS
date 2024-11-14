@@ -99,6 +99,8 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
     }
   };
 
+  if (!items) return <div className="m-auto p-8 text-xl text-center w-full">Menu is loading...</div>;
+
   return (
     <>
       <div className="grid grid-cols-4 lg:grid-cols-6 gap-2 p-3">

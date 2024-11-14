@@ -100,7 +100,7 @@ const CategoryBoard = () => {
       </div>
 
       {menuItemId ? (
-        <div className="h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
+        <div className="flex h-1/2 overflow-y-scroll scrollbar-hide border-2 border-neutral-900">
           <MenuItem
             items={menuItems}
             selectedMenuItem={menuItemId}
