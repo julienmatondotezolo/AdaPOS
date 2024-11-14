@@ -113,7 +113,7 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
                 className={`relative flex justify-between p-3 h-[80px] md:h-[120px] cursor-pointer ${selectedMenuItem == menu.id && quantity > 0 ? "bg-green-600 hover:bg-green-500" : "bg-neutral-800 hover:bg-neutral-700"} transition-all ease-out duration-100`}
               >
                 <div className="flex md:flex-col items-start justify-between w-full">
-                  <article className="text-sm w-full">
+                  <article className="text-sm w-full break-words">
                     <h3 className="font-bold">{menu.names[locale]}</h3>
                     {/* <p className="hidden md:block text-xs text-[#818497]">€ {menu.price}</p> */}
                   </article>

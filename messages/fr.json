@@ -5,6 +5,9 @@
     "aside": "Accompagnement",
     "confirm": "Confirmer",
     "selectSideDish": "Sélectionnez un accompagnement",
-    "noSideDish": "Aucun accompagnement"
+    "noSideDish": "Aucun accompagnement",
+    "selectWaiter": "Sélectionner un serveur",
+    "selectDishNumber": "Veuillez saisir le nombre de couverts:",
+    "dishNumber": "Nombre de couverts"
   }
 }

@@ -227,14 +227,6 @@ const ticketHeadSection = ({
 export const generateTicket = async ({ title, tableNumber, meals, waiter, items }: ticketProps) => {
   if (!items) return;
 
-  // var doc = new jsPDF({
-  //   orientation: "portrait",
-  //   unit: "mm",
-  //   format: [72, 297], // Width: 72 mm, Height: 297 mm
-  //   putOnlyUsedFonts: true,
-  //   floatPrecision: 16, // or "smart", default is 16
-  // });
-
   const doc = ticketHeadSection({ title, tableNumber, meals, waiter });
 
   let contentHeight = 45;

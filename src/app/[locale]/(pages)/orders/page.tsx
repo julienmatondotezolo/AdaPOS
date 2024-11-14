@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 import React from "react";
 import { useQuery } from "react-query";
+import { useSelector } from "react-redux";
 
 import { fetchOrder } from "@/_services";
 import { TimeHeader } from "@/components";
+import { useRouter } from "@/navigation";
 
 const formatDate = (timestamp: number) => {
   const date = new Date(timestamp);
@@ -23,6 +25,8 @@ const formatDate = (timestamp: number) => {
 
 function Orders() {
   const locale = useLocale();
+  const router = useRouter();
+  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
 
   const { isLoading, data: orders } = useQuery("order", fetchOrder, {
     refetchOnWindowFocus: true,
@@ -30,16 +34,18 @@ function Orders() {
     select: (data) => data.sort((a: any, b: any) => b.createdTime - a.createdTime),
   });
 
+  if (!currentWaiter) router.push("/dashboard");
+
   if (isLoading)
     return (
       <div className="flex h-full overflow-scroll pb-12">
-        <p className="m-auto">Loading categories</p>
+        <p className="m-auto">Loading order</p>
       </div>
     );
 
   return (
     <>
-      <TimeHeader />
+      <TimeHeader waiterName={currentWaiter?.name} />
       <div className="h-full overflow-scroll pb-12 border-2 border-neutral-900">
         <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="grid grid-cols-4 lg:grid-cols-4 gap-2 p-3">
           {orders.map((order: any, index: any) => {
@@ -54,10 +60,13 @@ function Orders() {
                 className="flex flex-col justify-between w-full bg-secondary hover:bg-gray-600 p-4 md:p-3 cursor-pointer text-white"
               >
                 <div className="flex flex-col">
-                  <article className="mb-4 pb-2 border-b border-neutral-400/30">
-                    <p className="text-xl font-bold">Table: {order.table}</p>
-                    <p className="text-xs">{formatDate(order.createdTime)}</p>
-                  </article>
+                  <div className="flex w-full items-center justify-between mb-4 pb-2 border-b border-neutral-400/30">
+                    <article className="">
+                      <p className="text-xl font-bold">Table: {order.table}</p>
+                      <p className="text-xs">{formatDate(order.createdTime)}</p>
+                    </article>
+                    <p>{order.waiter}</p>
+                  </div>
                   <section className="bg-black/10 p-4 w-full">
                     {order.orderMenuItems.map((menuItems: any, index: any) => (
                       <div key={index} className="flex justify-between py-1">

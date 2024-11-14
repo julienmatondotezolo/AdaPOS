@@ -1,3 +1,9 @@
+export type Waiter = {
+  id: string;
+  name: string;
+  password: string;
+};
+
 export type MenuType = {
   id: number;
   names: any;

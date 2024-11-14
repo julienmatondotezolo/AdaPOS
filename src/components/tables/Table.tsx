@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -9,6 +10,7 @@ import { addTable } from "@/lib/features";
 import { Dialog } from "../ui"; // Import Dialog component
 
 const Table = ({ table }: { table: TableType }) => {
+  const text = useTranslations("Index");
   const dispatch = useDispatch();
   const [couvert, setCouvert] = useState<number | null>(null);
   const [openDialog, setOpenDialog] = useState<boolean>(false); // State to control dialog visibility

@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder, fetchSupplement } from "@/_services";
 import { sendPdfFile } from "@/_services/ada/adaPrintService";
-import { MenuType, Note } from "@/_types";
+import { MenuType, Note, TicketTitle } from "@/_types";
+import { useSocket } from "@/hooks";
 import { addNote, addSupplement, deleteNote, remove, removeAll, removeAllSupplements } from "@/lib/features";
 import { generateTicket } from "@/lib/Helpers";
 
@@ -31,7 +32,7 @@ const CartItems = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogMode, setDialogMode] = useState<"note" | "extra" | null>(null);
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
-  const waiter = "Julien";
+  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
 
   const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
     refetchOnWindowFocus: true,
@@ -45,6 +46,9 @@ const CartItems = () => {
       queryClient.invalidateQueries("order");
     },
   });
+
+  const { socketEmit } = useSocket();
+  const zenchefRestaurantId = process.env.NEXT_PUBLIC_ZENCHEF_RESTAURANT_ID;
 
   // const total = useSelector(selectTotal);
 
@@ -92,106 +96,90 @@ const CartItems = () => {
       rest: [],
     };
 
-    allCartItems.forEach((item: any) => {
-      const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
-      const aperitiviCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
-      const dessertCategoryId = "62bbd6ca-5891-4d29-bb59-d22a2f11ba00";
+    const generateAndSendPdf = async (title: TicketTitle, items: any, filename: string) => {
+      const doc = await generateTicket({
+        title,
+        tableNumber: table[0]?.tableNumber,
+        meals: table[0]?.couvert,
+        waiter: currentWaiter.name,
+        items,
+      });
 
+      if (!doc) return;
+
+      // doc.save(title);
+
+      const blob = doc.output("blob");
+      const formData = new FormData();
+      const fileData = {
+        filename,
+        blob,
+      };
+
+      formData.append("file", blob, `${filename}.pdf`);
+
+      socketEmit("send-file", {
+        roomId: zenchefRestaurantId,
+        userId: currentWaiter.id,
+        file: fileData,
+      });
+
+      // sendPdfFileMutation.mutateAsync({ filename, formData });
+    };
+
+    allCartItems.forEach((item: any) => {
+      // BAR
+      const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
+      const aperitiviCategoryId = "e229352f-97d6-4835-a1f2-a23df56c707c";
+      const digestifsCategoryId = "8b4bbd61-ef54-4c4d-abab-db789eaa0b28";
+      const dessertCategoryId = "62bbd6ca-5891-4d29-bb59-d22a2f11ba00";
+      const champagneEtVinsCategoryId = "0494ddb6-a92f-40ed-8f13-39d3316c8160";
+      const startersCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
+
+      // PIZZA
       const pizzaCategoryId = "1e5b59c5-bf44-45a7-8a63-9dc1d7e5202b";
       const pizzaSubCategoryId = "e16a2016-1c00-4e90-99b9-868ffe80d4a2";
 
-      if (item.category.parentCategory.id === drinksCategoryId) {
+      if (item.category?.parentCategory?.id === drinksCategoryId) {
         barItems.bar.push(item);
       } else if (
-        item.category.parentCategory.id === dessertCategoryId ||
-        item.category.parentCategory.id === aperitiviCategoryId
+        item.category?.parentCategory?.id === dessertCategoryId ||
+        item.category?.parentCategory?.id === aperitiviCategoryId ||
+        item.category?.parentCategory?.id === digestifsCategoryId ||
+        item.category?.parentCategory?.id === champagneEtVinsCategoryId ||
+        item.category?.parentCategory?.id === startersCategoryId
       ) {
         barItems.aperitivi.push(item);
-      } else if (item.category.parentCategory.id === pizzaCategoryId) {
+      } else if (item.category?.parentCategory?.id === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
         pizzeriaItems.pizza.push(item);
         otherItems.pizza.push(item);
       } else if (
-        item.category.parentCategory.id !== drinksCategoryId &&
-        item.category.parentCategory.id !== aperitiviCategoryId &&
-        item.category.parentCategory.id !== dessertCategoryId &&
-        item.category.parentCategory.id !== pizzaCategoryId
+        item.category?.parentCategory?.id !== drinksCategoryId &&
+        item.category?.parentCategory?.id !== aperitiviCategoryId &&
+        item.category?.parentCategory?.id !== dessertCategoryId &&
+        item.category?.parentCategory?.id !== pizzaCategoryId
       ) {
         pizzeriaItems.rest.push(item);
         otherItems.rest.push(item);
       }
     });
 
-    if (barItems.aperitivi.length > 0 || barItems.bar.length > 0) {
-      const doc = await generateTicket({
-        title: "BAR",
-        tableNumber: table[0]?.tableNumber,
-        meals: table[0]?.couvert,
-        waiter: waiter,
-        items: barItems,
-      });
-
-      if (!doc) return;
-
-      // doc.save("BAR");
-
-      const blob = doc.output("blob");
-
-      // Inside the handlePrint function:
-      const formData = new FormData();
-
-      formData.append("file", blob, "BAR.pdf");
-
-      sendPdfFileMutation.mutate({ filename: "BAR", formData });
+    if (barItems?.aperitivi?.length > 0 || barItems?.bar?.length > 0) {
+      await generateAndSendPdf("BAR", barItems, "BAR");
+      barItems.aperitivi = [];
+      barItems.bar = [];
     }
 
-    if (pizzeriaItems.pizza.length > 0 || barItems.rest.length > 0) {
-      const filename = "PIZZERIA";
-
-      const doc = await generateTicket({
-        title: filename,
-        tableNumber: table[0]?.tableNumber,
-        meals: table[0]?.couvert,
-        waiter: waiter,
-        items: pizzeriaItems,
-      });
-
-      if (!doc) return;
-
-      // doc.save(filename);
-
-      const blob = doc.output("blob");
-
-      // Inside the handlePrint function:
-      const formData = new FormData();
-
-      formData.append("file", blob, `${filename}.pdf`);
-
-      sendPdfFileMutation.mutateAsync({ filename: filename, formData });
+    if (pizzeriaItems?.pizza?.length > 0 || barItems?.rest?.length > 0) {
+      await generateAndSendPdf("PIZZERIA", pizzeriaItems, "PIZZERIA");
+      pizzeriaItems.pizza = [];
+      pizzeriaItems.rest = [];
     }
 
-    if (otherItems.pizza.length > 0 || otherItems.rest.length > 0) {
-      const filename = "KEUKEN";
-
-      const doc = await generateTicket({
-        title: filename,
-        tableNumber: table[0]?.tableNumber,
-        meals: table[0]?.couvert,
-        waiter: waiter,
-        items: otherItems,
-      });
-
-      if (!doc) return;
-
-      // doc.save(filename);
-
-      const blob = doc.output("blob");
-
-      // Inside the handlePrint function:
-      const formData = new FormData();
-
-      formData.append("file", blob, `${filename}.pdf`);
-
-      sendPdfFileMutation.mutateAsync({ filename, formData });
+    if (otherItems?.pizza?.length > 0 || otherItems?.rest?.length > 0) {
+      await generateAndSendPdf("KEUKEN", otherItems, "KEUKEN");
+      otherItems.pizza = [];
+      otherItems.rest = [];
     }
   };
 
@@ -205,7 +193,7 @@ const CartItems = () => {
     const supplementIds = allSupplements.map((supplement: any) => supplement.id);
 
     const order = {
-      waiter: waiter,
+      waiter: currentWaiter.name,
       table: table[0]?.tableNumber,
       note: note,
       meals: table[0]?.couvert,

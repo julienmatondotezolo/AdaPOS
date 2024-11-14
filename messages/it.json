@@ -5,6 +5,9 @@
     "aside": "A parte",
     "confirm": "Conferma",
     "selectSideDish": "Seleziona un contorno",
-    "noSideDish": "Nessun supporto"
+    "noSideDish": "Nessun supporto",
+    "selectWaiter": "Seleziona cameriere",
+    "selectDishNumber": "Inserisci il numero di coperti:",
+    "dishNumber": "Numero di coperti"
   }
 }

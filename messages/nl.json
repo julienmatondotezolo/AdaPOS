@@ -5,6 +5,9 @@
     "aside": "Bijgerecht",
     "confirm": "Bevestig",
     "selectSideDish": "Kies een bijgerecht",
-    "noSideDish": "Geen bijgerecht"
+    "noSideDish": "Geen bijgerecht",
+    "selectWaiter": "Kies een ober",
+    "selectDishNumber": "Vul het aantal couverts in:",
+    "dishNumber": "Aantal couverts"
   }
 }
