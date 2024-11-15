@@ -121,15 +121,15 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
                   </article>
                 </div>
                 <div className="flex absolute left-0 bottom-0 p-1 w-full justify-between items-center">
-                  <Plus
-                    onClick={() => inCreament(menu)}
+                  <Minus
+                    onClick={() => deCrement(menu)}
                     className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
                     size={15}
                   />
                   {/* <p>{selectedmenuItem == menu.id ? quantity : "0"}</p> */}
                   <p>{cartItems.find((item: any) => item.id === menu.id)?.quantity ?? "0"}</p>
-                  <Minus
-                    onClick={() => deCrement(menu)}
+                  <Plus
+                    onClick={() => inCreament(menu)}
                     className="bg-neutral-900 hover:bg-neutral-800 p-2 box-content"
                     size={15}
                   />
