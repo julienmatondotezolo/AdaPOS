@@ -5,8 +5,6 @@ import { useQuery } from "react-query";
 import { fetchTableByRoomId } from "@/_services";
 import { zenchefTable } from "@/_types";
 
-import { Table } from "./Table";
-
 const TableCanvas = ({ roomId }: { roomId: string }) => {
   const fetchCurrentTables = () => fetchTableByRoomId({ roomId });
 
