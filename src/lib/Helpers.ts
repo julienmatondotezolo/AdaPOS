@@ -153,6 +153,7 @@ type ticketProps = {
   meals: string;
   waiter: string;
   items?: any[];
+  notes: string[];
 };
 
 const textBar = ({ doc, text, position }: { doc: jsPDF; text: string; position: number }) => {
@@ -224,12 +225,29 @@ const ticketHeadSection = ({
   return doc;
 };
 
-export const generateTicket = async ({ title, tableNumber, meals, waiter, items }: ticketProps) => {
+export const generateTicket = async ({ title, tableNumber, meals, waiter, items, notes }: ticketProps) => {
   if (!items) return;
 
   const doc = ticketHeadSection({ title, tableNumber, meals, waiter });
 
+  let noteContentHeight = 45;
   let contentHeight = 45;
+
+  if (notes.length > 0 && notes[0] !== null)
+    notes.forEach((note: string) => {
+      const yPosition = noteContentHeight;
+
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
+      doc.text(note.toUpperCase() + "!!!", 36, yPosition, {
+        align: "center",
+      });
+
+      // Update totalHeight after each iteration
+      contentHeight = noteContentHeight + 12;
+    });
+
+  // let contentHeight = 45;
 
   switch (title) {
     case "BAR":

@@ -2,10 +2,13 @@
   "Index": {
     "welcome": "Welkom",
     "send": "Verzenden",
+    "clear": "Leegmaken",
     "aside": "Bijgerecht",
     "confirm": "Bevestig",
     "selectSideDish": "Kies een bijgerecht",
     "noSideDish": "Geen bijgerecht",
+    "selectSupplement": "Selecteer een supplement",
+    "noSupplement": "Geen supplement",
     "selectWaiter": "Kies een ober",
     "selectDishNumber": "Vul het aantal couverts in:",
     "dishNumber": "Aantal couverts"

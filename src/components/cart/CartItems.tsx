@@ -103,11 +103,12 @@ const CartItems = () => {
         meals: table[0]?.couvert,
         waiter: currentWaiter.name,
         items,
+        notes: [storedNote.note],
       });
 
       if (!doc) return;
 
-      // doc.save(title);
+      doc.save(title);
 
       const blob = doc.output("blob");
       const formData = new FormData();
@@ -118,11 +119,11 @@ const CartItems = () => {
 
       formData.append("file", blob, `${filename}.pdf`);
 
-      socketEmit("send-file", {
-        roomId: zenchefRestaurantId,
-        userId: currentWaiter.id,
-        file: fileData,
-      });
+      // socketEmit("send-file", {
+      //   roomId: zenchefRestaurantId,
+      //   userId: currentWaiter.id,
+      //   file: fileData,
+      // });
 
       // sendPdfFileMutation.mutateAsync({ filename, formData });
     };
@@ -363,7 +364,7 @@ const CartItems = () => {
             onClick={handleRemoveAll}
             className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 ${allCartItems.length > 0 ? "bg-red-500/80 hover:bg-red-500" : "bg-neutral-800 cursor-not-allowed"} transition-all ease-out duration-50 `}
           >
-            <button>Clear</button>
+            <button>{text("clear")}</button>
           </div>
         </div>
         {/* <div className="flex flex-col pl-8 pr-8 py-2 space-y-2">

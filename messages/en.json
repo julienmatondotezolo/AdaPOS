@@ -2,10 +2,13 @@
   "Index": {
     "welcome": "Welcome",
     "send": "Send",
+    "clear": "Clear",
     "aside": "Aside",
     "confirm": "Confirm",
     "selectSideDish": "Select a Side Dish",
     "noSideDish": "No side dish",
+    "selectSupplement": "Select a Supplement",
+    "noSupplement": "No supplement",
     "selectWaiter": "Select waiter",
     "selectDishNumber": "Please enter the number of dishes :",
     "dishNumber": "Number of dishes"

@@ -2,10 +2,13 @@
   "Index": {
     "welcome": "Bienvenue",
     "send": "Envoyer",
+    "clear": "Vider",
     "aside": "Accompagnement",
     "confirm": "Confirmer",
     "selectSideDish": "Sélectionnez un accompagnement",
     "noSideDish": "Aucun accompagnement",
+    "selectSupplement": "Sélectionnez un supplément",
+    "noSupplement": "Aucun supplément",
     "selectWaiter": "Sélectionner un serveur",
     "selectDishNumber": "Veuillez saisir le nombre de couverts:",
     "dishNumber": "Nombre de couverts"

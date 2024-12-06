@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "react-query";
 
 import { fetchTableByRoomId } from "@/_services";
-import { TableType } from "@/_types";
+import { zenchefTable } from "@/_types";
 
 import { Table } from "./Table";
 
@@ -27,7 +27,7 @@ const TableBoard = ({ roomId }: { roomId: string }) => {
   return (
     <div className="h-full overflow-scroll pb-12 border-2 border-neutral-900">
       <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="grid grid-cols-4 lg:grid-cols-8 gap-2 p-3">
-        {tables.map((table: TableType, i: React.Key | null | undefined) => (
+        {tables.map((table: zenchefTable, i: React.Key | null | undefined) => (
           <Table key={i} table={table} />
         ))}
       </motion.div>

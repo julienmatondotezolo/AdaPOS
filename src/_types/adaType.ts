@@ -15,7 +15,14 @@ export type MenuType = {
   selectedAside?: string;
 };
 
-export type TableType = {
+export type zenchefTableType = {
+  id: number;
+  width: number;
+  height: number;
+  shape: string;
+};
+
+export type zenchefTable = {
   id: number;
   name: string;
   couvert: number;
@@ -25,6 +32,7 @@ export type TableType = {
   max?: number;
   is_bookable?: boolean;
   ordered?: boolean;
+  table_type?: zenchefTableType;
 };
 
 // Define the Note type

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { Cart, CategoryBoard, Navigation, TableBoard, TimeHeader, WaiterSelector } from "@/components";
+import { Cart, CategoryBoard, Navigation, TableBoard, TableCanvas, TimeHeader, WaiterSelector } from "@/components";
 import { useSocket } from "@/hooks";
 
 function Dashboard() {
@@ -36,6 +36,7 @@ function Dashboard() {
             className={`w-full ${table.length ? "h-[50%] sm:h-max md:h-full md:w-8/12" : "h-[calc(100%-180px)] sm:h-[calc(100%-90px)] md:h-full"}`}
           >
             {table.length > 0 ? <CategoryBoard /> : <TableBoard roomId="69084" />}
+            {/* {table.length > 0 ? <CategoryBoard /> : <TableCanvas roomId="69084" />} */}
           </div>
           {table.length > 0 && (
             <div className={`md:w-4/12 w-full ${table.length && "h-fit md:h-full"} overflow-hidden`}>

@@ -25,13 +25,28 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   const cartItems = useSelector((state: any) => state.cart);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [selectedDish, setSelectedDish] = useState<string | null>(null);
+  const [selectedSupplement, setSelectedSupplement] = useState<string | null>(null);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
 
-  const handleConfirmSelection = (data: any) => {
+  const handleConfirmSelection = (e: any, data: any) => {
+    e.preventDefault();
+    if (!selectedDish) {
+      alert(text("selectSideDish"));
+      return;
+    }
+
+    if (!selectedSupplement) {
+      alert(text("selectSupplement"));
+      return;
+    }
+
     if (selectedDish) {
-      const { id, names, price, sideDishes } = data;
+      const { id, names, price, sideDishes, supplements } = data;
 
       const selectedDishData = sideDishes?.find((dish: any) => dish.names[locale] === selectedDish);
+      const selectedSupplementData = supplements?.find(
+        (supplement: any) => supplement.names[locale] === selectedSupplement,
+      );
       const existingItem = cartItems.find((item: any) => item.id === id);
       const itemWithAside: any = {
         id,
@@ -40,9 +55,12 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
         quantity: existingItem ? existingItem.quantity : 1,
         sideDishIds: selectedDishData ? [selectedDishData.id] : [],
         selectedAside: selectedDishData && selectedDishData.names[locale],
+        selectedSupplement: selectedSupplementData && selectedSupplementData.names[locale],
       };
 
       dispatch(add(itemWithAside));
+      setSelectedDish(null);
+      setSelectedSupplement(null);
       setOpenDialog(false); // Close dialog after selection
     }
   };
@@ -139,44 +157,77 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
           ))}
       </div>
       <Dialog open={openDialog} setIsOpen={setOpenDialog}>
-        <div>
-          <h3>{text("selectSideDish")}</h3>
-          <section className="p-4">
-            <div>
-              <input
-                type="radio"
-                id="sideDish"
-                name={text("noSideDish")}
-                value={text("noSideDish")}
-                className="mr-4"
-                checked={selectedDish === text("noSideDish")}
-                onChange={(e) => setSelectedDish(e.target.value)}
-              />
-              <label htmlFor={text("noSideDish")}>{text("noSideDish")}</label>
+        <form onSubmit={(e) => handleConfirmSelection(e, selectedMenu)}>
+          <div className="flex justify-between w-full mb-8">
+            <div className="w-[48%] border border-gray-800 p-4">
+              <h3 className="font-bold">{text("selectSideDish")}</h3>
+              <section className="p-4">
+                <div>
+                  <input
+                    type="radio"
+                    id="sideDish"
+                    name={text("noSideDish")}
+                    value={text("noSideDish")}
+                    className="mr-4"
+                    checked={selectedDish === text("noSideDish")}
+                    onChange={(e) => setSelectedDish(e.target.value)}
+                  />
+                  <label htmlFor={text("noSideDish")}>{text("noSideDish")}</label>
+                </div>
+                {selectedMenu?.sideDishes.map((dish: any) => (
+                  <div key={dish.id}>
+                    <input
+                      key={dish.id}
+                      type="radio"
+                      id={dish.id}
+                      name={dish.names[locale]}
+                      value={dish.names[locale]}
+                      className="mr-4"
+                      checked={selectedDish === dish.names[locale]}
+                      onChange={(e) => setSelectedDish(e.target.value)}
+                    />
+                    <label htmlFor={dish.names[locale]}>{dish.names[locale]}</label>
+                  </div>
+                ))}
+              </section>
             </div>
-            {selectedMenu?.sideDishes.map((dish: any) => (
-              <div key={dish.id}>
-                <input
-                  key={dish.id}
-                  type="radio"
-                  id={dish.id}
-                  name={dish.names[locale]}
-                  value={dish.names[locale]}
-                  className="mr-4"
-                  checked={selectedDish === dish.names[locale]}
-                  onChange={(e) => setSelectedDish(e.target.value)}
-                />
-                <label htmlFor={dish.names[locale]}>{dish.names[locale]}</label>
-              </div>
-            ))}
-          </section>
-          <button
-            className="w-3/4 py-4 text-center font-bold border-2 border-neutral-900 bg-green-600"
-            onClick={() => handleConfirmSelection(selectedMenu)}
-          >
+            <div className="w-[48%] border border-gray-800 p-4">
+              <h3 className="font-bold">{text("selectSupplement")}</h3>
+              <section className="p-4">
+                <div>
+                  <input
+                    type="radio"
+                    id="supplement"
+                    name={text("noSupplement")}
+                    value={text("noSupplement")}
+                    className="mr-4"
+                    checked={selectedSupplement === text("noSupplement")}
+                    onChange={(e) => setSelectedSupplement(e.target.value)}
+                  />
+                  <label htmlFor={text("noSupplement")}>{text("noSupplement")}</label>
+                </div>
+                {selectedMenu?.supplements.map((supplement: any) => (
+                  <div key={supplement.id}>
+                    <input
+                      key={supplement.id}
+                      type="radio"
+                      id={supplement.id}
+                      name={supplement.names[locale]}
+                      value={supplement.names[locale]}
+                      className="mr-4"
+                      checked={selectedSupplement === supplement.names[locale]}
+                      onChange={(e) => setSelectedSupplement(e.target.value)}
+                    />
+                    <label htmlFor={supplement.names[locale]}>{supplement.names[locale]}</label>
+                  </div>
+                ))}
+              </section>
+            </div>
+          </div>
+          <button className="w-full py-4 text-center font-bold border-2 border-neutral-900 bg-green-600" type="submit">
             {text("confirm")}
           </button>
-        </div>
+        </form>
       </Dialog>
     </>
   );

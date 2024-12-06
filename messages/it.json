@@ -2,10 +2,13 @@
   "Index": {
     "welcome": "Benvenuto",
     "send": "Invia",
+    "clear": "Vuoto",
     "aside": "A parte",
     "confirm": "Conferma",
     "selectSideDish": "Seleziona un contorno",
     "noSideDish": "Nessun supporto",
+    "selectSupplement": "Seleziona un supplemento",
+    "noSupplement": "Nessun supplément",
     "selectWaiter": "Seleziona cameriere",
     "selectDishNumber": "Inserisci il numero di coperti:",
     "dishNumber": "Numero di coperti"
