@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { removeTable } from "@/lib/features";
 
 function Navigation() {
-  const dispatch = useDispatch();
-  const table = useSelector((state: any) => state.table);
+  const dispatch = useAppDispatch();
+  const table = useAppSelector((state) => state.table);
   const isTableSelected = table.length > 0 ? false : true;
 
   const goBack = () => {

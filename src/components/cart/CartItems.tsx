@@ -6,12 +6,11 @@ import { ShoppingCart, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder, fetchSupplement } from "@/_services";
 import { sendPdfFile } from "@/_services/ada/adaPrintService";
 import { MenuType, Note, TicketTitle } from "@/_types";
-import { useSocket } from "@/hooks";
+import { useAppDispatch, useAppSelector, useSocket } from "@/hooks";
 import { addNote, addSupplement, deleteNote, remove, removeAll, removeAllSupplements } from "@/lib/features";
 import { generateTicket } from "@/lib/Helpers";
 
@@ -21,18 +20,18 @@ import { Invoice } from "./Invoice";
 const CartItems = () => {
   const text = useTranslations("Index");
   const queryClient = useQueryClient();
-  const table = useSelector((state: any) => state.table);
+  const table = useAppSelector((state) => state.table);
   const locale = useLocale();
-  const dispatch = useDispatch();
-  const storedNote = useSelector((state: any) => state.notes);
+  const dispatch = useAppDispatch();
+  const storedNote = useAppSelector((state) => state.notes);
   const [invoiceShow, setInvoiceShow] = useState(false);
-  const allCartItems = useSelector((state: any) => state.cart);
-  const allSupplements = useSelector((state: any) => state.supplement);
+  const allCartItems = useAppSelector((state) => state.cart);
+  const allSupplements = useAppSelector((state) => state.supplement);
   const [note, setNote] = useState<Note | "">(storedNote.note || "");
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogMode, setDialogMode] = useState<"note" | "extra" | null>(null);
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
-  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
+  const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
   const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
     refetchOnWindowFocus: true,
