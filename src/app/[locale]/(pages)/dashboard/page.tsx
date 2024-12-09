@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { Cart, CategoryBoard, Navigation, TableBoard, TableCanvas, TimeHeader, WaiterSelector } from "@/components";
+import { Cart, CategoryBoard, Navigation, TableBoard, TimeHeader, WaiterSelector } from "@/components";
 import { useSocket } from "@/hooks";
 
 function Dashboard() {
