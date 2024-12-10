@@ -46,7 +46,7 @@ const CartItems = () => {
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
   const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
-  const isStoredNoteSelected = (content: string, category: string) =>
+  const isStoredNoteSelected = (content: string, category?: string) =>
     storedNotes.find((storedNote) => storedNote.content === content && storedNote.category === category);
 
   const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
@@ -70,10 +70,16 @@ const CartItems = () => {
   // const subTotal = total;
   // const tax = (5.25 / 100) * total;
 
-  const handleClickQuickNote = (content: string, category?: string) => (e: MouseEvent<HTMLButtonElement>) => {
+  const handleToggleQuickNote = (content: string, category?: string) => (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    dispatch(addNote({ id: `${storedNotes.length}`, content, category }));
+    const selectedNote = isStoredNoteSelected(content, category);
+
+    if (selectedNote) {
+      dispatch(deleteNote(selectedNote.id));
+    } else {
+      dispatch(addNote({ id: `${storedNotes.length}`, content, category }));
+    }
   };
 
   const handleRemove = (e: any, id: any) => {
@@ -292,17 +298,19 @@ const CartItems = () => {
             <p className="ml-2 text-md font-bold">Notes:</p>
             {storedNotes.map((note, index) => (
               <motion.div
-                key={note.id}
+                key={note.content + note.category}
                 initial={{ x: 100 }}
                 animate={{ x: 0 }}
                 transition={{ duration: 0.2 }}
                 exit={{ y: "50%", opacity: 0, scale: 0.5 }}
                 className="relative flex justify-between w-full pl-2 py-2 border-2 border-neutral-900 box-border"
               >
-                <div className="flex flex-col w-3/4 sm:space-x-1">
-                  <p className="truncate text-sm font-medium text-red-500">
-                    {index + 1}. {note.content} !!!
-                  </p>
+                <div className="flex flex-col w-3/4">
+                  <div className="flex items-center justify-between">
+                    <p className="truncate text-sm font-medium text-red-500">
+                      {index + 1}. {note.content} !!!
+                    </p>
+                  </div>
                   {note.category && (
                     <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">Category:</p>
@@ -491,12 +499,12 @@ const CartItems = () => {
                     </button>
                   ))}
                 </div>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="flex flex-wrap gap-2">
                   {hasSelectedCategory &&
                     quickNotes[selectedQuickNote].map((note) => (
                       <button
                         key={note}
-                        onClick={handleClickQuickNote(note, selectedQuickNote)}
+                        onClick={handleToggleQuickNote(note, selectedQuickNote)}
                         className={`p-3 capitalize ${isStoredNoteSelected(note, selectedQuickNote) ? "bg-green-600" : "bg-gray-500 hover:bg-gray-600"} truncate text-center`}
                       >
                         <p>{note}</p>
