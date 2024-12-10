@@ -39,10 +39,11 @@ export type zenchefTable = {
 export interface Note {
   id: string;
   content: string;
+  category?: string;
 }
 
 export interface NotesState {
-  note: Note | null; // Only one note allowed
+  notes: Note[];
 }
 
 export type TicketTitle = "BAR" | "KEUKEN" | "PIZZERIA";

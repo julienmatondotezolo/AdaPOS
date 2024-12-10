@@ -3,10 +3,10 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { FC, useEffect, useRef } from "react";
 import { useMutation } from "react-query";
-import { useSelector } from "react-redux";
 
 import { sendPdfFile } from "@/_services/ada/adaPrintService";
 import { MenuType } from "@/_types";
+import { useAppSelector } from "@/hooks";
 import { selectTotal } from "@/lib/features";
 import { formatDate, invoiceTicket } from "@/lib/Helpers";
 
@@ -20,8 +20,8 @@ type DialogProps = {
 const Invoice: FC<DialogProps> = ({ open, setIsOpen }) => {
   const sendPdfFileMutation = useMutation(sendPdfFile);
 
-  const allCartItems = useSelector((state: any) => state.cart);
-  const total = useSelector(selectTotal);
+  const allCartItems = useAppSelector((state) => state.cart);
+  const total = useAppSelector(selectTotal);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<any>();

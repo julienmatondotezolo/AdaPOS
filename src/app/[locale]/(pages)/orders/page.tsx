@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { useLocale } from "next-intl";
 import React from "react";
 import { useQuery } from "react-query";
-import { useSelector } from "react-redux";
 
 import { fetchOrder } from "@/_services";
 import { TimeHeader } from "@/components";
+import { useAppSelector } from "@/hooks";
 import { useRouter } from "@/navigation";
 
 const formatDate = (timestamp: number) => {
@@ -26,7 +26,7 @@ const formatDate = (timestamp: number) => {
 function Orders() {
   const locale = useLocale();
   const router = useRouter();
-  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
+  const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
   const { isLoading, data: orders } = useQuery("order", fetchOrder, {
     refetchOnWindowFocus: true,

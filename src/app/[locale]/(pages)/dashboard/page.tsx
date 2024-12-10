@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 
 import { Cart, CategoryBoard, Navigation, TableBoard, TimeHeader, WaiterSelector } from "@/components";
-import { useSocket } from "@/hooks";
+import { useAppSelector, useSocket } from "@/hooks";
 
 function Dashboard() {
-  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
+  const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
   const zenchefRestaurantId = process.env.NEXT_PUBLIC_ZENCHEF_RESTAURANT_ID;
 
@@ -17,7 +16,7 @@ function Dashboard() {
     if (currentWaiter) socketJoinRoom(zenchefRestaurantId, currentWaiter.id, currentWaiter.name);
   }, [currentWaiter, socketJoinRoom, zenchefRestaurantId]);
 
-  const table = useSelector((state: any) => state.table);
+  const table = useAppSelector((state) => state.table);
 
   if (!currentWaiter)
     return (
