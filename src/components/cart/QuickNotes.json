@@ -1,0 +1,16 @@
+{
+  "bar": ["DIVERS APERO", "Suite boisson", "Sans glacon", "Glacon a part", "Sans grenadine"],
+  "keuken": [
+    "Attention apéritif",
+    "Sans fromage",
+    "Sauce a part",
+    "PAte: aldente",
+    "SANS SALADE",
+    "SANS GLUTEN",
+    "Sans frite",
+    "Sans croquette",
+    "Non piquant"
+  ],
+  "pizza": ["Attention apéritif", "Suite boisson"],
+  "generic": ["Client à faim"]
+}
