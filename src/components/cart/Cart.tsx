@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+
+import { useAppSelector } from "@/hooks";
 
 import { CartItems } from "./CartItems";
 
 const Cart = () => {
-  const table = useSelector((state: any) => state.table);
-  const allCartItems = useSelector((state: any) => state.cart);
+  const table = useAppSelector((state) => state.table);
+  const allCartItems = useAppSelector((state) => state.cart);
 
   const isTableSlected = table.length > 0 ? true : false;
 

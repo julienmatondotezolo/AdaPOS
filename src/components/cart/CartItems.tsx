@@ -2,37 +2,52 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
-import { ShoppingCart, Trash2 } from "lucide-react";
+import { ChevronDown, ShoppingCart, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import React, { useState } from "react";
+import React, { type MouseEvent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
 
 import { createOrder, fetchSupplement } from "@/_services";
 import { sendPdfFile } from "@/_services/ada/adaPrintService";
 import { MenuType, Note, TicketTitle } from "@/_types";
-import { useSocket } from "@/hooks";
-import { addNote, addSupplement, deleteNote, remove, removeAll, removeAllSupplements } from "@/lib/features";
+import { useAppDispatch, useAppSelector, useSocket } from "@/hooks";
+import {
+  addNote,
+  addSupplement,
+  deleteNote,
+  remove,
+  removeAll,
+  removeAllSupplements,
+  resetNotes,
+} from "@/lib/features";
 import { generateTicket } from "@/lib/Helpers";
 
 import { Dialog } from "../ui";
 import { Invoice } from "./Invoice";
+import quickNotes from "./QuickNotes.json";
 
 const CartItems = () => {
   const text = useTranslations("Index");
   const queryClient = useQueryClient();
-  const table = useSelector((state: any) => state.table);
+  const table = useAppSelector((state) => state.table);
   const locale = useLocale();
-  const dispatch = useDispatch();
-  const storedNote = useSelector((state: any) => state.notes);
+  const dispatch = useAppDispatch();
+  const storedNotes = useAppSelector((state) => state.notes.notes);
+  const [note, setNote] = useState<string>("");
+  // Quick notes
+  const [selectedQuickNote, setSelectedQuickNote] = useState<keyof typeof quickNotes | "">("");
+  const hasSelectedCategory = selectedQuickNote !== "" && (quickNotes[selectedQuickNote] as string[]);
+
   const [invoiceShow, setInvoiceShow] = useState(false);
-  const allCartItems = useSelector((state: any) => state.cart);
-  const allSupplements = useSelector((state: any) => state.supplement);
-  const [note, setNote] = useState<Note | "">(storedNote.note || "");
+  const allCartItems = useAppSelector((state) => state.cart);
+  const allSupplements = useAppSelector((state) => state.supplement);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogMode, setDialogMode] = useState<"note" | "extra" | null>(null);
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
-  const currentWaiter = useSelector((state: any) => state.currentWaiter.currentWaiter);
+  const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
+
+  const isStoredNoteSelected = (content: string, category?: string) =>
+    storedNotes.find((storedNote) => storedNote.content === content && storedNote.category === category);
 
   const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
     refetchOnWindowFocus: true,
@@ -54,6 +69,18 @@ const CartItems = () => {
 
   // const subTotal = total;
   // const tax = (5.25 / 100) * total;
+
+  const handleToggleQuickNote = (content: string, category?: string) => (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const selectedNote = isStoredNoteSelected(content, category);
+
+    if (selectedNote) {
+      dispatch(deleteNote(selectedNote.id));
+    } else {
+      dispatch(addNote({ id: `${storedNotes.length}`, content, category }));
+    }
+  };
 
   const handleRemove = (e: any, id: any) => {
     e.preventDefault();
@@ -90,20 +117,34 @@ const CartItems = () => {
     const otherItems: any = {
       rest: [],
       pizza: [],
+      aperitivi: [],
     };
     const pizzeriaItems: any = {
       pizza: [],
       rest: [],
+      aperitivi: [],
     };
 
     const generateAndSendPdf = async (title: TicketTitle, items: any, filename: string) => {
+      const notes = storedNotes.reduce((acc, note) => {
+        if (
+          note.category?.toUpperCase() === title ||
+          note.category?.toUpperCase() === "GENERIC" ||
+          note.category === undefined
+        ) {
+          acc.push(note.content);
+        }
+
+        return acc;
+      }, [] as string[]);
+
       const doc = await generateTicket({
         title,
         tableNumber: table[0]?.tableNumber,
         meals: table[0]?.couvert,
         waiter: currentWaiter.name,
         items,
-        notes: [storedNote.note],
+        notes,
       });
 
       if (!doc) return;
@@ -151,6 +192,8 @@ const CartItems = () => {
         item.category?.parentCategory?.id === startersCategoryId
       ) {
         barItems.aperitivi.push(item);
+        pizzeriaItems.aperitivi.push(item);
+        otherItems.aperitivi.push(item);
       } else if (item.category?.parentCategory?.id === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
         pizzeriaItems.pizza.push(item);
         otherItems.pizza.push(item);
@@ -196,7 +239,7 @@ const CartItems = () => {
     const order = {
       waiter: currentWaiter.name,
       table: table[0]?.tableNumber,
-      note: note,
+      note: storedNotes.map((note) => note.content),
       meals: table[0]?.couvert,
       orderMenuItems: modifiedItems,
       orderSupplements: supplementIds,
@@ -204,10 +247,10 @@ const CartItems = () => {
 
     try {
       await handlePrint();
-      await createOrderMutation.mutate({ orderObject: order });
-      dispatch(removeAll("remove"));
-      dispatch(removeAllSupplements("remove"));
-      dispatch(deleteNote());
+      // await createOrderMutation.mutate({ orderObject: order });
+      // dispatch(removeAll("remove"));
+      // dispatch(removeAllSupplements("remove"));
+      // dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
@@ -220,7 +263,7 @@ const CartItems = () => {
 
   const handleConfirmNote = () => {
     if (note) {
-      dispatch(addNote(note));
+      dispatch(addNote({ id: `${storedNotes.length}`, content: note }));
       setOpenDialog(false);
     }
   };
@@ -239,7 +282,7 @@ const CartItems = () => {
     setDialogMode(mode);
     setOpenDialog(true);
     if (mode === "note") {
-      setNote(storedNote.note || "");
+      setNote("");
       setSelectedSupplements([]);
     } else if (mode === "extra") {
       setNote("");
@@ -254,23 +297,39 @@ const CartItems = () => {
         exit={{ y: "50%", opacity: 0 }}
         className={`flex flex-col ${allCartItems.length > 0 && "h-[50px] sm:h-[100px] md:h-[50vh]"} overflow-y-scroll scrollbar-hide`}
       >
-        {storedNote.note && (
+        {storedNotes && storedNotes.length > 0 && (
           <AnimatePresence>
-            <motion.div
-              initial={{ x: 100 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.2 }}
-              exit={{ y: "50%", opacity: 0, scale: 0.5 }}
-              className="relative flex justify-between w-full pl-2 py-2 border-2 border-neutral-900 box-border"
-            >
-              <div className="flex items-center sm:space-x-2">
-                <p className="ml-2 text-md font-bold">Notes:</p>
-                <p className="font-normal text-red-500">{storedNote.note} !!!</p>
-              </div>
-              <div onClick={() => dispatch(deleteNote())} className="w-12 h-full bg-red-500/20 hover:bg-red-500">
-                <Trash2 className="cursor-pointer h-full mx-auto" width={18} />
-              </div>
-            </motion.div>
+            <p className="ml-2 text-md font-bold">Notes:</p>
+            {storedNotes.map((note, index) => (
+              <motion.div
+                key={note.content + note.category}
+                initial={{ x: 100 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.2 }}
+                exit={{ y: "50%", opacity: 0, scale: 0.5 }}
+                className="relative flex justify-between w-full pl-2 py-2 border-2 border-neutral-900 box-border"
+              >
+                <div className="flex flex-col w-3/4">
+                  <div className="flex items-center justify-between">
+                    <p className="truncate text-sm font-medium text-red-500">
+                      {index + 1}. {note.content} !!!
+                    </p>
+                  </div>
+                  {note.category && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">Category:</p>
+                      <p className="font-normal capitalize">{note.category}</p>
+                    </div>
+                  )}
+                </div>
+                <div
+                  onClick={() => dispatch(deleteNote(note.id))}
+                  className="w-12 h-full bg-red-500/20 hover:bg-red-500"
+                >
+                  <Trash2 className="cursor-pointer h-full mx-auto" width={18} />
+                </div>
+              </motion.div>
+            ))}
           </AnimatePresence>
         )}
         {allCartItems.length > 0 ? (
@@ -424,9 +483,39 @@ const CartItems = () => {
 
       {/* Dialog */}
       <Dialog open={openDialog} setIsOpen={setOpenDialog}>
-        <div>
+        <div className="space-y-4">
           {dialogMode === "note" && (
             <>
+              <div className="flex flex-col gap-4 mb-2">
+                <div className="grid grid-cols-5 gap-2">
+                  {Object.keys(quickNotes).map((note: any) => (
+                    <button
+                      className={`p-3 relative capitalize ${note === selectedQuickNote ? "bg-gray-600" : "bg-gray-500 hover:bg-gray-600"} `}
+                      key={note}
+                      onClick={() => setSelectedQuickNote(note)}
+                    >
+                      <p>{note}</p>
+                      {note === selectedQuickNote && (
+                        <div className="absolute top-0 right-0 p-1 bg-black opacity-40 h-full flex items-end">
+                          <ChevronDown className="w-4 h-4 ml-auto" />
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {hasSelectedCategory &&
+                    quickNotes[selectedQuickNote].map((note) => (
+                      <button
+                        key={note}
+                        onClick={handleToggleQuickNote(note, selectedQuickNote)}
+                        className={`p-3 capitalize ${isStoredNoteSelected(note, selectedQuickNote) ? "bg-green-600" : "bg-gray-500 hover:bg-gray-600"} truncate text-center`}
+                      >
+                        <p>{note}</p>
+                      </button>
+                    ))}
+                </div>
+              </div>
               <h3>Add a Note:</h3>
               <textarea
                 value={note}

@@ -1,14 +1,14 @@
 import { useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { Waiter } from "@/_types";
 import waitersData from "@/assets/users/data.json";
+import { useAppDispatch } from "@/hooks";
 import { setCurrentWaiter } from "@/lib/features";
 
 const WaiterSelector: React.FC = () => {
   const text = useTranslations("Index");
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const waiters: Waiter[] = waitersData;
 
   const [selectedWaiter, setSelectedWaiter] = useState<Waiter>();

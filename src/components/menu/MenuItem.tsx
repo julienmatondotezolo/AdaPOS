@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { Minus, Plus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { add, remove, update } from "@/lib/features";
 
 import { Dialog } from "../ui";
@@ -21,8 +21,8 @@ interface MenuItemProps {
 const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemId }: MenuItemProps) => {
   const text = useTranslations("Index");
   const locale = useLocale();
-  const dispatch = useDispatch();
-  const cartItems = useSelector((state: any) => state.cart);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [selectedDish, setSelectedDish] = useState<string | null>(null);
   const [selectedSupplement, setSelectedSupplement] = useState<string | null>(null);
