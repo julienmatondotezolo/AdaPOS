@@ -123,10 +123,12 @@ const CartItems = () => {
     const otherItems: any = {
       rest: [],
       pizza: [],
+      aperitivi: [],
     };
     const pizzeriaItems: any = {
       pizza: [],
       rest: [],
+      aperitivi: [],
     };
 
     const generateAndSendPdf = async (title: TicketTitle, items: any, filename: string) => {
@@ -196,6 +198,8 @@ const CartItems = () => {
         item.category?.parentCategory?.id === startersCategoryId
       ) {
         barItems.aperitivi.push(item);
+        pizzeriaItems.aperitivi.push(item);
+        otherItems.aperitivi.push(item);
       } else if (item.category?.parentCategory?.id === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
         pizzeriaItems.pizza.push(item);
         otherItems.pizza.push(item);
@@ -249,10 +253,10 @@ const CartItems = () => {
 
     try {
       await handlePrint();
-      await createOrderMutation.mutate({ orderObject: order });
-      dispatch(removeAll("remove"));
-      dispatch(removeAllSupplements("remove"));
-      dispatch(resetNotes());
+      // await createOrderMutation.mutate({ orderObject: order });
+      // dispatch(removeAll("remove"));
+      // dispatch(removeAllSupplements("remove"));
+      // dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
@@ -485,12 +489,12 @@ const CartItems = () => {
 
       {/* Dialog */}
       <Dialog open={openDialog} setIsOpen={setOpenDialog}>
-        <div>
+        <div className="space-y-4">
           {dialogMode === "note" && (
             <>
               <div className="flex flex-col gap-4 mb-2">
                 <div className="grid grid-cols-5 gap-2">
-                  {Object.keys(quickNotes).map((note) => (
+                  {Object.keys(quickNotes).map((note: any) => (
                     <button
                       className={`p-3 relative capitalize ${note === selectedQuickNote ? "bg-gray-600" : "bg-gray-500 hover:bg-gray-600"} `}
                       key={note}
