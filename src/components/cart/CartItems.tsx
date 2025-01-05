@@ -144,6 +144,11 @@ const CartItems = () => {
         return acc;
       }, [] as string[]);
 
+      if (!currentWaiter) {
+        console.error("No waiter");
+        return;
+      }
+
       const doc = await generateTicket({
         title,
         tableNumber: table[0]?.tableNumber,
@@ -166,13 +171,11 @@ const CartItems = () => {
 
       formData.append("file", blob, `${filename}.pdf`);
 
-      // socketEmit("send-file", {
-      //   roomId: zenchefRestaurantId,
-      //   userId: currentWaiter.id,
-      //   file: fileData,
-      // });
-
-      // sendPdfFileMutation.mutateAsync({ filename, formData });
+      socketEmit("send-file", {
+        roomId: zenchefRestaurantId,
+        userId: currentWaiter.id,
+        file: fileData,
+      });
     };
 
     allCartItems.forEach((item: any) => {
@@ -242,6 +245,11 @@ const CartItems = () => {
 
     const supplementIds = allSupplements.map((supplement: any) => supplement.id);
 
+    if (!currentWaiter) {
+      console.error("No waiter");
+      return;
+    }
+
     const order = {
       waiter: currentWaiter.name,
       table: table[0]?.tableNumber,
@@ -253,10 +261,10 @@ const CartItems = () => {
 
     try {
       await handlePrint();
-      // await createOrderMutation.mutate({ orderObject: order });
-      // dispatch(removeAll("remove"));
-      // dispatch(removeAllSupplements("remove"));
-      // dispatch(resetNotes());
+      await createOrderMutation.mutateAsync({ orderObject: order });
+      dispatch(removeAll("remove"));
+      dispatch(removeAllSupplements("remove"));
+      dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
