@@ -171,11 +171,15 @@ const CartItems = () => {
 
       formData.append("file", blob, `${filename}.pdf`);
 
-      socketEmit("send-file", {
-        roomId: zenchefRestaurantId,
-        userId: currentWaiter.id,
-        file: fileData,
-      });
+      try {
+        socketEmit("send-file", {
+          roomId: zenchefRestaurantId,
+          userId: currentWaiter.id,
+          file: fileData,
+        });
+      } catch (error) {
+        console.error("error emitting socket:", error);
+      }
     };
 
     allCartItems.forEach((item: any) => {
@@ -261,7 +265,7 @@ const CartItems = () => {
 
     try {
       await handlePrint();
-      await createOrderMutation.mutateAsync({ orderObject: order });
+      // await createOrderMutation.mutateAsync({ orderObject: order });
       dispatch(removeAll("remove"));
       dispatch(removeAllSupplements("remove"));
       dispatch(resetNotes());
