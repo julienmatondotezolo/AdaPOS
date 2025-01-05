@@ -1,14 +1,51 @@
 import "../../assets/styles/globals.css";
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans } from "next/font/google";
 import React from "react";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
+const APP_NAME = "ADA POS";
+const APP_DEFAULT_TITLE = "ADA POS";
+const APP_TITLE_TEMPLATE = "%s - Ada POS";
+const APP_DESCRIPTION = "Adaptive Point of sale system working on multiple devices";
+
 export const metadata: Metadata = {
-  title: "ADA - Point of sale",
-  description: "Adaptive Point of sale system working on multiple devices",
+  // title: "ADA - Menu manager",
+  // description: "Adaptive Menu manager system working on multiple devices",
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  icons: {
+    icon: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
