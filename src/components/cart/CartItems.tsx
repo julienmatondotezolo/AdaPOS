@@ -49,9 +49,15 @@ const CartItems = () => {
   const isStoredNoteSelected = (content: string, category?: string) =>
     storedNotes.find((storedNote) => storedNote.content === content && storedNote.category === category);
 
-  const { isLoading, data: supplements } = useQuery("supplement", fetchSupplement, {
+  const { data: supplements } = useQuery("supplement", fetchSupplement, {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
+  });
+
+  const EXTRA_CAT_ID = "f865cdff-2d4c-4a6a-9f07-31ccd997385e";
+
+  const { data: categories } = useQuery("categories", {
+    select: (data: any) => data.filter((data: any) => data.id === EXTRA_CAT_ID).subCategories[0],
   });
 
   const sendPdfFileMutation = useMutation(sendPdfFile);
@@ -402,19 +408,19 @@ const CartItems = () => {
         )}
       </motion.div>
       <div className="flex flex-col w-full">
-        <div className="grid grid-cols-3 gap-0">
+        <div className="grid grid-cols-2 gap-0">
           <div
             onClick={() => handleDialog("note")}
             className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900  transition-all ease-out duration-50 ${allCartItems.length > 0 ? " bg-yellow-600" : "bg-neutral-800 cursor-not-allowed"}`}
           >
             <button>Note</button>
           </div>
-          <div
+          {/* <div
             onClick={() => handleDialog("extra")}
             className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900  transition-all ease-out duration-50 ${allCartItems.length > 0 ? " bg-purple-600" : "bg-neutral-800 cursor-not-allowed"}`}
           >
             <button>Extra</button>
-          </div>
+          </div> */}
           <div
             onClick={handleRemoveAll}
             className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900 ${allCartItems.length > 0 ? "bg-red-500/80 hover:bg-red-500" : "bg-neutral-800 cursor-not-allowed"} transition-all ease-out duration-50 `}
