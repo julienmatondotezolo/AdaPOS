@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 
-import { fetchCategories, fetchMenuItemByCategoryId } from "@/_services";
+import { fetchMenu } from "@/_services";
 
 import { CategoryItem } from "./CategoryItem";
 import { MenuItem } from "./MenuItem";
@@ -14,18 +14,9 @@ const CategoryBoard = () => {
   const [subCategories, setSubCategories] = useState<any>();
   const [quantity, setQuantity] = useState(1);
   const [menuItemId, setMenuItemId] = useState<string>();
+  const [menuItems, setMenuItems] = useState<any>();
 
-  const queryClient = useQueryClient();
-  const fetchCurrentTables = () => fetchCategories();
-
-  // Define the mutation for fetching menu items
-  const { mutate: fetchMenuItems, data: menuItems } = useMutation(fetchMenuItemByCategoryId, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("menuItems");
-    },
-  });
-
-  const { isLoading, data: categories } = useQuery("categories", fetchCurrentTables, {
+  const { isLoading, data: categories } = useQuery("menu", fetchMenu, {
     refetchOnWindowFocus: true,
     refetchOnMount: true,
     select: (data) => data.sort((a: any, b: any) => a.order - b.order),
@@ -46,10 +37,10 @@ const CategoryBoard = () => {
     setSubCategories(category.subCategories);
   };
 
-  const openMenuItem = (category: any) => {
-    setSubCategoryId(category.id);
-    fetchMenuItems({ categoryId: category.id });
-    setMenuItemId(category.id);
+  const openMenuItem = (subCategory: any) => {
+    setSubCategoryId(subCategory.id);
+    setMenuItemId(subCategory.id);
+    setMenuItems(subCategory.menuItems);
   };
 
   if (isLoading)

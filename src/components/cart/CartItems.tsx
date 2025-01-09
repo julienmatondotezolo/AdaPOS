@@ -172,11 +172,11 @@ const CartItems = () => {
       formData.append("file", blob, `${filename}.pdf`);
 
       try {
-        socketEmit("send-file", {
-          roomId: zenchefRestaurantId,
-          userId: currentWaiter.id,
-          file: fileData,
-        });
+        // socketEmit("send-file", {
+        //   roomId: zenchefRestaurantId,
+        //   userId: currentWaiter.id,
+        //   file: fileData,
+        // });
       } catch (error) {
         console.error("error emitting socket:", error);
       }
