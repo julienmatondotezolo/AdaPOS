@@ -265,7 +265,7 @@ const CartItems = () => {
 
     try {
       await handlePrint();
-      // await createOrderMutation.mutateAsync({ orderObject: order });
+      await createOrderMutation.mutateAsync({ orderObject: order });
       dispatch(removeAll("remove"));
       dispatch(removeAllSupplements("remove"));
       dispatch(resetNotes());
