@@ -185,7 +185,7 @@ const CartItems = () => {
     allCartItems.forEach((item: any) => {
       // BAR
       const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
-      const aperitiviCategoryId = "e229352f-97d6-4835-a1f2-a23df56c707c";
+      const aperitiviCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
       const digestifsCategoryId = "8b4bbd61-ef54-4c4d-abab-db789eaa0b28";
       const dessertCategoryId = "62bbd6ca-5891-4d29-bb59-d22a2f11ba00";
       const champagneEtVinsCategoryId = "0494ddb6-a92f-40ed-8f13-39d3316c8160";
