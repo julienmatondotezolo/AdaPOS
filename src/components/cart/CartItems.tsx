@@ -170,7 +170,7 @@ const CartItems = () => {
 
       if (!doc) return;
 
-      doc.save(title);
+      // doc.save(title);
 
       const blob = doc.output("blob");
       const formData = new FormData();
