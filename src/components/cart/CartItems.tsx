@@ -42,7 +42,7 @@ const CartItems = () => {
   const allCartItems = useAppSelector((state) => state.cart);
   const allSupplements = useAppSelector((state) => state.supplement);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [dialogMode, setDialogMode] = useState<"note" | "extra" | null>(null);
+  const [dialogMode, setDialogMode] = useState<"note" | "extra" | "clear" | null>(null);
   const [selectedSupplements, setSelectedSupplements] = useState<string[]>([]);
   const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
@@ -103,8 +103,18 @@ const CartItems = () => {
     if (allCartItems.length === 0) {
       return;
     }
+    setDialogMode("clear");
+    setOpenDialog(true);
+  };
+
+  const confirmRemoveAll = () => {
     dispatch(removeAll("remove"));
     dispatch(removeAllSupplements("remove"));
+    setOpenDialog(false);
+  };
+
+  const cancelRemoveAll = () => {
+    setOpenDialog(false);
   };
 
   const showInvoice = () => {
@@ -118,17 +128,17 @@ const CartItems = () => {
   const handlePrint = async () => {
     const barItems: any = {
       bar: [],
-      aperitivi: [],
+      starters: [],
     };
     const otherItems: any = {
       rest: [],
       pizza: [],
-      aperitivi: [],
+      starters: [],
     };
     const pizzeriaItems: any = {
       pizza: [],
       rest: [],
-      aperitivi: [],
+      starters: [],
     };
 
     const generateAndSendPdf = async (title: TicketTitle, items: any, filename: string) => {
@@ -160,7 +170,7 @@ const CartItems = () => {
 
       if (!doc) return;
 
-      // doc.save(title);
+      doc.save(title);
 
       const blob = doc.output("blob");
       const formData = new FormData();
@@ -185,45 +195,44 @@ const CartItems = () => {
     allCartItems.forEach((item: any) => {
       // BAR
       const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
-      const aperitiviCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
+      const startersCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
       const digestifsCategoryId = "8b4bbd61-ef54-4c4d-abab-db789eaa0b28";
       const dessertCategoryId = "62bbd6ca-5891-4d29-bb59-d22a2f11ba00";
       const champagneEtVinsCategoryId = "0494ddb6-a92f-40ed-8f13-39d3316c8160";
-      const startersCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
 
       // PIZZA
       const pizzaCategoryId = "1e5b59c5-bf44-45a7-8a63-9dc1d7e5202b";
       const pizzaSubCategoryId = "e16a2016-1c00-4e90-99b9-868ffe80d4a2";
 
-      if (item.category?.parentCategory?.id === drinksCategoryId) {
+      if (item.category === drinksCategoryId) {
         barItems.bar.push(item);
       } else if (
-        item.category?.parentCategory?.id === dessertCategoryId ||
-        item.category?.parentCategory?.id === aperitiviCategoryId ||
-        item.category?.parentCategory?.id === digestifsCategoryId ||
-        item.category?.parentCategory?.id === champagneEtVinsCategoryId ||
-        item.category?.parentCategory?.id === startersCategoryId
+        item.category === dessertCategoryId ||
+        item.category === startersCategoryId ||
+        item.category === digestifsCategoryId ||
+        item.category === champagneEtVinsCategoryId ||
+        item.category === startersCategoryId
       ) {
-        barItems.aperitivi.push(item);
-        pizzeriaItems.aperitivi.push(item);
-        otherItems.aperitivi.push(item);
-      } else if (item.category?.parentCategory?.id === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
+        barItems.starters.push(item);
+        pizzeriaItems.starters.push(item);
+        otherItems.starters.push(item);
+      } else if (item.category === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
         pizzeriaItems.pizza.push(item);
         otherItems.pizza.push(item);
       } else if (
-        item.category?.parentCategory?.id !== drinksCategoryId &&
-        item.category?.parentCategory?.id !== aperitiviCategoryId &&
-        item.category?.parentCategory?.id !== dessertCategoryId &&
-        item.category?.parentCategory?.id !== pizzaCategoryId
+        item.category !== drinksCategoryId &&
+        item.category !== startersCategoryId &&
+        item.category !== dessertCategoryId &&
+        item.category !== pizzaCategoryId
       ) {
         pizzeriaItems.rest.push(item);
         otherItems.rest.push(item);
       }
     });
 
-    if (barItems?.aperitivi?.length > 0 || barItems?.bar?.length > 0) {
+    if (barItems?.starters?.length > 0 || barItems?.bar?.length > 0) {
       await generateAndSendPdf("BAR", barItems, "BAR");
-      barItems.aperitivi = [];
+      barItems.starters = [];
       barItems.bar = [];
     }
 
@@ -274,9 +283,6 @@ const CartItems = () => {
         console.error(`An error has occurred: ${error.message}`);
       }
     }
-
-    // console.log("allCartItems", allCartItems);
-    // console.log("allCartItems", JSON.stringify(allCartItems));
   };
 
   const handleConfirmNote = () => {
@@ -464,15 +470,15 @@ const CartItems = () => {
           </div>
         </div> */}
         <div className="flex w-full justify-between">
-          <button
+          {/* <button
             onClick={showInvoice}
             className={`w-1/4 py-4 text-center border-2 border-neutral-900 ${allCartItems.length > 0 ? "bg-[#3441d4]" : "bg-neutral-500 cursor-not-allowed"}`}
           >
             Print
-          </button>
+          </button> */}
           <button
             onClick={handleSend}
-            className={`w-3/4 py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
+            className={`w-full py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
           >
             {createOrderMutation.isLoading ? "Loading..;" : text("send")}
           </button>
@@ -502,6 +508,29 @@ const CartItems = () => {
       {/* Dialog */}
       <Dialog open={openDialog} setIsOpen={setOpenDialog}>
         <div className="space-y-4">
+          {dialogMode === "clear" && (
+            <div className="p-4 space-y-8">
+              <article>
+                <h3 className="text-lg font-semibold">{`${text("confirm")} "${text("clear")}"`}</h3>
+                <p>{text("clearConfirmation")}</p>
+              </article>
+
+              <div className="flex space-x-2">
+                <button
+                  onClick={cancelRemoveAll}
+                  className="px-4 py-2 text-sm font-medium border-2 border-neutral-900 bg-gray-500 hover:bg-gray-600"
+                >
+                  {text("cancel")}
+                </button>
+                <button
+                  onClick={confirmRemoveAll}
+                  className="px-4 py-2 text-sm font-medium border-2 border-neutral-900 bg-red-500 hover:bg-red-600"
+                >
+                  {text("clear")}
+                </button>
+              </div>
+            </div>
+          )}
           {dialogMode === "note" && (
             <>
               <div className="flex flex-col gap-4 mb-2">

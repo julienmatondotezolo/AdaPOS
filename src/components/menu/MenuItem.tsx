@@ -16,9 +16,10 @@ interface MenuItemProps {
   quantity: number;
   setQuantity: any;
   setMenuItemId: any;
+  categoryId: string | undefined;
 }
 
-const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemId }: MenuItemProps) => {
+const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemId, categoryId }: MenuItemProps) => {
   const text = useTranslations("Index");
   const locale = useLocale();
   const dispatch = useAppDispatch();
@@ -66,8 +67,8 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   };
 
   const inCreament = (data: any) => {
-    const { id, names, price, sideDishes, category } = data;
-    const newData = { id, names, price: price * 1, quantity: 1, category };
+    const { id, names, price, sideDishes } = data;
+    const newData = { id, names, price: price * 1, quantity: 1, category: categoryId };
 
     const existingItem = cartItems.find((item: any) => item.id === id);
 

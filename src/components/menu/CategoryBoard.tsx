@@ -98,6 +98,7 @@ const CategoryBoard = () => {
             quantity={quantity}
             setQuantity={setQuantity}
             setMenuItemId={setMenuItemId}
+            categoryId={categoryId}
           />
         </div>
       ) : (

@@ -13,6 +13,7 @@ export type MenuType = {
   asides?: string[];
   sideDishIds?: string[];
   selectedAside?: string;
+  selectedSupplement?: string;
 };
 
 export type zenchefTableType = {
