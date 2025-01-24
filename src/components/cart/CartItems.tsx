@@ -27,6 +27,7 @@ import { Invoice } from "./Invoice";
 import quickNotes from "./QuickNotes.json";
 
 const CartItems = () => {
+  const DEV_MODE: string | undefined = process.env.NEXT_PUBLIC_DEBUG_MODE;
   const text = useTranslations("Index");
   const queryClient = useQueryClient();
   const table = useAppSelector((state) => state.table);
@@ -170,7 +171,7 @@ const CartItems = () => {
 
       if (!doc) return;
 
-      doc.save(title);
+      if (DEV_MODE) doc.save(title);
 
       const blob = doc.output("blob");
       const formData = new FormData();
