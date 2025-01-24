@@ -7,8 +7,14 @@ import React, { useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { add, remove, update } from "@/lib/features";
+import { isMainCourse } from "@/lib/Utils";
 
 import { Dialog } from "../ui";
+import cookings from "./cooking.json";
+import mainCourseArray from "./mainCourse.json";
+import sauces from "./sauce.json";
+import sideDishes from "./sidedish.json";
+import supplements from "./supplement.json";
 
 interface MenuItemProps {
   items: any;
@@ -24,10 +30,18 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
   const locale = useLocale();
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart);
+  const [isMeat, setIsMeat] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [selectedCooking, setSelectedCooking] = useState<string | null>(null);
   const [selectedDish, setSelectedDish] = useState<string | null>(null);
+  const [selectedSauce, setSelectedSauce] = useState<string | null>(null);
   const [selectedSupplement, setSelectedSupplement] = useState<string | null>(null);
   const [selectedMenu, setSelectedMenu] = useState<any>(null);
+  const idsThatAreNotMeat = [
+    "034a1c74-23a9-4e03-90c3-648037496a97",
+    "f6160883-f758-40a5-b271-6c85f88abd24",
+    "7fb560b7-ded5-4693-9d27-3c688d7064cc",
+  ];
 
   const handleConfirmSelection = (e: any, data: any) => {
     e.preventDefault();
@@ -36,18 +50,31 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
       return;
     }
 
+    if (!selectedSauce) {
+      alert(text("selectSauce"));
+      return;
+    }
+
     if (!selectedSupplement) {
       alert(text("selectSupplement"));
       return;
     }
 
-    if (selectedDish) {
-      const { id, names, price, sideDishes, supplements } = data;
+    if (!selectedCooking && isMeat) {
+      alert(text("selectCooking"));
+      return;
+    }
 
+    if (selectedDish) {
+      const { id, names, price, cookings, sideDishes, sauces, supplements } = data;
+
+      const selectedCookingData = cookings?.find((cooking: any) => cooking.names[locale] === selectedCooking);
       const selectedDishData = sideDishes?.find((dish: any) => dish.names[locale] === selectedDish);
+      const selectedSauceData = sauces?.find((sauce: any) => sauce.names[locale] === selectedSauce);
       const selectedSupplementData = supplements?.find(
         (supplement: any) => supplement.names[locale] === selectedSupplement,
       );
+
       const existingItem = cartItems.find((item: any) => item.id === id);
       const itemWithAside: any = {
         id,
@@ -56,27 +83,66 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
         quantity: existingItem ? existingItem.quantity : 1,
         sideDishIds: selectedDishData ? [selectedDishData.id] : [],
         selectedAside: selectedDishData && selectedDishData.names[locale],
+        selectedSauce: selectedSauceData && selectedSauceData.names[locale],
         selectedSupplement: selectedSupplementData && selectedSupplementData.names[locale],
+        selectedCooking: selectedCookingData && selectedCookingData.names[locale],
       };
 
       dispatch(add(itemWithAside));
       setSelectedDish(null);
+      setSelectedSauce(null);
       setSelectedSupplement(null);
       setOpenDialog(false); // Close dialog after selection
     }
   };
 
   const inCreament = (data: any) => {
-    const { id, names, price, sideDishes } = data;
-    const newData = { id, names, price: price * 1, quantity: 1, category: categoryId };
+    setIsMeat(false);
+    setSelectedCooking(null);
+    setSelectedDish(null);
+    setSelectedSauce(null);
+    setSelectedSupplement(null);
+
+    if (!categoryId) return;
+
+    const { id, names, price } = data;
+    const newData = {
+      id,
+      names,
+      price: price * 1,
+      quantity: 1,
+      category: categoryId,
+      cookings,
+      sauces,
+      sideDishes,
+      supplements,
+    };
 
     const existingItem = cartItems.find((item: any) => item.id === id);
 
     setMenuItemId(id);
-    setSelectedMenu(data);
+    setSelectedMenu(newData);
 
-    if (sideDishes && sideDishes.length > 0) {
+    const checkIfMainCourse = isMainCourse({
+      allMainCoursesCategoryIds: mainCourseArray,
+      categoryId: categoryId,
+    });
+
+    const checkIfSubMainCourse = isMainCourse({
+      allMainCoursesCategoryIds: mainCourseArray,
+      categoryId: id,
+    });
+
+    if (checkIfMainCourse || checkIfSubMainCourse) {
       setOpenDialog(true); // Open dialog to select side dishes
+
+      const meatId = "c8bfce10-a693-4300-b19e-c3db39ed8f67";
+
+      const isNotmeat = !idsThatAreNotMeat.includes(id);
+
+      if (categoryId === meatId && isNotmeat) {
+        setIsMeat(true);
+      }
       return;
     }
 
@@ -162,63 +228,82 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
           <div className="flex justify-between w-full mb-8">
             <div className="w-[48%] border border-gray-800 p-4">
               <h3 className="font-bold">{text("selectSideDish")}</h3>
-              <section className="p-4">
-                <div>
-                  <input
-                    type="radio"
-                    id="sideDish"
-                    name={text("noSideDish")}
-                    value={text("noSideDish")}
-                    className="mr-4"
-                    checked={selectedDish === text("noSideDish")}
-                    onChange={(e) => setSelectedDish(e.target.value)}
-                  />
+              <section className="flex flex-wrap gap-2 p-4">
+                <div
+                  className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center
+                    ${selectedDish === text("noSideDish") ? "bg-green-600" : ""}`}
+                  onClick={() => setSelectedDish(text("noSideDish"))}
+                >
                   <label htmlFor={text("noSideDish")}>{text("noSideDish")}</label>
                 </div>
                 {selectedMenu?.sideDishes.map((dish: any) => (
-                  <div key={dish.id}>
-                    <input
-                      key={dish.id}
-                      type="radio"
-                      id={dish.id}
-                      name={dish.names[locale]}
-                      value={dish.names[locale]}
-                      className="mr-4"
-                      checked={selectedDish === dish.names[locale]}
-                      onChange={(e) => setSelectedDish(e.target.value)}
-                    />
+                  <div
+                    key={dish.id}
+                    className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center
+                    ${selectedDish === dish.names[locale] ? "bg-green-600" : ""}`}
+                    onClick={() => setSelectedDish(dish.names[locale])}
+                  >
                     <label htmlFor={dish.names[locale]}>{dish.names[locale]}</label>
                   </div>
                 ))}
               </section>
             </div>
             <div className="w-[48%] border border-gray-800 p-4">
+              <h3 className="font-bold">{text("selectSauce")}</h3>
+              <section className="flex flex-wrap gap-2 p-4">
+                <div
+                  className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center 
+                  ${selectedSauce === text("noSauce") ? "bg-green-600" : ""}`}
+                  onClick={() => setSelectedSauce(text("noSauce"))}
+                >
+                  <label htmlFor={text("noSauce")}>{text("noSauce")}</label>
+                </div>
+                {selectedMenu?.sauces.map((sauce: any) => (
+                  <div
+                    key={sauce.id}
+                    className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center
+                    ${selectedSauce === sauce.names[locale] ? "bg-green-600" : ""}`}
+                    onClick={() => setSelectedSauce(sauce.names[locale])}
+                  >
+                    <label htmlFor={sauce.names[locale]}>{sauce.names[locale]}</label>
+                  </div>
+                ))}
+              </section>
+            </div>
+            {isMeat && (
+              <div className="w-[20%] border border-gray-800 p-4">
+                <h3 className="font-bold">{text("selectCooking")}</h3>
+                <section className="flex flex-wrap gap-2 p-4">
+                  {selectedMenu?.cookings.map((cooking: any) => (
+                    <div
+                      key={cooking.id}
+                      className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center
+                    ${selectedCooking === cooking.names[locale] ? "bg-green-600" : ""}`}
+                      onClick={() => setSelectedCooking(cooking.names[locale])}
+                    >
+                      <label htmlFor={cooking.names[locale]}>{cooking.names[locale]}</label>
+                    </div>
+                  ))}
+                </section>
+              </div>
+            )}
+            <div className="w-[48%] border border-gray-800 p-4">
               <h3 className="font-bold">{text("selectSupplement")}</h3>
-              <section className="p-4">
-                <div>
-                  <input
-                    type="radio"
-                    id="supplement"
-                    name={text("noSupplement")}
-                    value={text("noSupplement")}
-                    className="mr-4"
-                    checked={selectedSupplement === text("noSupplement")}
-                    onChange={(e) => setSelectedSupplement(e.target.value)}
-                  />
+              <section className="flex flex-wrap gap-2 p-4">
+                <div
+                  className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center 
+                  ${selectedSupplement === text("noSupplement") ? "bg-green-600" : ""}`}
+                  onClick={() => setSelectedSupplement(text("noSupplement"))}
+                >
                   <label htmlFor={text("noSupplement")}>{text("noSupplement")}</label>
                 </div>
                 {selectedMenu?.supplements.map((supplement: any) => (
-                  <div key={supplement.id}>
-                    <input
-                      key={supplement.id}
-                      type="radio"
-                      id={supplement.id}
-                      name={supplement.names[locale]}
-                      value={supplement.names[locale]}
-                      className="mr-4"
-                      checked={selectedSupplement === supplement.names[locale]}
-                      onChange={(e) => setSelectedSupplement(e.target.value)}
-                    />
+                  <div
+                    key={supplement.id}
+                    className={`p-3 w-48 bg-gray-500 cursor-pointer relative flex items-center
+                    ${selectedSupplement === supplement.names[locale] ? "bg-green-600" : ""}`}
+                    onClick={() => setSelectedSupplement(supplement.names[locale])}
+                  >
                     <label htmlFor={supplement.names[locale]}>{supplement.names[locale]}</label>
                   </div>
                 ))}

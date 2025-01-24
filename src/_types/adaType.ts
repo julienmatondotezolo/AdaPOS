@@ -13,7 +13,9 @@ export type MenuType = {
   asides?: string[];
   sideDishIds?: string[];
   selectedAside?: string;
+  selectedSauce?: string;
   selectedSupplement?: string;
+  selectedCooking?: string;
 };
 
 export type zenchefTableType = {

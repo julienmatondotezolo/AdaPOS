@@ -11,8 +11,8 @@ const TableBoard = ({ roomId }: { roomId: string }) => {
   const fetchCurrentTables = () => fetchTableByRoomId({ roomId });
 
   const { isLoading, data: tables } = useQuery("tables", fetchCurrentTables, {
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     select: (data) => data.tables.sort((a: any, b: any) => a.name - b.name),
     keepPreviousData: true,
   });

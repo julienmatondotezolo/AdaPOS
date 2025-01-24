@@ -7,12 +7,17 @@
     "aside": "Accompagnement",
     "confirm": "Confirmer",
     "cancel": "Annuler",
+    "supplement": "Supplément",
     "selectSideDish": "Sélectionnez un accompagnement",
     "noSideDish": "Aucun accompagnement",
     "selectSupplement": "Sélectionnez un supplément",
+    "selectSauce": "Sélectionnez une Sauce",
+    "noSauce": "Aucune sauce",
     "noSupplement": "Aucun supplément",
     "selectWaiter": "Sélectionner un serveur",
     "selectDishNumber": "Veuillez saisir le nombre de couverts:",
-    "dishNumber": "Nombre de couverts"
+    "dishNumber": "Nombre de couverts",
+    "selectCooking": "Sélectionnez la cuisson",
+    "cooking": "Cuisson"
   }
 }

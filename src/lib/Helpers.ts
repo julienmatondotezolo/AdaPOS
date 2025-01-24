@@ -387,7 +387,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           maxWidth: 59,
         });
 
-        // ASIDE & SUPPLMENTS
+        // ASIDE & SUPPLEMENTS & SAUCE
         if (cart.selectedAside) {
           contentHeight = contentHeight + 10;
           doc.setFontSize(8);
@@ -399,13 +399,35 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
             maxWidth: 59,
           });
         }
+        if (cart.selectedSauce) {
+          contentHeight = contentHeight + 5;
+          doc.setFontSize(8);
+          doc.text("Sauce:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedSauce, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
         if (cart.selectedSupplement) {
           contentHeight = contentHeight + 5;
           doc.setFontSize(8);
-          doc.text("Suppléments:", 8, contentHeight, {
+          doc.text("Supplement:", 8, contentHeight, {
             align: "left",
           });
           doc.text(cart.selectedSupplement, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
+        if (cart.selectedCooking) {
+          contentHeight = contentHeight + 5;
+          doc.setFontSize(8);
+          doc.text("Cuisson:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedCooking, 36, contentHeight, {
             align: "left",
             maxWidth: 59,
           });

@@ -170,7 +170,7 @@ const CartItems = () => {
 
       if (!doc) return;
 
-      // doc.save(title);
+      doc.save(title);
 
       const blob = doc.output("blob");
       const formData = new FormData();
@@ -374,10 +374,28 @@ const CartItems = () => {
                     </p>
                   </div>
 
-                  {cart.sideDishIds && (
-                    <div className="flex items-cente text-xs sm:space-x-1">
+                  {cart.selectedAside && (
+                    <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">{text("aside")}:</p>
                       <p className="font-normal">{cart.selectedAside}</p>
+                    </div>
+                  )}
+                  {cart.selectedCooking && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">{text("cooking")}:</p>
+                      <p className="font-normal">{cart.selectedCooking}</p>
+                    </div>
+                  )}
+                  {cart.selectedSauce && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">Sauce:</p>
+                      <p className="font-normal">{cart.selectedSauce}</p>
+                    </div>
+                  )}
+                  {cart.selectedSupplement && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">{text("supplement")}:</p>
+                      <p className="font-normal">{cart.selectedSupplement}</p>
                     </div>
                   )}
                 </div>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "c7bd34b5-13c4-4c32-a3ce-dfae58834ba1",
+    "names": {
+      "en": "Rare",
+      "it": "Al sangue",
+      "fr": "Bleu",
+      "nl": "Rood"
+    }
+  },
+  {
+    "id": "c68d153e-4ce1-4a2c-9661-eaf7c7312532",
+    "names": {
+      "en": "Medium-rare",
+      "it": "Al sangue",
+      "fr": "Saignant",
+      "nl": "Bloedrood"
+    }
+  },
+  {
+    "id": "c6fcef40-99e1-490c-9f48-a05d526542f33",
+    "names": {
+      "en": "Medium",
+      "it": "Medio",
+      "fr": "À point",
+      "nl": "Medium"
+    }
+  },
+  {
+    "id": "c6fcef40-99e1-490c-9f48-a05d526542f4",
+    "names": {
+      "en": "Medium-well",
+      "it": "Medio al sangue",
+      "fr": "Bien cuit",
+      "nl": "Medium-well"
+    }
+  }
+]
