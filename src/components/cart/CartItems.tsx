@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
+import { openDB } from "idb";
 import { ChevronDown, ShoppingCart, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import React, { type MouseEvent, useState } from "react";
@@ -183,11 +184,12 @@ const CartItems = () => {
       formData.append("file", blob, `${filename}.pdf`);
 
       try {
-        socketEmit("send-file", {
-          roomId: zenchefRestaurantId,
-          userId: currentWaiter.id,
-          file: fileData,
-        });
+        if (DEV_MODE)
+          socketEmit("send-file", {
+            roomId: zenchefRestaurantId,
+            userId: currentWaiter.id,
+            file: fileData,
+          });
       } catch (error) {
         console.error("error emitting socket:", error);
       }
@@ -251,6 +253,8 @@ const CartItems = () => {
   };
 
   const handleSend = async () => {
+    console.log("allCartItems:", allCartItems);
+
     const modifiedItems = allCartItems.map((item: any) => {
       const { id, selectedAside, ...rest } = item;
 
@@ -274,11 +278,28 @@ const CartItems = () => {
     };
 
     try {
-      await handlePrint();
-      await createOrderMutation.mutateAsync({ orderObject: order });
-      dispatch(removeAll("remove"));
-      dispatch(removeAllSupplements("remove"));
-      dispatch(resetNotes());
+      // // Save to backend & print
+      // await handlePrint();
+      // await createOrderMutation.mutateAsync({ orderObject: order });
+      // // Save to IndexedDB
+      // const orderId = `order-${Date.now()}-${currentWaiter.name}`;
+      // const orderData = {
+      //   id: orderId,
+      //   ...order,
+      //   status: "active",
+      //   createdAt: new Date().toISOString(),
+      // };
+      // const db = await openDB("restaurant-db", 1);
+      // await db.put("orders", orderData);
+      // await db.put("tables", {
+      //   tableNumber: table[0]?.tableNumber,
+      //   orderId,
+      //   status: "locked",
+      // });
+      // // Clear cart
+      // dispatch(removeAll("remove"));
+      // dispatch(removeAllSupplements("remove"));
+      // dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
@@ -378,25 +399,25 @@ const CartItems = () => {
                   {cart.selectedAside && (
                     <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">{text("aside")}:</p>
-                      <p className="font-normal">{cart.selectedAside}</p>
+                      <p className="font-normal">{cart.selectedAside[locale]}</p>
                     </div>
                   )}
                   {cart.selectedCooking && (
                     <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">{text("cooking")}:</p>
-                      <p className="font-normal">{cart.selectedCooking}</p>
+                      <p className="font-normal">{cart.selectedCooking[locale]}</p>
                     </div>
                   )}
                   {cart.selectedSauce && (
                     <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">Sauce:</p>
-                      <p className="font-normal">{cart.selectedSauce}</p>
+                      <p className="font-normal">{cart.selectedSauce[locale]}</p>
                     </div>
                   )}
                   {cart.selectedSupplement && (
                     <div className="flex items-center text-xs sm:space-x-1">
                       <p className="font-bold">{text("supplement")}:</p>
-                      <p className="font-normal">{cart.selectedSupplement}</p>
+                      <p className="font-normal">{cart.selectedSupplement[locale]}</p>
                     </div>
                   )}
                 </div>

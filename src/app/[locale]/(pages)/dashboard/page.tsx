@@ -6,6 +6,7 @@ import { Cart, CategoryBoard, Navigation, TableBoard, TimeHeader, WaiterSelector
 import { useAppSelector, useSocket } from "@/hooks";
 
 function Dashboard() {
+  const DEV_MODE: string | undefined = process.env.NEXT_PUBLIC_DEBUG_MODE;
   const currentWaiter = useAppSelector((state) => state.currentWaiter.currentWaiter);
 
   const zenchefRestaurantId = process.env.NEXT_PUBLIC_ZENCHEF_RESTAURANT_ID;
@@ -13,8 +14,8 @@ function Dashboard() {
   const { socketJoinRoom } = useSocket();
 
   useEffect(() => {
-    if (currentWaiter) socketJoinRoom(zenchefRestaurantId, currentWaiter.id, currentWaiter.name);
-  }, [currentWaiter, socketJoinRoom, zenchefRestaurantId]);
+    if (currentWaiter && !DEV_MODE) socketJoinRoom(zenchefRestaurantId, currentWaiter.id, currentWaiter.name);
+  }, [currentWaiter, socketJoinRoom, zenchefRestaurantId, DEV_MODE]);
 
   const table = useAppSelector((state) => state.table);
 

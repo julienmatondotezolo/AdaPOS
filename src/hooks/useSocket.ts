@@ -24,8 +24,8 @@ const useSocket = () => {
       socket.on("disconnect", onDisconnect);
 
       return () => {
-        socket.off("connect", onConnect);
-        socket.off("disconnect", onDisconnect);
+        socket?.off("connect", onConnect);
+        socket?.off("disconnect", onDisconnect);
       };
     }
   }, []);
@@ -45,7 +45,7 @@ const useSocket = () => {
 
   const socketJoinRoom = (roomdId: string | undefined, id: string, user: string) => {
     try {
-      socket.emit("join-room", {
+      socket?.emit("join-room", {
         roomId: roomdId,
         username: user,
         userId: id,
@@ -57,7 +57,7 @@ const useSocket = () => {
 
   const socketLeaveRoom = (roomdId: string | undefined, username: string) => {
     try {
-      socket.emit("leave-room", {
+      socket?.emit("leave-room", {
         roomId: roomdId,
         username: username,
       });
@@ -67,7 +67,7 @@ const useSocket = () => {
   };
 
   const socketOff = (event: string) => {
-    socket.off(event);
+    socket?.off(event);
   };
 
   // Handle navigation changes

@@ -82,11 +82,13 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
         price: price * 1,
         quantity: existingItem ? existingItem.quantity : 1,
         sideDishIds: selectedDishData ? [selectedDishData.id] : [],
-        selectedAside: selectedDishData && selectedDishData.names[locale],
-        selectedSauce: selectedSauceData && selectedSauceData.names[locale],
-        selectedSupplement: selectedSupplementData && selectedSupplementData.names[locale],
-        selectedCooking: selectedCookingData && selectedCookingData.names[locale],
+        selectedAside: selectedDishData && selectedDishData.names,
+        selectedSauce: selectedSauceData && selectedSauceData.names,
+        selectedSupplement: selectedSupplementData && selectedSupplementData.names,
+        selectedCooking: selectedCookingData && selectedCookingData.names,
       };
+
+      console.log("itemWithAside:", itemWithAside);
 
       dispatch(add(itemWithAside));
       setSelectedDish(null);
