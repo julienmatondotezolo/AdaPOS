@@ -12,10 +12,10 @@ export type MenuType = {
   quantity: number;
   asides?: string[];
   sideDishIds?: string[];
-  selectedAside?: string;
-  selectedSauce?: string;
-  selectedSupplement?: string;
-  selectedCooking?: string;
+  selectedAside?: any;
+  selectedSauce?: any;
+  selectedSupplement?: any;
+  selectedCooking?: any;
 };
 
 export type TableType = {

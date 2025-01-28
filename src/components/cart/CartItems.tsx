@@ -127,7 +127,12 @@ const CartItems = () => {
     setInvoiceShow(true);
   };
 
-  const handlePrint = async () => {
+  const handlePrint = async ({ items }: { items: any }) => {
+    if (!items) {
+      alert("ERROR: No items in cart impossible to send order.");
+      return;
+    }
+
     const barItems: any = {
       bar: [],
       starters: [],
@@ -157,7 +162,7 @@ const CartItems = () => {
       }, [] as string[]);
 
       if (!currentWaiter) {
-        console.error("No waiter");
+        console.error("ERROR: No waiter selected");
         return;
       }
 
@@ -190,12 +195,13 @@ const CartItems = () => {
             userId: currentWaiter.id,
             file: fileData,
           });
+        return;
       } catch (error) {
         console.error("error emitting socket:", error);
       }
     };
 
-    allCartItems.forEach((item: any) => {
+    items.forEach((item: any) => {
       // BAR
       const drinksCategoryId = "c1cbea71-ece5-4d63-bb12-fe06b03d1140";
       const startersCategoryId = "f9d526cb-f64e-4c65-acdc-585a40929406";
@@ -253,8 +259,6 @@ const CartItems = () => {
   };
 
   const handleSend = async () => {
-    console.log("allCartItems:", allCartItems);
-
     const modifiedItems = allCartItems.map((item: any) => {
       const { id, selectedAside, ...rest } = item;
 
@@ -268,35 +272,41 @@ const CartItems = () => {
       return;
     }
 
-    const order = {
-      waiter: currentWaiter.name,
-      table: table[0]?.tableNumber,
-      note: storedNotes.map((note) => note.content),
+    // const order = {
+    //   waiter: currentWaiter.name,
+    //   table: table[0]?.tableNumber,
+    //   note: storedNotes.map((note) => note.content),
+    //   meals: table[0]?.couvert,
+    //   orderMenuItems: modifiedItems,
+    //   orderSupplements: {},
+    // };
+
+    const orderId = `order-${Date.now()}-${currentWaiter.name.toLowerCase()}`;
+
+    const orderData = {
+      id: orderId,
+      items: allCartItems,
       meals: table[0]?.couvert,
-      orderMenuItems: modifiedItems,
-      orderSupplements: supplementIds,
+      status: "active",
+      waiter: currentWaiter?.name,
+      createdAt: new Date().toISOString(),
     };
 
     try {
-      // // Save to backend & print
-      // await handlePrint();
-      // await createOrderMutation.mutateAsync({ orderObject: order });
-      // // Save to IndexedDB
-      // const orderId = `order-${Date.now()}-${currentWaiter.name}`;
-      // const orderData = {
-      //   id: orderId,
-      //   ...order,
-      //   status: "active",
-      //   createdAt: new Date().toISOString(),
-      // };
-      // const db = await openDB("restaurant-db", 1);
-      // await db.put("orders", orderData);
-      // await db.put("tables", {
-      //   tableNumber: table[0]?.tableNumber,
-      //   orderId,
-      //   status: "locked",
-      // });
-      // // Clear cart
+      // Save to backend & print
+      await handlePrint({ items: allCartItems });
+      // await createOrderMutation.mutateAsync({ orderObject: orderData });
+
+      // Save to IndexedDB
+      const db = await openDB("restaurant-db", 1);
+
+      await db.put("orders", orderData);
+      await db.put("tables", {
+        tableNumber: table[0]?.tableNumber,
+        orderId,
+        status: "locked",
+      });
+      // Clear cart
       // dispatch(removeAll("remove"));
       // dispatch(removeAllSupplements("remove"));
       // dispatch(resetNotes());

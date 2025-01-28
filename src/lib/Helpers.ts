@@ -394,7 +394,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           doc.text("Accompagnements:", 8, contentHeight, {
             align: "left",
           });
-          doc.text(cart.selectedAside, 36, contentHeight, {
+          doc.text(cart.selectedAside.fr, 36, contentHeight, {
             align: "left",
             maxWidth: 59,
           });
@@ -405,7 +405,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           doc.text("Sauce:", 8, contentHeight, {
             align: "left",
           });
-          doc.text(cart.selectedSauce, 36, contentHeight, {
+          doc.text(cart.selectedSauce.fr, 36, contentHeight, {
             align: "left",
             maxWidth: 59,
           });
@@ -416,7 +416,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           doc.text("Supplement:", 8, contentHeight, {
             align: "left",
           });
-          doc.text(cart.selectedSupplement, 36, contentHeight, {
+          doc.text(cart.selectedSupplement.fr, 36, contentHeight, {
             align: "left",
             maxWidth: 59,
           });
@@ -427,7 +427,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           doc.text("Cuisson:", 8, contentHeight, {
             align: "left",
           });
-          doc.text(cart.selectedCooking, 36, contentHeight, {
+          doc.text(cart.selectedCooking.fr, 36, contentHeight, {
             align: "left",
             maxWidth: 59,
           });

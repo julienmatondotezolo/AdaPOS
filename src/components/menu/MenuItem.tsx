@@ -88,8 +88,6 @@ const MenuItem = ({ items, selectedMenuItem, quantity, setQuantity, setMenuItemI
         selectedCooking: selectedCookingData && selectedCookingData.names,
       };
 
-      console.log("itemWithAside:", itemWithAside);
-
       dispatch(add(itemWithAside));
       setSelectedDish(null);
       setSelectedSauce(null);
