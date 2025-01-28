@@ -17,8 +17,8 @@ const CategoryBoard = () => {
   const [menuItems, setMenuItems] = useState<any>();
 
   const { isLoading, data: categories } = useQuery("menu", fetchMenu, {
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     select: (data) => data.sort((a: any, b: any) => a.order - b.order),
     onSuccess(data) {
       if (data && data.length > 0) {
@@ -98,6 +98,7 @@ const CategoryBoard = () => {
             quantity={quantity}
             setQuantity={setQuantity}
             setMenuItemId={setMenuItemId}
+            categoryId={categoryId}
           />
         </div>
       ) : (

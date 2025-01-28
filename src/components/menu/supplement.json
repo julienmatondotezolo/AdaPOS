@@ -1,0 +1,61 @@
+[
+    {
+      "id": "a7bd34b5-13c4-4c32-a3ce-dfae58834ba1",
+      "names": {
+        "en": "Bread + butter",
+        "it": "Pane + burro",
+        "fr": "Pain + beurre",
+        "nl": "Brood + boter"
+      },
+      "additionalPrice": 2.5
+    },{
+      "id": "c7bd34b5-13c4-4c32-a3ce-dfae58834ba2",
+      "names": {
+        "en": "Parmesan cheese",
+        "it": "Formaggio parmigiano",
+        "fr": "Parmesan",
+        "nl": "Parmesaanse kaas"
+      },
+      "additionalPrice": 2.5
+    },
+    {
+      "id": "d7bd34b5-13c4-4c32-a3ce-dfae58834ba3",
+      "names": {
+        "en": "Extra setting + dish",
+        "it": "Posate supplementari + piatto",
+        "fr": "Couvert supplémentaire + assiette",
+        "nl": "Extra bestek + bord"
+      },
+      "additionalPrice": 3.5
+    },
+    {
+      "id": "b7bd34b5-13c4-4c32-a3ce-dfae58834ba7",
+      "names": {
+        "en": "croquette",
+        "it": "croquette",
+        "fr": "croquette",
+        "nl": "kroketten"
+      },
+      "additionalPrice": 3.5
+    },
+    {
+      "id": "f68d153e-4ce1-4a2c-9661-eaf7c7312537",
+      "names": {
+        "en": "fries",
+        "it": "patatine fritte",
+        "fr": "frites",
+        "nl": "frietjes"
+      },
+      "additionalPrice": 3.5
+    },
+    {
+      "id": "16fcef40-99e1-490c-9f48-a05d526542f6",
+      "names": {
+        "en": "pasta",
+        "it": "pasta",
+        "fr": "pâtes",
+        "nl": "pasta"
+      },
+      "additionalPrice": 3.5
+    }
+  ]

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "c8bfce10-a693-4300-b19e-c3db39ed8f67",
+    "names": {
+      "en": "Meat & Fish",
+      "it": "Carne & Pesce",
+      "fr": "Viande et poisson",
+      "nl": "Vlees en vis"
+    }
+  },
+  {
+    "id": "8ffee41a-a051-4c28-8bd9-3acbacf7d735",
+    "names": {
+      "en": "Paste",
+      "it": "Paste",
+      "fr": "Pâtes",
+      "nl": "Pasta"
+    }
+  },
+  {
+    "id": "f58d8041-6977-4847-9a7c-75b94a00d8be",
+    "names": {
+      "en": "Spaghetti alla Bolognese",
+      "it": "Spaghetti alla Bolognese",
+      "fr": "Spaghetti alla Bolognese",
+      "nl": "Spaghetti alla Bolognese"
+    }
+  },
+  {
+    "id": "193a2a96-217e-45e4-a84e-18b527649ddc",
+    "names": {
+      "en": "Lasagna",
+      "it": "Lasagna",
+      "fr": "Lasagna",
+      "nl": "Lasagna"
+    }
+  },
+  {
+    "id": "3606770a-c4c8-4828-ba38-b55f6f59e093",
+    "names": {
+      "en": "Penne al Formaggio e Prosciutto",
+      "it": "Penne al Formaggio e Prosciutto",
+      "fr": "Penne al Formaggio e Prosciutto",
+      "nl": "Penne al Formaggio e Prosciutto"
+    }
+  }
+]

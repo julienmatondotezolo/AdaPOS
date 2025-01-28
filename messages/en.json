@@ -3,14 +3,21 @@
     "welcome": "Welcome",
     "send": "Send",
     "clear": "Clear",
+    "clearConfirmation": "Are you sure you want to remove all items",
     "aside": "Aside",
     "confirm": "Confirm",
+    "cancel": "Cancel",
+    "supplement": "Supplement",
     "selectSideDish": "Select a Side Dish",
     "noSideDish": "No side dish",
     "selectSupplement": "Select a Supplement",
     "noSupplement": "No supplement",
+    "selectSauce": "Select a Sauce",
+    "noSauce": "No sauce",
     "selectWaiter": "Select waiter",
     "selectDishNumber": "Please enter the number of dishes :",
-    "dishNumber": "Number of dishes"
+    "dishNumber": "Number of dishes",
+    "selectCooking": "Select cooking",
+    "cooking": "Cooking"
   }
 }

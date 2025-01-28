@@ -3,14 +3,21 @@
     "welcome": "Benvenuto",
     "send": "Invia",
     "clear": "Vuoto",
+    "clearConfirmation": "Sei sicuro di voler rimuovere tutti gli elementi?",
     "aside": "A parte",
     "confirm": "Conferma",
+    "cancel": "Annullare",
+    "supplement": "Supplemento",
     "selectSideDish": "Seleziona un contorno",
     "noSideDish": "Nessun supporto",
     "selectSupplement": "Seleziona un supplemento",
+    "selectSauce": "Seleziona una salsa",
+    "noSauce": "Nessun salsa",
     "noSupplement": "Nessun supplément",
     "selectWaiter": "Seleziona cameriere",
     "selectDishNumber": "Inserisci il numero di coperti:",
-    "dishNumber": "Numero di coperti"
+    "dishNumber": "Numero di coperti",
+    "selectCooking": "Seleziona la cottura",
+    "cooking": "Cottura"
   }
 }

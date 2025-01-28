@@ -3,14 +3,21 @@
     "welcome": "Welkom",
     "send": "Verzenden",
     "clear": "Leegmaken",
+    "clearConfirmation": "Bent u zeker dat u alle items wilt verwijderen ?",
     "aside": "Bijgerecht",
     "confirm": "Bevestig",
+    "cancel": "Annuleren",
+    "supplement": "Supplement",
     "selectSideDish": "Kies een bijgerecht",
     "noSideDish": "Geen bijgerecht",
     "selectSupplement": "Selecteer een supplement",
+    "selectSauce": "Selecteer een saus",
+    "noSauce": "Geen saus",
     "noSupplement": "Geen supplement",
     "selectWaiter": "Kies een ober",
     "selectDishNumber": "Vul het aantal couverts in:",
-    "dishNumber": "Aantal couverts"
+    "dishNumber": "Aantal couverts",
+    "selectCooking": "Kies een bereiding",
+    "cooking": "Bereiding"
   }
 }

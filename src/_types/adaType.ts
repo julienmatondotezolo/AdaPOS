@@ -13,6 +13,21 @@ export type MenuType = {
   asides?: string[];
   sideDishIds?: string[];
   selectedAside?: string;
+  selectedSauce?: string;
+  selectedSupplement?: string;
+  selectedCooking?: string;
+};
+
+export type TableType = {
+  id: number;
+  name: string;
+  couvert: number;
+  x?: number;
+  y?: number;
+  min?: number;
+  max?: number;
+  is_bookable?: boolean;
+  ordered?: boolean;
 };
 
 export type zenchefTableType = {

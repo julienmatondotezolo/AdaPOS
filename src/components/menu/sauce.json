@@ -1,0 +1,42 @@
+[
+    {
+        "id": "dc41b935-d83b-47a1-a813-0ef49d568faa",
+        "names": {
+            "en": "Al pepe",
+            "it": "Al pepe",
+            "fr": "Al pepe",
+            "nl": "Al pepe"
+        },
+        "additionalPrice": 3.50
+    },
+    {
+        "id": "f7a94cd7-5626-4b09-a611-d79db94bdc05",
+        "names": {
+            "en": "Pizzaiola",
+            "it": "Pizzaiola",
+            "fr": "Pizzaiola",
+            "nl": "Pizzaiola"
+        },
+        "additionalPrice": 3.50
+    },
+    {
+        "id": "3d40b437-6d29-4e7d-a879-e320a5a87952",
+        "names": {
+            "en": "Archiduc",
+            "it": "Archiduc",
+            "fr": "Archiduc",
+            "nl": "Archiduc"
+        },
+        "additionalPrice": 3.50
+    },
+    {
+        "id": "17678349-ccf0-4e39-9a82-028c98b55659",
+        "names": {
+            "en": "Dello Chef",
+            "it": "Dello Chef",
+            "fr": "Dello Chef",
+            "nl": "Dello Chef"
+        },
+        "additionalPrice": 4.50
+    }
+]

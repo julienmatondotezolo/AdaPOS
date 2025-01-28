@@ -1,4 +1,45 @@
 /* eslint-disable no-case-declarations */
+
+// Template ticket for postion
+// URL: https://raw.githack.com/MrRio/jsPDF/master/index.html
+// var doc = new jsPDF({
+//   orientation: "portrait",
+//   unit: "mm",
+//   format: [72, 297], // Width: 72 mm, Height: 297 mm
+//   putOnlyUsedFonts: true,
+//   floatPrecision: 16, // or "smart", default is 16
+// });
+
+// doc.setFontSize(12);
+// doc.setFont("helvetica", "bold");
+// doc.setTextColor("#000000");
+// doc.text("1", 10, 20, {
+// align: "right",
+// });
+// doc.text("BISTECCA AL NATURALE", 12, 20, {
+// align: "left",
+// maxWidth: 59,
+// });
+
+// // ASIDE & SUPPLMENTS
+// doc.setFontSize(8);
+// doc.text("Accompagnement:", 8, 25, {
+//   align: "left",
+// });
+// doc.text("Pasta", 35, 25, {
+//   align: "left",
+//   maxWidth: 59,
+// });
+
+// doc.setFontSize(8);
+// doc.text("Supplément:", 8, 29, {
+//   align: "left",
+// });
+// doc.text("Pasta", 35, 29, {
+//   align: "left",
+//   maxWidth: 59,
+// });
+
 import jsPDF from "jspdf";
 import { StaticImageData } from "next/image";
 
@@ -230,7 +271,7 @@ const ticketApperitivi = ({ doc, items, contentHeight }: { doc: jsPDF; items: an
 
   let newContentHeight = contentHeight + 10;
 
-  items.aperitivi.forEach((cart: MenuType) => {
+  items.starters.forEach((cart: MenuType) => {
     const yPosition = newContentHeight;
 
     doc.setFontSize(10);
@@ -284,7 +325,7 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
 
   let contentHeight = 45;
 
-  if (items.aperitivi && items.aperitivi.length > 0)
+  if (items.starters && items.starters.length > 0)
     contentHeight = ticketApperitivi({ doc, items, contentHeight }).returnedHeight;
 
   if (notes.length > 0 && notes[0] !== null) contentHeight = ticketNote({ doc, notes, contentHeight }).returnedHeight;
@@ -345,6 +386,52 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
           align: "left",
           maxWidth: 59,
         });
+
+        // ASIDE & SUPPLEMENTS & SAUCE
+        if (cart.selectedAside) {
+          contentHeight = contentHeight + 10;
+          doc.setFontSize(8);
+          doc.text("Accompagnements:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedAside, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
+        if (cart.selectedSauce) {
+          contentHeight = contentHeight + 5;
+          doc.setFontSize(8);
+          doc.text("Sauce:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedSauce, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
+        if (cart.selectedSupplement) {
+          contentHeight = contentHeight + 5;
+          doc.setFontSize(8);
+          doc.text("Supplement:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedSupplement, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
+        if (cart.selectedCooking) {
+          contentHeight = contentHeight + 5;
+          doc.setFontSize(8);
+          doc.text("Cuisson:", 8, contentHeight, {
+            align: "left",
+          });
+          doc.text(cart.selectedCooking, 36, contentHeight, {
+            align: "left",
+            maxWidth: 59,
+          });
+        }
 
         // Update totalHeight after each iteration
         contentHeight = contentHeight + 12;
