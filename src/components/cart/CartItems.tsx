@@ -176,7 +176,7 @@ const CartItems = () => {
         meals: table[0]?.couvert,
         waiter: currentWaiter.name,
         items,
-        notes: storedNotes.map((note) => note.content),
+        notes,
       });
 
       if (!doc) return;

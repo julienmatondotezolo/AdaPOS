@@ -10,6 +10,19 @@
 //   floatPrecision: 16, // or "smart", default is 16
 // });
 
+// var position = 5;
+// var text = "BAR"
+
+// doc.setLineWidth(1);
+//   doc.line(5, position - 3, 68, position - 3);
+//   doc.line(5, position + 2, 68, position + 2);
+
+//   doc.setFontSize(12);
+//   // doc.setTextColor("#000000");
+//   doc.text(text, 36, position + 1, {
+//     align: "center",
+//   });
+
 // doc.setFontSize(12);
 // doc.setFont("helvetica", "bold");
 // doc.setTextColor("#000000");
@@ -36,6 +49,16 @@
 //   align: "left",
 // });
 // doc.text("Pasta", 35, 29, {
+//   align: "left",
+//   maxWidth: 59,
+// });
+
+// doc.setFontSize(8);
+// doc.setTextColor("#000000");
+// doc.text("0", 10, 35, {
+//   align: "right",
+// });
+// doc.text("PENNE AL FORMAGGIO E PROSCIUTTO (ENFANTS", 12, 35, {
 //   align: "left",
 //   maxWidth: 59,
 // });
@@ -306,6 +329,7 @@ const ticketNote = ({ doc, notes, contentHeight }: { doc: jsPDF; notes: any[]; c
 
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
+    doc.setTextColor("#000000");
     doc.text(note.toUpperCase() + "!!!", 36, yPosition, {
       align: "center",
     });
