@@ -350,10 +350,10 @@ export const generateTicket = async ({ title, tableNumber, meals, waiter, items,
 
   let contentHeight = 35;
 
+  if (notes.length > 0 && notes[0] !== null) contentHeight = ticketNote({ doc, notes, contentHeight }).returnedHeight;
+
   if (items.starters && items.starters.length > 0)
     contentHeight = ticketApperitivi({ doc, items, contentHeight }).returnedHeight;
-
-  if (notes.length > 0 && notes[0] !== null) contentHeight = ticketNote({ doc, notes, contentHeight }).returnedHeight;
   // let contentHeight = 45;
 
   switch (title) {

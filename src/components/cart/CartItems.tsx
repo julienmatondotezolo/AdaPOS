@@ -293,7 +293,7 @@ const CartItems = () => {
 
     const orderData = {
       id: orderId,
-      items: allCartItems,
+      items: [...allCartItems, ...allReoponedCartItems],
       note: storedNotes.map((note) => note.content),
       meals: table[0]?.couvert,
       status: "active",
