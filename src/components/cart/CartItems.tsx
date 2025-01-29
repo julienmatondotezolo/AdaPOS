@@ -193,7 +193,7 @@ const CartItems = () => {
       formData.append("file", blob, `${filename}.pdf`);
 
       try {
-        if (DEV_MODE)
+        if (!DEV_MODE)
           socketEmit("send-file", {
             roomId: zenchefRestaurantId,
             userId: currentWaiter.id,
@@ -590,7 +590,7 @@ const CartItems = () => {
             onClick={handleSend}
             className={`w-full py-4 text-center font-bold border-2 border-neutral-900 ${allCartItems.length > 0 ? " bg-green-600" : "bg-neutral-500 cursor-not-allowed"}`}
           >
-            {createOrderMutation.isLoading ? "Loading..;" : text("send")}
+            {createOrderMutation.isLoading ? "Loading..." : text("send")}
           </button>
         </div>
       </div>
