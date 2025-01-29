@@ -324,7 +324,6 @@ const ticketNote = ({ doc, notes, contentHeight }: { doc: jsPDF; notes: any[]; c
   contentHeight = contentHeight + 10;
 
   notes.forEach((note: string) => {
-    console.log("note:", note);
     const yPosition = contentHeight;
 
     doc.setFontSize(12);

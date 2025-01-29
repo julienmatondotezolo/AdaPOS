@@ -270,7 +270,7 @@ const CartItems = () => {
     const modifiedItems = allCartItems.map((item: any) => {
       const { id, selectedAside, ...rest } = item;
 
-      return { menuItemId: id, quantity: rest.quantity, sideDishIds: rest.sideDishIds ?? [] };
+      return { menuItemId: id, quantity: rest.quantity, sideDishIds: [], supplements: [] };
     });
 
     const supplementIds = allSupplements.map((supplement: any) => supplement.id);
@@ -280,14 +280,14 @@ const CartItems = () => {
       return;
     }
 
-    // const order = {
-    //   waiter: currentWaiter.name,
-    //   table: table[0]?.tableNumber,
-    //   note: storedNotes.map((note) => note.content),
-    //   meals: table[0]?.couvert,
-    //   orderMenuItems: modifiedItems,
-    //   orderSupplements: {},
-    // };
+    const order = {
+      waiter: currentWaiter.name,
+      table: table[0]?.tableNumber,
+      notes: storedNotes.map((note) => note.content),
+      orderMenuItems: modifiedItems,
+      orderSupplements: [],
+      meals: table[0]?.couvert,
+    };
 
     const orderId = `order-${Date.now()}-${currentWaiter.name.toLowerCase()}`;
 
@@ -304,8 +304,7 @@ const CartItems = () => {
     try {
       // Save to backend & print
       await handlePrint({ items: allCartItems });
-      // await createOrderMutation.mutateAsync({ orderObject: orderData });
-
+      await createOrderMutation.mutateAsync({ orderObject: order });
       // Save to IndexedDB
       const db = await openDB("restaurant-db", 1);
 
@@ -316,10 +315,10 @@ const CartItems = () => {
         status: "locked",
       });
       // Clear cart
-      // dispatch(removeAll("remove"));
-      // dispatch(removeAllReopened("remove"));
-      // dispatch(removeAllSupplements("remove"));
-      // dispatch(resetNotes());
+      dispatch(removeAll("remove"));
+      dispatch(removeAllReopened("remove"));
+      dispatch(removeAllSupplements("remove"));
+      dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
