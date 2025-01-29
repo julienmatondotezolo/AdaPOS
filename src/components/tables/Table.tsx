@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 import { TableType } from "@/_types/adaType";
 import { useAppDispatch } from "@/hooks";
-import { addTable } from "@/lib/features";
+import { addReopened, addTable } from "@/lib/features";
 
 import { Dialog } from "../ui"; // Import Dialog component
 
@@ -66,7 +66,36 @@ const Table = ({ table, lockStatus }: TableProps) => {
       };
 
       dispatch(addTable(tableNumber));
-      setOpenOrderDialog(false);
+
+      try {
+        // Then loop through currentOrder.items and add each item to cart
+        currentOrder.items.forEach((item: any) => {
+          // Create a clean item object with only necessary properties
+          const itemToAdd = {
+            id: item.id,
+            names: item.names,
+            price: item.price,
+            quantity: item.quantity,
+            category: item.category,
+            sideDishIds: item.sideDishIds || [],
+            selectedAside: item.selectedAside || null,
+            selectedSauce: item.selectedSauce || null,
+            selectedSupplement: item.selectedSupplement || null,
+            selectedCooking: item.selectedCooking || null,
+            cookings: item.cookings || [],
+            sauces: item.sauces || [],
+            sideDishes: item.sideDishes || [],
+            supplements: item.supplements || [],
+          };
+
+          // Dispatch add action for each item
+          dispatch(addReopened(itemToAdd));
+
+          setOpenOrderDialog(false);
+        });
+      } catch (error) {
+        console.error("error reopening orders:", error);
+      }
     }
   };
 
@@ -85,6 +114,7 @@ const Table = ({ table, lockStatus }: TableProps) => {
 
       setOpenOrderDialog(false);
       // You might want to trigger a refresh of the table statuses here
+      window.location.reload();
     } catch (error) {
       console.error("Error closing order:", error);
     }
@@ -100,7 +130,7 @@ const Table = ({ table, lockStatus }: TableProps) => {
       >
         <div className="flex m-auto flex-col justify-center h-[80px] md:h-[120px] space-y-5">
           <h3 className="font-bold text-sm md:text-xl">T-{table.name}</h3>
-          {lockStatus?.status === "locked" && <span className="text-xs">🔒 Occupied</span>}
+          {lockStatus?.status === "locked" && <span className="text-xs">🔒 {currentOrder?.waiter}</span>}
         </div>
       </div>
 
@@ -130,10 +160,18 @@ const Table = ({ table, lockStatus }: TableProps) => {
         <div className="p-4">
           <h3 className="text-xl mb-4">Table {table.name} - Current Order</h3>
           <div className="mb-4">
-            <p>Order ID: {currentOrder?.id}</p>
-            <p>Created: {new Date(currentOrder?.createdAt).toLocaleString()}</p>
-            <p>Meals: {currentOrder?.meals}</p>
-            <p>Waiter: {currentOrder?.waiter}</p>
+            <p>
+              Order ID: <b>{currentOrder?.id}</b>
+            </p>
+            <p>
+              Created: <b>{new Date(currentOrder?.createdAt).toLocaleString()}</b>
+            </p>
+            <p>
+              Meals: <b>{currentOrder?.meals}</b>
+            </p>
+            <p>
+              Waiter: <b>{currentOrder?.waiter}</b>
+            </p>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <button

@@ -63,6 +63,27 @@ export async function fetchOrder(): Promise<any> {
   }
 }
 
+export async function fetchOrderById({ orderId }: { orderId: string }): Promise<any> {
+  try {
+    const responseGetOrder: Response = await fetch(adaMenuUrl + `/order/${orderId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: `Bearer ${session.session.user.token}`,
+        "ngrok-skip-browser-warning": "1",
+      },
+    });
+
+    if (responseGetOrder.ok) {
+      return responseGetOrder.json();
+    } else {
+      return responseGetOrder;
+    }
+  } catch (error) {
+    console.error("Impossible to get menu item by id:", error);
+  }
+}
+
 export async function createOrder({ orderObject }: { orderObject: any }): Promise<any> {
   try {
     const responseCreateOrder: Response = await fetch(adaMenuUrl + `/order`, {

@@ -7,6 +7,7 @@ import { CartItems } from "./CartItems";
 const Cart = () => {
   const table = useAppSelector((state) => state.table);
   const allCartItems = useAppSelector((state) => state.cart);
+  const allReoponedCartItems = useAppSelector((state) => state.reopenedCart);
 
   const isTableSlected = table.length > 0 ? true : false;
 
@@ -27,7 +28,7 @@ const Cart = () => {
         {allCartItems.length > 0 && (
           <article className="flex space-x-2 text-sm">
             <p>Items:</p>
-            <p className="font-bold">{allCartItems.length}</p>
+            <p className="font-bold">{allCartItems.length + allReoponedCartItems.length}</p>
           </article>
         )}
       </div>
