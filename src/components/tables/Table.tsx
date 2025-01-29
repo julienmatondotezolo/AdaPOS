@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 import { TableType } from "@/_types/adaType";
 import { useAppDispatch } from "@/hooks";
-import { add, addTable } from "@/lib/features";
+import { addReopened, addTable } from "@/lib/features";
 
 import { Dialog } from "../ui"; // Import Dialog component
 
@@ -67,31 +67,35 @@ const Table = ({ table, lockStatus }: TableProps) => {
 
       dispatch(addTable(tableNumber));
 
-      // Then loop through currentOrder.items and add each item to cart
-      currentOrder.items.forEach((item: any) => {
-        // Create a clean item object with only necessary properties
-        const itemToAdd = {
-          id: item.id,
-          names: item.names,
-          price: item.price,
-          quantity: item.quantity,
-          category: item.category,
-          sideDishIds: item.sideDishIds || [],
-          selectedAside: item.selectedAside || null,
-          selectedSauce: item.selectedSauce || null,
-          selectedSupplement: item.selectedSupplement || null,
-          selectedCooking: item.selectedCooking || null,
-          cookings: item.cookings || [],
-          sauces: item.sauces || [],
-          sideDishes: item.sideDishes || [],
-          supplements: item.supplements || [],
-        };
+      try {
+        // Then loop through currentOrder.items and add each item to cart
+        currentOrder.items.forEach((item: any) => {
+          // Create a clean item object with only necessary properties
+          const itemToAdd = {
+            id: item.id,
+            names: item.names,
+            price: item.price,
+            quantity: item.quantity,
+            category: item.category,
+            sideDishIds: item.sideDishIds || [],
+            selectedAside: item.selectedAside || null,
+            selectedSauce: item.selectedSauce || null,
+            selectedSupplement: item.selectedSupplement || null,
+            selectedCooking: item.selectedCooking || null,
+            cookings: item.cookings || [],
+            sauces: item.sauces || [],
+            sideDishes: item.sideDishes || [],
+            supplements: item.supplements || [],
+          };
 
-        // Dispatch add action for each item
-        dispatch(add(itemToAdd));
-      });
+          // Dispatch add action for each item
+          dispatch(addReopened(itemToAdd));
 
-      setOpenOrderDialog(false);
+          setOpenOrderDialog(false);
+        });
+      } catch (error) {
+        console.error("error reopening orders:", error);
+      }
     }
   };
 

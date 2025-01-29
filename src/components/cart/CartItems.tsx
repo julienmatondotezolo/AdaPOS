@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { AnimatePresence, motion } from "framer-motion";
 import { openDB } from "idb";
-import { ChevronDown, ShoppingCart, Trash2 } from "lucide-react";
+import { ChevronDown, Lock, ShoppingCart, Trash2 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import React, { type MouseEvent, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -18,6 +18,7 @@ import {
   deleteNote,
   remove,
   removeAll,
+  removeAllReopened,
   removeAllSupplements,
   resetNotes,
 } from "@/lib/features";
@@ -31,17 +32,20 @@ const CartItems = () => {
   const DEV_MODE: string | undefined = process.env.NEXT_PUBLIC_DEBUG_MODE;
   const text = useTranslations("Index");
   const queryClient = useQueryClient();
-  const table = useAppSelector((state) => state.table);
   const locale = useLocale();
   const dispatch = useAppDispatch();
-  const storedNotes = useAppSelector((state) => state.notes.notes);
   const [note, setNote] = useState<string>("");
   // Quick notes
   const [selectedQuickNote, setSelectedQuickNote] = useState<keyof typeof quickNotes | "">("");
   const hasSelectedCategory = selectedQuickNote !== "" && (quickNotes[selectedQuickNote] as string[]);
 
   const [invoiceShow, setInvoiceShow] = useState(false);
+  const table = useAppSelector((state) => state.table);
   const allCartItems = useAppSelector((state) => state.cart);
+
+  const allReoponedCartItems = useAppSelector((state) => state.reopenedCart);
+
+  const storedNotes = useAppSelector((state) => state.notes.notes);
   const allSupplements = useAppSelector((state) => state.supplement);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogMode, setDialogMode] = useState<"note" | "extra" | "clear" | null>(null);
@@ -307,9 +311,10 @@ const CartItems = () => {
         status: "locked",
       });
       // Clear cart
-      // dispatch(removeAll("remove"));
-      // dispatch(removeAllSupplements("remove"));
-      // dispatch(resetNotes());
+      dispatch(removeAll("remove"));
+      dispatch(removeAllReopened("remove"));
+      dispatch(removeAllSupplements("remove"));
+      dispatch(resetNotes());
     } catch (error) {
       if (error instanceof Error) {
         console.error(`An error has occurred: ${error.message}`);
@@ -322,6 +327,8 @@ const CartItems = () => {
       dispatch(addNote({ id: `${storedNotes.length}`, content: note }));
       setOpenDialog(false);
     }
+
+    setOpenDialog(false);
   };
 
   const handleConfirmSupplements = () => {
@@ -332,7 +339,7 @@ const CartItems = () => {
   };
 
   const handleDialog = (mode: "note" | "extra") => {
-    if (allCartItems.length === 0) {
+    if (allCartItems.length === 0 && allReoponedCartItems.length === 0) {
       return;
     }
     setDialogMode(mode);
@@ -388,8 +395,59 @@ const CartItems = () => {
             ))}
           </AnimatePresence>
         )}
-        {allCartItems.length > 0 ? (
+        {allCartItems.length > 0 || allReoponedCartItems.length > 0 ? (
           <AnimatePresence>
+            {allReoponedCartItems.map((cart: MenuType, index: number) => (
+              <motion.div
+                key={index}
+                initial={{ x: 100 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.2 }}
+                exit={{ y: "50%", opacity: 0, scale: 0.5 }}
+                className="relative flex justify-between w-full pl-2 py-2 border-2 border-neutral-900 box-border "
+              >
+                <div className="flex w-3/4 flex-col justify-between text-orange-500">
+                  <div className="flex items-center justify-between">
+                    <p className="truncate text-sm font-medium">
+                      {index + 1}. &nbsp;{cart.names[locale]} &nbsp;{" "}
+                    </p>
+                  </div>
+
+                  {cart.selectedAside && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">{text("aside")}:</p>
+                      <p className="font-normal">{cart.selectedAside[locale]}</p>
+                    </div>
+                  )}
+                  {cart.selectedCooking && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">{text("cooking")}:</p>
+                      <p className="font-normal">{cart.selectedCooking[locale]}</p>
+                    </div>
+                  )}
+                  {cart.selectedSauce && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">Sauce:</p>
+                      <p className="font-normal">{cart.selectedSauce[locale]}</p>
+                    </div>
+                  )}
+                  {cart.selectedSupplement && (
+                    <div className="flex items-center text-xs sm:space-x-1">
+                      <p className="font-bold">{text("supplement")}:</p>
+                      <p className="font-normal">{cart.selectedSupplement[locale]}</p>
+                    </div>
+                  )}
+                </div>
+                <div className="flex w-2/4 justify-between items-end md:items-center overflow-hidden">
+                  <p className="lg:inline-flex text-xs mr-4 md:text-xs lg:text-sm">
+                    Qty: <strong className="ml-2">{cart.quantity}</strong>
+                  </p>
+                  <div className="w-12 h-full bg-orange-500/20 hover:bg-orange-500">
+                    <Lock className="h-full mx-auto" width={18} />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
             {allCartItems.map((cart: MenuType, index: number) => (
               <motion.div
                 key={index}
@@ -483,7 +541,7 @@ const CartItems = () => {
         <div className="grid grid-cols-2 gap-0">
           <div
             onClick={() => handleDialog("note")}
-            className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900  transition-all ease-out duration-50 ${allCartItems.length > 0 ? " bg-yellow-600" : "bg-neutral-800 cursor-not-allowed"}`}
+            className={`text-center p-2 text-sm font-semibold cursor-pointer border-2 border-neutral-900  transition-all ease-out duration-50 ${allCartItems.length > 0 || allReoponedCartItems.length > 0 ? " bg-yellow-600" : "bg-neutral-800 cursor-not-allowed"}`}
           >
             <button>Note</button>
           </div>

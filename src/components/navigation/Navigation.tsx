@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { removeTable } from "@/lib/features";
+import { removeAll, removeAllReopened, removeAllSupplements, removeTable, resetNotes } from "@/lib/features";
 
 function Navigation() {
   const dispatch = useAppDispatch();
@@ -12,6 +12,10 @@ function Navigation() {
 
   const goBack = () => {
     dispatch(removeTable([]));
+    dispatch(removeAll("remove"));
+    dispatch(removeAllReopened("remove"));
+    dispatch(removeAllSupplements("remove"));
+    dispatch(resetNotes());
   };
 
   return (
