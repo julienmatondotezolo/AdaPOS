@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { TableType } from "@/_types/adaType";
 import { useAppDispatch } from "@/hooks";
 import { addReopened, addTable } from "@/lib/features";
+import { useRouter } from "@/navigation";
 
 import { Dialog } from "../ui"; // Import Dialog component
 
@@ -22,6 +23,7 @@ interface TableProps {
 }
 
 const Table = ({ table, lockStatus }: TableProps) => {
+  const router = useRouter();
   const text = useTranslations("Index");
   const dispatch = useAppDispatch();
   const [couvert, setCouvert] = useState<number | null>(null);
@@ -114,6 +116,7 @@ const Table = ({ table, lockStatus }: TableProps) => {
 
       setOpenOrderDialog(false);
       // You might want to trigger a refresh of the table statuses here
+      window.location.reload();
     } catch (error) {
       console.error("Error closing order:", error);
     }

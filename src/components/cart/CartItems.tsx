@@ -218,23 +218,27 @@ const CartItems = () => {
       const pizzaSubCategoryId = "e16a2016-1c00-4e90-99b9-868ffe80d4a2";
 
       if (item.category === drinksCategoryId) {
+        // add DRINK CAT IN BAR
         barItems.bar.push(item);
+      } else if (item.category === startersCategoryId) {
+        // add DRINK CAT IN KITCHEN
+        otherItems.starters.push(item);
       } else if (
         item.category === dessertCategoryId ||
-        item.category === startersCategoryId ||
         item.category === digestifsCategoryId ||
-        item.category === champagneEtVinsCategoryId ||
-        item.category === startersCategoryId
+        item.category === champagneEtVinsCategoryId
       ) {
+        // add DESSERTS, DIGESTIVI, CHAMPAGNE CAT IN ALL 3
         barItems.starters.push(item);
         pizzeriaItems.starters.push(item);
         otherItems.starters.push(item);
       } else if (item.category === pizzaCategoryId || item?.category?.id === pizzaSubCategoryId) {
+        // add PIZZA CAT IN ALL PIZAA
         pizzeriaItems.pizza.push(item);
         otherItems.pizza.push(item);
       } else if (
+        // If not equal to DRINKS, STARTERS, DESSERTS AND PIZZA ADD TO KITCHEN
         item.category !== drinksCategoryId &&
-        item.category !== startersCategoryId &&
         item.category !== dessertCategoryId &&
         item.category !== pizzaCategoryId
       ) {
